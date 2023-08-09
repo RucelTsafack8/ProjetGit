@@ -42,9 +42,34 @@ if(isset($_POST['envoyer'])){
         $erreur_adresse = "l'adresse est mal ecrit ";
         $ERREUR++;
     }else if($ERREUR<=0){
+        //REQUETE D'INSERTION A LA TABLE 
+        $requete = 'INSERT INTO PERSONNELS(CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
+        (:CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+        
+        $requete1 = 'INSERT INTO PROFESSEURS(ID_PROFESSEUR,CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
+        (:ID_PROFESSEUR,:CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+
+        $requete2 = 'INSERT INTO RESP_FORMATION(ID_PROFESSEUR,FONCTIONS,DATE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
+        (:ID_PROFESSEUR,:FONCTIONS,:DATE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+
+        $requete3 = 'INSERT INTO ADMINISTRATEUR(ID_TYPE_COMPTE,CNI,NUMERO_TEL,EMAIL,NOM_UTILISATEUR,MOT_DE_PASSE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
+        (:ID_TYPE_COMPTE,:CNI,:NUMERO_TEL,:NOM_UTILISATEUR,:MOT_DE_PASSE,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+
+        $requete4 = 'INSERT INTO SECRETAIRE(ID_TYPE_COMPTE,CNI,NUMERO_TEL,EMAIL,NOM_UTILISATEUR,MOT_DE_PASSE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
+        (:ID_TYPE_COMPTE,:CNI,:NUMERO_TEL,:EMAIL,:NOM_UTILISATEUR,:MOT_DE_PASSE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+
+        $stmt = $db->prepare($requete1);
+        $stmt->bindParam(":CNI",$_POST['CNI']);
+        $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL']);
+        $stmt->bindParam(":EMAIL",$_POST['EMAIL']);
+        $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS']);
+        $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
+        $stmt->bindParam(":SEXE",$_POST['SEXE']);
+        $stmt->bindParam(":ADRESSE",$_POST['ADRESSE']);
+        $stmt->execute();
         $MESSAGE_SUCCESS = "LE FORMULAIRE  A ETE SOUMIS AVEC SUCCESS";
         $_SESSION['NOM_PRENOMS'] = $NOM_PRENOMS;
-        header('location:connexion.php');
+        header('location:index.php');
 
     }
 }
@@ -105,11 +130,11 @@ if(isset($_POST['envoyer'])){
                 <div class="mt-3">
                     <label for="SEXE" class="form-label">SEXE</label>
                     <div class="form-check-inline ms-4">
-                        <input type="radio" name="SEXE" id="SEXEh" class="form-check-input" checked>
+                        <input type="radio" name="SEXE" id="SEXEh" class="form-check-input" checked value= "HOMME">
                         <label for="SEXEh" class="form-check-label">HOMME</label>
                     </div>
                     <div class="form-check-inline  ms-4">
-                        <input type="radio" name="SEXE" id="SEXEf" class="form-check-input">
+                        <input type="radio" name="SEXE" id="SEXEf" class="form-check-input" value ="FEMME">
                         <label for="SEXEf" class="form-check-label">FEMME</label>
                     </div>
                 </div>
