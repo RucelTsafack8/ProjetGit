@@ -15,11 +15,16 @@ require_once('connect.php');
      crossorigin="anonymous">
 </head>
 <body>
-    <div class="container bg-light">
-        <h1 class ="text-center text-uppercase text-info mt-3 py-3">inscription personnel</h1>
-        <div class="row  justify-content-center align-items-center w-100">
-            <form action="" method="post" class="mt-3 w-50">
+    <div class="container">
+        
+        <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
+            <form action="" method="post" class="mt-3 w-75 bg-light">
+                <h1 class ="text-center text-uppercase text-info mt-3 py-3">inscription personnel</h1>
 
+                <div class="mt-3">
+                    <label for="CNI" class="form-label">NUMERO DE CNI</label>
+                    <input type="number" name="CNI" id="CNI" class="form-control">
+                </div>
                 <div class="mt-3">
                     <label for="NUMERO_TEL" class="form-label">NUMERO TELEPHONE</label>
                     <input type="number" name="NUMERO_TEL" id="NUMERO_TEL" class="form-control">
@@ -58,10 +63,8 @@ require_once('connect.php');
                 </div>
 
                 <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
-                    <input type="submit" value="envoyer" class="btn btn-success w-50">
-                </div>
-                
-                
+                    <input type="submit" value="Envoyer" class="btn btn-success w-50" name="enoyer">
+                </div> 
             </form>
         </div>
     </div>
