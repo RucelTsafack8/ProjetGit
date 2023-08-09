@@ -1,4 +1,5 @@
 <?php
+//on demarre la session
 session_start();
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
@@ -9,6 +10,7 @@ $erreur_cni = '';
 $erreur_adresse = '';
 $erreur_date = '';
 $MESSAGE_SUCCESS='';
+$ERREUR = 0;
 $date_naiss= 0;
 $date_actuel= date('Y');
 $age = 0;
@@ -21,22 +23,30 @@ if(isset($_POST['envoyer'])){
     $SEXE = $_POST['SEXE'];
     $ADRESSE = $_POST['ADRESSE'];
     $age = $date_actuel - $date_naiss;
-    if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS) && (strlen($EMAIL)<=8) && empty($EMAIL) && (strlen($NUMERO_TEL)<9) && strlen($CNI)<=8
-    && $age <= 17 && strlen($NOM_PRENOMS)<=4 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $ADRESSE)){
-        // && empty($NUMERO_TEL) && empty($EMAIL) && empty($CNI) && empty($DATE_NAISSANCE) && empty($ADRESSE)
+    if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";
+        $ERREUR++;
+    }else if(strlen($EMAIL)<=8 && empty($EMAIL)) {
         $erreur_email = "l'email est mal renseigner";
+        $ERREUR++;
+    }else if(strlen($NUMERO_TEL)<9){
         $erreur_numero = "le numero est incorrect";
-        $erreur_date = "l'age est inferieur a la normal";
+        $ERREUR++;
+    } else if(strlen($CNI)<=8){
         $erreur_cni = "le numero  de la cni est incorrect";
+        $ERREUR++;
+    } else if($age <= 17){
+        $erreur_date = "l'age est inferieur a la normal";
+        $ERREUR++;
+    }else if(strlen($ADRESSE)<=4 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $ADRESSE)){
         $erreur_adresse = "l'adresse est mal ecrit ";
-
-    }
-    else{
+        $ERREUR++;
+    }else if($ERREUR<=0){
         $MESSAGE_SUCCESS = "LE FORMULAIRE  A ETE SOUMIS AVEC SUCCESS";
+        $_SESSION['NOM_PRENOMS'] = $NOM_PRENOMS;
+        header('location:connexion.php');
+
     }
-
-
 }
 
 ?>
