@@ -11,7 +11,7 @@ $erreur_adresse = '';
 $erreur_date = '';
 $MESSAGE_SUCCESS='';
 $ERREUR = 0;
-$date_naiss= 0;
+$annee_naiss= 0;
 $date_actuel= date('Y');
 $age = 0;
 if(isset($_POST['envoyer'])){
@@ -22,7 +22,8 @@ if(isset($_POST['envoyer'])){
     $DATE_NAISSANCE = $_POST['DATE_NAISSANCE'];
     $SEXE = $_POST['SEXE'];
     $ADRESSE = $_POST['ADRESSE'];
-    $age = $date_actuel - $date_naiss;
+    $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
+    $age = $date_actuel - $annee_naiss;
     if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";
         $ERREUR++;
@@ -58,7 +59,7 @@ if(isset($_POST['envoyer'])){
         $requete4 = 'INSERT INTO SECRETAIRE(ID_TYPE_COMPTE,CNI,NUMERO_TEL,EMAIL,NOM_UTILISATEUR,MOT_DE_PASSE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
         (:ID_TYPE_COMPTE,:CNI,:NUMERO_TEL,:EMAIL,:NOM_UTILISATEUR,:MOT_DE_PASSE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
 
-        $stmt = $db->prepare($requete1);
+        $stmt = $db->prepare($requete);
         $stmt->bindParam(":CNI",$_POST['CNI']);
         $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL']);
         $stmt->bindParam(":EMAIL",$_POST['EMAIL']);
@@ -96,20 +97,20 @@ if(isset($_POST['envoyer'])){
 
                     <label for="CNI" class="form-label">NUMERO DE CNI</label>
                     <input type="number" name="CNI" id="CNI" class="form-control">
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_cni;?></h5>
+                    <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_cni;?></h5>
 
                 </div>
                 <div class="mt-3">
                     <label for="NUMERO_TEL" class="form-label">NUMERO TELEPHONE</label>
                     <input type="number" name="NUMERO_TEL" id="NUMERO_TEL" class="form-control">
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+                    <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_numero;?></h5>
 
                 </div>
 
                 <div class="mt-3">
                     <label for="EMAIL" class="form-label">EMAIL</label>
                     <input type="email" name="EMAIL" id="EMAIL" class="form-control">
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_email;?></h5>
+                    <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_email;?></h5>
 
                 </div>
 
@@ -117,13 +118,13 @@ if(isset($_POST['envoyer'])){
                     <label for="NOM_PRENOMS" class="form-label">NOM ET PRENOM</label>
                     <input type="text" name="NOM_PRENOMS" id="NOM_PRENOMS" class="form-control">
                     <!-- affiche l'erreur si le nom et le prenom sont mal ecrit -->
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_nom;?></h5>
+                    <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_nom;?></h5>
                 </div>
 
                 <div class="mt-3">
                     <label for="DATE_NAISSANCE" class="form-label">DATE DE NAISSANCE</label>
                     <input type="date" name="DATE_NAISSANCE" id="DATE_NAISSANCE" class="form-control">
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_date;?></h5>
+                    <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_date;?></h5>
 
                 </div>
 
@@ -142,12 +143,9 @@ if(isset($_POST['envoyer'])){
                 <div class="mt-3">
                     <label for="ADRESSE" class="form-label">ADRESSE</label>
                     <input type="text" name="ADRESSE" id="ADRESSE" class="form-control">
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_adresse;?></h5>
-
-                    
+                    <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_adresse;?></h5>
                 </div> 
-                <br>
-                <h5 class="text-center text-success"><?php echo $MESSAGE_SUCCESS;?></h5> <br>
+                <h5 class="text-center text-success text-uppercase"><?php echo $MESSAGE_SUCCESS;?></h5>
                 <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
                     <input type="submit" value="Envoyer" class="btn btn-success w-50" name="envoyer">
                 </div> 
