@@ -1,4 +1,5 @@
 <?php
+session_start();
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
 
@@ -17,7 +18,7 @@ require_once('connect.php');
 <body>
     <div class="container">
         <div class="row">
-            <h1 class="text-center text-info text-uppercase">systeme de gestion de 3IA</h1>
+            <h1 class="text-center text-info text-uppercase">systeme de gestion de 3IA,<?php  echo $_SESSION['NOM_PRENOMS'];?></h1>
         </div>
     </div>
     

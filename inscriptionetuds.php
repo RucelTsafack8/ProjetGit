@@ -11,6 +11,7 @@ $erreur_adresse = '';
 $erreur_date = '';
 $MESSAGE_SUCCESS='';
 $ERREUR = 0;
+$ID_ETUDIANT= '';
 
 $date_actuel= date('Y');
 $age = 0;
@@ -24,6 +25,8 @@ if(isset($_POST['envoyer'])){
     $ADRESSE = $_POST['ADRESSE'];
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel - $annee_naiss;
+    $RANGNUMBER = rand(1000,10000);
+    $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
     
     if(strlen($NUM_TEL)<=8){
         $erreur_numero = "le numero est incorrect";
@@ -44,9 +47,12 @@ if(isset($_POST['envoyer'])){
         $erreur_adresse = "l'adresse n'est pas conforme";
         $ERREUR++;
     }elseif ($ERREUR<0){
+        //requete d'insertion des etudiants
+        $requtres = 'INSERT INTO ETUDIANTS()';
         $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
     }
-
+    $ID_ETUDIANT = "3IA-$date_actuel$INDICE-$RANGNUMBER";
+    echo "$ID_ETUDIANT";
 
 
 }
@@ -116,7 +122,7 @@ if(isset($_POST['envoyer'])){
                 <div class="mt-3">
                     <label for="CHOIX_FORMATION" class="form-label" aria-label="Default select">CHOIX FORMATION</label>
                     <select name="CHOIX_FORMATION" id="CHOIX_FORMATION" class="form-select">
-                        <option value="PROGRAMMATION">PROGRAMMATION</option>
+                        <option value="PRODEV">PROGRAMMATION</option>
                         <option value="INFOGRAPHIE">INFOGRAPHIE</option>
                         <option value="SECRETARIAT">SECRETARIAT</option>
                         <option value="RESEAUX">RESEAUX</option>
