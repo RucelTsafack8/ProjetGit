@@ -1,6 +1,8 @@
 <?php
 //on demarre la session
 session_start();
+//on require le header pour l'entete de la page
+require_once('header.php');
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
 $erreur_nom = '';
@@ -69,7 +71,7 @@ if(isset($_POST['envoyer'])){
      crossorigin="anonymous">
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-5 py-5">
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-75">
                 <h1 class= "text-center text-info text-uppercase">inscrition etudiants</h1>

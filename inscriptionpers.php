@@ -1,6 +1,8 @@
 <?php
 //on demarre la session
 session_start();
+//on require le header pour l'entete de la page
+require_once('header.php');
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
 $erreur_nom = '';
@@ -25,6 +27,10 @@ if(isset($_POST['envoyer'])){
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel - $annee_naiss;
     $DATE = $date_actuel;
+    $RANGNUMBER = rand(100,1000);
+    $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
+    $ID_TYPE_COMPTE = "3IA-ADMIN.$DATE$INDICE-$RANGNUMBER";
+
     if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";
         $ERREUR++;
@@ -45,37 +51,28 @@ if(isset($_POST['envoyer'])){
         $ERREUR++;
     }else if($ERREUR<=0){
         $_SESSION['NOM_PRENOMS'] = $NOM_PRENOMS;
+        $_SESSION['ID_TYPE_COMPTE'] = $ID_TYPE_COMPTE;
+
         //REQUETE D'INSERTION A LA TABLE 
-        // $requete = 'INSERT INTO professeurs(ID_PROFESSEUR,CNI,NUMERO_TEL,EMAIL,FONCTIONS,DATE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
-        // (:ID_PROFESSEUR,:CNI,:NUMERO_TEL,:EMAIL,:FONCTIONS,:DATE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
-        
+    
         $requete1 = 'INSERT INTO personnels(CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
         (:CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
 
-        // $requete2 = 'INSERT INTO RESP_FORMATION(ID_PROFESSEUR,FONCTIONS,DATE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
-        // (:ID_PROFESSEUR,:FONCTIONS,:DATE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
-
-        // $requete3 = 'INSERT INTO ADMINISTRATEUR(ID_TYPE_COMPTE,CNI,NUMERO_TEL,EMAIL,NOM_UTILISATEUR,MOT_DE_PASSE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
-        // (:ID_TYPE_COMPTE,:CNI,:NUMERO_TEL,:NOM_UTILISATEUR,:MOT_DE_PASSE,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
-
-        // $requete4 = 'INSERT INTO SECRETAIRE(ID_TYPE_COMPTE,CNI,NUMERO_TEL,EMAIL,NOM_UTILISATEUR,MOT_DE_PASSE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
-        // (:ID_TYPE_COMPTE,:CNI,:NUMERO_TEL,:EMAIL,:NOM_UTILISATEUR,:MOT_DE_PASSE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
-
         $stmt = $db->prepare($requete1);
-        //$stmt->bindParam(":ID_PROFESSEUR",$_POST['ID_PROFESSEUR'],PDO::PARAM_STR);
+
         $stmt->bindParam(":CNI",$_POST['CNI'],PDO::PARAM_INT);
         $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL'],PDO::PARAM_INT);
         $stmt->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
-        // $stmt->bindParam(":FONCTIONS",$_POST['FONCTIONS'],PDO::PARAM_STR);
-        // $stmt->bindParam(":DATE",$_POST['DATE'],PDO::PARAM_STR);
+        
         $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
         $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE'],PDO::PARAM_STR);
         $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->execute();
         $MESSAGE_SUCCESS = "LE FORMULAIRE  A ETE SOUMIS AVEC SUCCESS";
-        $_SESSION['NOM_PRENOMS'] = $NOM_PRENOMS;
-        header('location:index.php');
+        $_SESSION['ID_TYPE_COMPTE'] = $ID_TYPE_COMPTE;
+
+        header('location:inscriptpers.php');
 
     }
 }
@@ -93,11 +90,11 @@ if(isset($_POST['envoyer'])){
      crossorigin="anonymous">
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-5 py-5">
         
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="mt-3 w-75 bg-light">
-                <h1 class ="text-center text-uppercase text-info mt-3 py-3">inscription personnel</h1>
+                <h1 class ="text-center text-uppercase text-info mt-3 py-3">inscription personnel</h1>            
                 <div class="mt-3">
 
                     <label for="CNI" class="form-label">NUMERO DE CNI</label>
