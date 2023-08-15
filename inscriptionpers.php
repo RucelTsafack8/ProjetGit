@@ -3,6 +3,8 @@
 session_start();
 //on require le header pour l'entete de la page
 require_once('header.php');
+//on require le footer pour le pied de page
+require_once('footer.php');
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
 $erreur_nom = '';
