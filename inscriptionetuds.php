@@ -19,7 +19,8 @@ $ID_ETUDIANT= '';
 
 $date_actuel= date('Y');
 $age = 0;
-echo "$date_actuel";
+// echo "$date_actuel";
+// echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 if(isset($_POST['envoyer'])){
 
     $NUM_TEL = $_POST['NUM_TEL'];
@@ -31,7 +32,7 @@ if(isset($_POST['envoyer'])){
     $DATE = date("D-M-Y");
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
-    echo "$age";
+    // echo "$age";
     $RANGNUMBER = rand(1000,10000);
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
     
@@ -56,13 +57,14 @@ if(isset($_POST['envoyer'])){
     }elseif ($ERREUR<0){
         $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$RANGNUMBER";
         echo "$ID_ETUDIANT";
-    
+        
         //requete d'insertion des etudiants
-        $requetes = 'INSERT INTO ETUDIANTS(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,DATE_DEBUT)
+        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,DATE_DEBUT)
         VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:DATE_DEBUT)';
         $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
-
+        
         $stmt = $db->prepare($requetes);
+        
         $stmt->bindParam(":ID_ETUDIANT",$ID_ETUDIANT,PDO::PARAM_STR);
         $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
         $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL'],PDO::PARAM_INT);
@@ -74,12 +76,11 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->bindParam(":CHOIX_FORMATION",$_POST['CHOIX_FORMATION'],PDO::PARAM_STR);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
-        $stmt->execute();
-
+        $stmt->execute(); 
         header('location:details.php');
+        echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
+        
     }
-
-
 }
 ?>
 
