@@ -3,8 +3,8 @@
 session_start();
 //on require le header pour l'entete de la page
 require_once('header.php');
-//on require le footer pour le pied de page
-require_once('footer.php');
+
+
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
 $erreur_nom = '';
@@ -19,6 +19,7 @@ $ID_ETUDIANT= '';
 
 $date_actuel= date('Y');
 $age = 0;
+echo "$date_actuel";
 if(isset($_POST['envoyer'])){
 
     $NUM_TEL = $_POST['NUM_TEL'];
@@ -27,8 +28,10 @@ if(isset($_POST['envoyer'])){
     $DATE_NAISSANCE = $_POST['DATE_NAISSANCE'];
     $SEXE = $_POST['SEXE'];
     $ADRESSE = $_POST['ADRESSE'];
+    $DATE = date("D-M-Y");
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
-    $age = $date_actuel - $annee_naiss;
+    $age = $date_actuel-$annee_naiss;
+    echo "$age";
     $RANGNUMBER = rand(1000,10000);
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
     
@@ -51,27 +54,35 @@ if(isset($_POST['envoyer'])){
         $erreur_adresse = "l'adresse n'est pas conforme";
         $ERREUR++;
     }elseif ($ERREUR<0){
+        $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$RANGNUMBER";
+        echo "$ID_ETUDIANT";
+    
         //requete d'insertion des etudiants
-        $requtres = 'INSERT INTO ETUDIANTS()';
+        $requetes = 'INSERT INTO ETUDIANTS(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,DATE_DEBUT)
+        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:DATE_DEBUT)';
         $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
+
+        $stmt = $db->prepare($requetes);
+        $stmt->bindParam(":ID_ETUDIANT",$ID_ETUDIANT,PDO::PARAM_STR);
+        $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
+        $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL'],PDO::PARAM_INT);
+        $stmt->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
+        
+        $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
+        $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
+        $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
+        $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
+        $stmt->bindParam(":CHOIX_FORMATION",$_POST['CHOIX_FORMATION'],PDO::PARAM_STR);
+        $stmt->bindParam(":DATE_DEBUT",$DATE);
+        $stmt->execute();
+
+        header('location:details.php');
     }
-    $ID_ETUDIANT = "3IA-$date_actuel$INDICE-$RANGNUMBER";
-    echo "$ID_ETUDIANT";
 
 
 }
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>inscription etudiants</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css\bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-     crossorigin="anonymous">
-</head>
+
 <body>
     <div class="container mt-5 py-5">
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
@@ -146,3 +157,7 @@ if(isset($_POST['envoyer'])){
     
 </body>
 </html>
+<?php
+    //on require le footer pour le pied de page
+    require_once('footer.php');
+?>

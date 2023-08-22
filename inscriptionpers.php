@@ -3,10 +3,9 @@
 session_start();
 //on require le header pour l'entete de la page
 require_once('header.php');
-//on require le footer pour le pied de page
-require_once('footer.php');
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
+require_once('style.css');
 $erreur_nom = '';
 $erreur_email = '';
 $erreur_numero = '';
@@ -19,7 +18,9 @@ $annee_naiss= 0;
 $date_actuel= date('Y');
 $age = 0;
 if(isset($_POST['envoyer'])){
-    $CNI = $_POST['CNI'];
+    session_start();
+
+    $NUMERO_CNI = $_POST['NUMERO_CNI'];
     $NUMERO_TEL = $_POST['NUMERO_TEL'];
     $EMAIL = $_POST['EMAIL'];
     $NOM_PRENOMS = $_POST['NOM_PRENOMS'];
@@ -31,6 +32,7 @@ if(isset($_POST['envoyer'])){
     $DATE = $date_actuel;
     $RANGNUMBER = rand(100,1000);
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
+    $ID_COMPTE = "3IA-$DATE$INDICE-$RANGNUMBER";
     $ID_TYPE_COMPTE = "3IA-ADMIN.$DATE$INDICE-$RANGNUMBER";
 
     if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
@@ -42,7 +44,7 @@ if(isset($_POST['envoyer'])){
     }else if(strlen($NUMERO_TEL)<9){
         $erreur_numero = "le numero est incorrect";
         $ERREUR++;
-    } else if(strlen($CNI)<=8){
+    } else if(strlen($NUMERO_CNI)<=8){
         $erreur_cni = "le numero  de la cni est incorrect";
         $ERREUR++;
     } else if($age <= 17){
@@ -52,27 +54,35 @@ if(isset($_POST['envoyer'])){
         $erreur_adresse = "l'adresse est mal ecrit ";
         $ERREUR++;
     }else if($ERREUR<=0){
-        $_SESSION['NOM_PRENOMS'] = $NOM_PRENOMS;
-        $_SESSION['ID_TYPE_COMPTE'] = $ID_TYPE_COMPTE;
+       
+
 
         //REQUETE D'INSERTION A LA TABLE 
     
-        $requete1 = 'INSERT INTO personnels(CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
-        (:CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+        $requete1 = 'INSERT INTO personnels(ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
+        (:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
 
         $stmt = $db->prepare($requete1);
 
-        $stmt->bindParam(":CNI",$_POST['CNI'],PDO::PARAM_INT);
+        $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
+        $stmt->bindParam(":NUMERO_CNI",$_POST['NUMERO_CNI'],PDO::PARAM_INT);
         $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL'],PDO::PARAM_INT);
         $stmt->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
         
         $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
-        $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE'],PDO::PARAM_STR);
+        $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
         $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->execute();
         $MESSAGE_SUCCESS = "LE FORMULAIRE  A ETE SOUMIS AVEC SUCCESS";
         $_SESSION['ID_TYPE_COMPTE'] = $ID_TYPE_COMPTE;
+        $_SESSION['ID_COMPTE'] = $ID_COMPTE;
+        $_SESSION['SEXE'] = $SEXE;
+        $_SESSION['ADRESSE'] = $ADRESSE;
+        $_SESSION['NOM_PRENOMS'] =$NOM_PRENOMS;
+        $_SESSION['EMAIL'] =$EMAIL;
+        $_SESSION['DATE_NAISSANCE'] =$DATE_NAISSANCE;
+        $_SESSION['NUMERO_TEL'] =$NUMERO_TEL;
 
         header('location:inscriptpers.php');
 
@@ -80,17 +90,7 @@ if(isset($_POST['envoyer'])){
 }
 
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>inscription personnel</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css\bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-     crossorigin="anonymous">
-</head>
+
 <body>
     <div class="container mt-5 py-5">
         
@@ -99,8 +99,8 @@ if(isset($_POST['envoyer'])){
                 <h1 class ="text-center text-uppercase text-info mt-3 py-3">inscription personnel</h1>            
                 <div class="mt-3">
 
-                    <label for="CNI" class="form-label">NUMERO DE CNI</label>
-                    <input type="number" name="CNI" id="CNI" class="form-control">
+                    <label for="NUMERO_CNI" class="form-label">NUMERO DE CNI</label>
+                    <input type="number" name="NUMERO_CNI" id="NUMERO_CNI" class="form-control">
                     <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_cni;?></h5>
 
                 </div>
@@ -158,3 +158,7 @@ if(isset($_POST['envoyer'])){
     </div>
 </body>
 </html>
+<?php
+    //on require le footer pour le pied de page
+    require_once('footer.php');
+?>
