@@ -2,7 +2,6 @@
 session_start();
 //on require le header pour l'entete de la page
 //require_once('header.php');
-require_once('style.css');
 
 
 require_once('connect.php');
@@ -18,7 +17,6 @@ if(isset($_POST['envoi'])){
     $NOM_UTILISATEUR = $_POST['NOM_UTILISATEUR'];
     $MOT_DE_PASSE = $_POST['MOT_DE_PASSE'];
     $REPETE = $_POST['MOT_DE_PASSE2'];
-
 
     if(strlen($NOM_UTILISATEUR)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/',$NOM_UTILISATEUR)){
         $nom= "veillez remplir le champ d'au moins 9 caracteres";
@@ -79,11 +77,11 @@ if(isset($_POST['envoi'])){
 <body>
     <div class="container mt-5 py-5">
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
-            <form action="" method="post" class =" w-75 bg-light">
-            <h1 class ="text-center text-uppercase text-info mt-3 py-3">configuration compte  admin</h1>
-            <h3 class ="text-center text-uppercase text-info mt-3 py-3"><?php echo $_SESSION['ID_TYPE_COMPTE'];echo $_SESSION['DATE_NAISSANCE'];?></h3>
+                <form action="" method="post" class =" w-75 bg-light">
+                <h1 class ="text-center text-uppercase text-info mt-3 py-3">configuration compte  admin</h1>
+                <h3 class ="text-center text-uppercase text-info mt-3 py-3"><?php echo $_SESSION['ID_TYPE_COMPTE'];echo $_SESSION['DATE_NAISSANCE'];?></h3>
 
-            <div class="mt-3">
+                <div class="mt-3">
                     <label for="NOM_UTILISTEUR" class="form-label">NOM UTILISATEUR</label>
                     <input type="" name="NOM_UTILISATEUR" id="NOM_UTILISATEUR" class="form-control">
                     <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $nom; ?></h5>

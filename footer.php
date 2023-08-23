@@ -5,7 +5,7 @@
             <a class="text-white" href="index.php">SIR_TECH 3IA </a>
         </div>
         
-
+        <script src="https://kit.fontawesome.com/a1358332fd.js" crossorigin="anonymous"></script>
     </footer>
     
 </body>

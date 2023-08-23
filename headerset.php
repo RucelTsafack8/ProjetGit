@@ -14,15 +14,14 @@
         <div class="">
             <nav class="navbar navbar-expand-lg bg-primary">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="admin.php">SIR_TECH-3IA</a>
+                    <a class="navbar-brand" href="index.php">SIR_TECH-3IA</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse d-flex justify-content-end me-3" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link active" aria-current="page" href="index.php">Acceuil</a>
-                            <a class="nav-link " href="admin.php">Dashbord</a>
-                            <a class="nav-link active" aria-current="page" href="details.php"><i class="fa-solid fa-circle-user"></i></a>
+                            <a class="nav-link active" aria-current="page" href="modifier.php"><i class="fa-solid fa-circle-user"></i></i></a>
                             <a href="deconnexion.php" class="btn btn-success w-50" name="envoi">Deconnexion</a>
                         </div>
                     </div>

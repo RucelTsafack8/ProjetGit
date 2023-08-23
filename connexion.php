@@ -8,21 +8,33 @@ require_once('connect.php');
 $messageErreur = '';
 // condition du bouton d'envoi
 if(isset($_POST['envoi'])){
-    // try{ 
+    $CHOIX_TYPE_COMPTE = $_POST['CHOIX_TYPE_COMPTE'];
     $NOM_UTILISATEUR = $_POST['NOM_UTILISATEUR'];
     $MOT_DE_PASSE = $_POST['MOT_DE_PASSE'];
-    
-   
-    
-    if(($NOM_UTILISATEUR !== "" && $MOT_DE_PASSE !== "") )
-    {
-        //on excute la requete si les champs ne sont pas vide
-        //requete de selection dans la base de donnees 
-        $requete = 'SELECT * FROM ADMINISTRATEUR WHERE NOM_UTILISATEUR=? AND MOT_DE_PASSE = ?';
-        //initiation de l'execution de la requete
-     $stmt = $db->prepare($requete);
-     $stmt->execute(array($NOM_UTILISATEUR,$MOT_DE_PASSE));
-     $reponse = $stmt->fetch(PDO::FETCH_OBJ);
+
+
+    if($CHOIX_TYPE_COMPTE=='ADMIN'){
+        if(($NOM_UTILISATEUR !== "" && $MOT_DE_PASSE !== "") )
+        {
+            //on excute la requete si les champs ne sont pas vide
+            $REQ = 'SELECT ID_COMPTE,ID_TYPE_COMPTE FROM ADMINISTRATEUR WHERE NOM_UTILISATEUR=? AND MOT_DE_PASSE = ?';
+            $stn = $db->prepare($REQ);
+            $stn->execute(array($NOM_UTILISATEUR,$MOT_DE_PASSE));
+            $result = $stn->fetchAll(PDO::FETCH_ASSOC);
+            foreach($result as $ID){
+                $_SESSION['ID_COMPTE']=$ID['ID_COMPTE'];
+                $_SESSION['ID_TYPE_COMPTE']=$ID['ID_TYPE_COMPTE'];
+                echo $_SESSION['ID_COMPTE'];
+                echo $_SESSION['ID_TYPE_COMPTE'];
+
+            }
+            //requete de selection dans la base de donnees 
+            $requete = 'SELECT * FROM ADMINISTRATEUR WHERE NOM_UTILISATEUR=? AND MOT_DE_PASSE = ?';
+            
+            //initiation de l'execution de la requete
+            $stmt = $db->prepare($requete);
+            $stmt->execute(array($NOM_UTILISATEUR,$MOT_DE_PASSE));
+            $reponse = $stmt->fetch(PDO::FETCH_OBJ);
             if($reponse>0){  
                 // nom d'utilisateur et mot de passe correctes 
                 $_SESSION['NOM_UTILISATEUR'] = $NOM_UTILISATEUR;
@@ -30,6 +42,38 @@ if(isset($_POST['envoi'])){
             }else{
                 $messageErreur = "Nom Utilisateur ou mot de passe incorrecte!!! si vous n'avez pas encore de compte veuillez vous conecter!!!";
             }
+        }
+    }else{
+        if(($NOM_UTILISATEUR !== "" && $MOT_DE_PASSE !== "") )
+        {
+            //on excute la requete si les champs ne sont pas vide
+            $REQ = 'SELECT ID_COMPTE,ID_TYPE_COMPTE FROM secretaire WHERE NOM_UTILISATEUR=? AND MOT_DE_PASSE = ?';
+            $stn = $db->prepare($REQ);
+            $stn->execute(array($NOM_UTILISATEUR,$MOT_DE_PASSE));
+            $result = $stn->fetchAll(PDO::FETCH_ASSOC);
+            foreach($result as $info){
+                $id = $info["ID_COMPTE"];
+                $_SESSION['ID_COMPTE']=$id;
+                $id_type_compte = $info["ID_TYPE_COMPTE"];
+                $_SESSION['ID_TYPE_COMPTE'] = $id_type_compte;
+                
+            }
+                //requete de selection dans la base de donnees 
+                $requete = 'SELECT * FROM secretaire WHERE NOM_UTILISATEUR=? AND MOT_DE_PASSE = ?';
+                
+                //initiation de l'execution de la requete
+                $stmt = $db->prepare($requete);
+                $stmt->execute(array($NOM_UTILISATEUR,$MOT_DE_PASSE));
+                $reponse = $stmt->fetch(PDO::FETCH_OBJ);
+                if($reponse>0){  
+                    // nom d'utilisateur et mot de passe correctes 
+                    $_SESSION['NOM_UTILISATEUR'] = $NOM_UTILISATEUR;   
+                    $_SESSION['ID_TYPE_COMPTE'] = $id_type_compte;
+                    header("location:index.php");
+                }else{
+                    $messageErreur = "Nom Utilisateur ou mot de passe incorrecte!!! si vous n'avez pas encore de compte veuillez vous conecter!!!";
+                }
+        }
     }
 }
 
@@ -53,13 +97,20 @@ if(isset($_POST['envoi'])){
                 <h1 class="text-center text-info text-uppercase">connexion</h1>
                 <h5 class="text-center text-danger mt-4"><?php echo $messageErreur ?></h5>
                 <div class="mt-3">
-                    <label for="Nom" class="form-label">NOM UTILISATEUR</label>
-                    <input type="text" name="NOM_UTILISATEUR" id="Nom" class="form-control">
+                    <label for="CHOIX_TYPE_COMPTE" class="form-label" aria-label="Default select">TYPE DE COMPTE</label>
+                    <select name="CHOIX_TYPE_COMPTE" id="CHOIX_TYPE_COMPTE" class="form-select">
+                        <option value="ADMIN">ADMINISTRATEUR</option>
+                        <option value="SECRET">SECRETAIRE</option>
+                    </select>
+                </div>
+                <div class="mt-3">
+                    <label for="NOM_UTILISATEUR" class="form-label">NOM UTILISATEUR</label>
+                    <input type="text" name="NOM_UTILISATEUR" id="NOM_UTILISTEUR" class="form-control">
                 </div>
         
                 <div class="mt-3">
-                    <label for="Password" class="form-label">MOT DE PASSE</label>
-                    <input type="password" name="MOT_DE_PASSE" id="Password" class="form-control">
+                    <label for="MOT_DE_PASSE" class="form-label">MOT DE PASSE</label>
+                    <input type="password" name="MOT_DE_PASSE" id="MOT_DE_PASSE" class="form-control">
                 </div>
                 <div class="mt-3 d-flex justify-content-center  justify-content-center align-items-center w-100">
                     <input type="submit" value="valider" class="btn btn-success w-50" name="envoi">

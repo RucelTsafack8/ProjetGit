@@ -16,6 +16,8 @@ $erreur_date = '';
 $MESSAGE_SUCCESS='';
 $ERREUR = 0;
 $ID_ETUDIANT= '';
+$ID_COMPTE=$_SESSION['ID_COMPTE'];
+$CHOIX_FORMATION = '';
 
 $date_actuel= date('Y');
 $age = 0;
@@ -23,13 +25,14 @@ $age = 0;
 // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 if(isset($_POST['envoyer'])){
 
-    $NUM_TEL = $_POST['NUM_TEL'];
-    $EMAIL = $_POST['EMAIL'];
-    $NOM_PRENOMS = $_POST['NOM_PRENOMS'];
-    $DATE_NAISSANCE = $_POST['DATE_NAISSANCE'];
-    $SEXE = $_POST['SEXE'];
-    $ADRESSE = $_POST['ADRESSE'];
-    $DATE = date("D-M-Y");
+    $NUM_TEL = strip_tags($_POST['NUM_TEL']);
+    $EMAIL = strip_tags($_POST['EMAIL']);   
+    $NOM_PRENOMS = strip_tags($_POST['NOM_PRENOM)S']);
+    $DATE_NAISSANCE = strip_tags($_POST['DATE_NAISSANCE']);
+    $SEXE = strip_tags($_POST['SEXE']);
+    $ADRESSE = strip_tags($_POST['ADRESSE']);
+    $CHOIX_FORMATION = strip_tags($_POST['CHOIX_FORMATION']);
+    $DATE = date("Y-m-d H:i:s");
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
     // echo "$age";
@@ -54,9 +57,10 @@ if(isset($_POST['envoyer'])){
     }elseif(strlen($ADRESSE)<=4 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $ADRESSE)){
         $erreur_adresse = "l'adresse n'est pas conforme";
         $ERREUR++;
-    }elseif ($ERREUR<0){
+    }elseif ($ERREUR<=0){
         $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$RANGNUMBER";
-        echo "$ID_ETUDIANT";
+        echo "$ID_ETUDIANT +";
+        echo "$CHOIX_FORMATION";
         
         //requete d'insertion des etudiants
         $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,DATE_DEBUT)
@@ -67,7 +71,7 @@ if(isset($_POST['envoyer'])){
         
         $stmt->bindParam(":ID_ETUDIANT",$ID_ETUDIANT,PDO::PARAM_STR);
         $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
-        $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL'],PDO::PARAM_INT);
+        $stmt->bindParam(":NUM_TEL",$_POST['NUM_TEL'],PDO::PARAM_INT);
         $stmt->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
         
         $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
@@ -78,8 +82,8 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
         header('location:details.php');
-        echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
-        
+        // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
+
     }
 }
 ?>
@@ -88,7 +92,7 @@ if(isset($_POST['envoyer'])){
     <div class="container mt-5 py-5">
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-75">
-                <h1 class= "text-center text-info text-uppercase">inscrition etudiants</h1>
+                <h1 class= "text-center text-info text-uppercase">inscrition etudiants , <?php echo $_SESSION['ID_COMPTE']; ?></h1>
                 
                 <div class="mt-3">
                     <label for="NUMERO_TEL" class="form-label">NUMERO TELEPHONE</label>
