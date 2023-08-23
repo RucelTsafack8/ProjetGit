@@ -20,8 +20,8 @@
                     </button>
                     <div class="collapse navbar-collapse d-flex justify-content-end me-3" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                            <a class="nav-link active" aria-current="page" href="index.php">Acceuil</a>
-                            <a class="nav-link active" aria-current="page" href="modifier.php"><i class="fa-solid fa-circle-user"></i></i></a>
+                            <a class="nav-link active fs-3" aria-current="page" href="index.php">Acceuil</a>
+                            <a class="nav-link active fs-3" aria-current="page" href="modifier.php"><i class="fa-solid fa-circle-user"></i></i></a>
                             <a href="deconnexion.php" class="btn btn-success w-50" name="envoi">Deconnexion</a>
                         </div>
                     </div>

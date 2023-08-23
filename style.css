@@ -1,21 +1,21 @@
 body{
     background-color: grey  !important;
-    font-family: 'Times New Roman' !important; 
-    font-weight: 400 !important;
-    font-size: 20px !important;
+    font-weight: 400 ;
+    font-size: 20px ;
+    font-family: 'Times New Roman', Times, serif;
 
 }
+.navbar-brand{
+    color: aqua ;
+    font-size: 30px;
+}
+
+.navbar .container-fluid .collapse .navbar-nav.navbar-nav .nav-link:hover{
+    color: azure;
+    text-decoration: underline mediumspringgreen;
+}
+
 h1{
-    font-weight: 800 !important;
-    font-size: 40px !important;
-}
-.navbar-nav .nav-link{
-    margin: 15px !important;
-    padding: 10px !important;
-    font-size: 22px !important;
-    color: blueviolet !important;
-}
-.navbar-nav .nav-link:hover{
-    color: azure !important;
-    text-decoration: underline mediumspringgreen !important;
+    font-weight: 800;
+    font-size: 40px;
 }

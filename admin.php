@@ -104,7 +104,9 @@ $result_etudiant = $stn->fetchAll(PDO::FETCH_ASSOC);
             ?>
         </table>
     </div>
-    <a href="deconnexion.php" class="btn btn-success w-50" name="envoi">Deconnexion</a>
+    <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
+        <a href="deconnexion.php" class="btn btn-success w-50" name="envoi">Deconnexion</a>
+    </div>
 </body>
 </html>
 <?php
