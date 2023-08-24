@@ -2,7 +2,14 @@
 //on demarre la session
 session_start();
 //on require le header pour l'entete de la page
-require_once('header.php');
+$ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
+$MOT = 'ADMIN';
+$resultat = strstr($ID_TYPE_COMPTE,$MOT);
+if($resultat===false){
+    require_once('headerset.php');
+}else{
+    require_once('header.php');
+}
 
 
 //require once le fichier conect pour la connexion a la base de dennees

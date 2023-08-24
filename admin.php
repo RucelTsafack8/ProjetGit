@@ -3,6 +3,9 @@ session_start();
 // On inclus le fichier de connection a la base de donnees.
 require_once('connect.php');
 
+require_once('header.php');
+
+
 $requete = 'SELECT * FROM SECRETAIRE';
 //on prepare la requete
 $query = $db->prepare($requete);
