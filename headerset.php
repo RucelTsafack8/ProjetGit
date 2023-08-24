@@ -22,7 +22,7 @@
                         <div class="navbar-nav">
                             <a class="nav-link active fs-3" aria-current="page" href="index.php">Acceuil</a>
                             <a class="nav-link active fs-3" aria-current="page" href="modifier.php"><i class="fa-solid fa-circle-user"></i></i></a>
-                            <a href="deconnexion.php" class="btn btn-success w-50" name="envoi">Deconnexion</a>
+                            <a href="deconnexion.php" class="btn btn-danger">Deconnexion</a>
                         </div>
                     </div>
                 </div>

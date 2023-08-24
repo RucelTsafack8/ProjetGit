@@ -43,20 +43,19 @@ if(isset($_GET['ID_ETUDIANT'])){
 <body>
     <div class="container mt-5 py-5">
         <h2 class="text-center text-warning">Informations Etudiant <?php echo $ETUDIANT['NOM_PRENOMS']; ?></h2>
-        <table class="table  border-success">
 
             <h4>ID_COMPTE :<?= $ETUDIANT['ID_ETUDIANT']?></h4>
             <h4>NUMERO TEL :<?= $ETUDIANT['NUM_TEL']?></h4>
             <h4>EMAIL :<?= $ETUDIANT['EMAIL']?></h4>
-            <h4>CHOIX FORMATION :<?= $ETUDIANT['CHOIX_FORMATION']?></h4>
             <h4>NOM PRENOMS :<?= $ETUDIANT['NOM_PRENOMS']?></h4>
             <h4>DATE NAISSANCE :<?= $ETUDIANT['DATE_NAISSANCE']?></h4>
             <h4>SEXE :<?= $ETUDIANT['SEXE']?></h4>
             <h4>ADRESSE : <?= $ETUDIANT['ADRESSE']?></h4> 
             <h4>DATE DEBUT : <?= $ETUDIANT['DATE_DEBUT']?></h4> 
+            <h4>CHOIX FORMATION :<?= $ETUDIANT['CHOIX_FORMATION']?></h4>
+            <h4>PRIX_FORMATION : <?= $ETUDIANT['PRIX_FORMATION']?>F</h4> 
 
-      
-        </table>
+
     </div>
     
 </body>

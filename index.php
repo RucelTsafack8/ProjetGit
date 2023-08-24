@@ -21,11 +21,28 @@ require_once('connect.php');
             <h1 class="text-center text-info text-uppercase">systeme de gestion de 3IA </h1>
             <h1 class="text-center text-info text-uppercase">bonjour  <?php  echo $_SESSION['NOM_UTILISATEUR']; ?> </h1>
         </div>
-    </div>
-    <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
-        <a href="deconnexion.php" class="btn btn-success w-50" name="envoi">Deconnexion</a>
-    </div> 
     
+        <div class="row">
+            <div class="col-6">
+                <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
+                    <a href="inscriptionpers.php" class="btn btn-success w-50" name="envoi">Inscription Secretaire</a>
+                </div>
+                <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
+                    <a href="inscriptionprof.php" class="btn btn-success w-50" name="envoi">Inscription Professeur</a>
+                </div>
+                <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
+                    <a href="inscriptionetuds.php" class="btn btn-success w-50" name="envoi">Inscription Etudiant</a>
+                </div>
+                <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
+                    <a href="inscriptionstage.php" class="btn btn-success w-50" name="envoi">Inscription Stagiare</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
+            <a href="deconnexion.php" class="btn btn-danger w-50" name="envoi">Deconnexion</a>
+        </div> 
+    </div>  
 </body>
 </html>
 <?php
