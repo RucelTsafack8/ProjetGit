@@ -69,7 +69,7 @@ if(isset($_POST['envoi'])){
                     // nom d'utilisateur et mot de passe correctes 
                     $_SESSION['NOM_UTILISATEUR'] = $NOM_UTILISATEUR;   
                     $_SESSION['ID_TYPE_COMPTE'] = $id_type_compte;
-                    header("location:index.php");
+                    header("location:indexset.php");
                 }else{
                     $messageErreur = "Nom Utilisateur ou mot de passe incorrecte!!! si vous n'avez pas encore de compte veuillez vous conecter!!!";
                 }

@@ -16,7 +16,6 @@ require_once('connect.php');
 
 if(isset($_GET['ID_TYPE_COMPTE'])){
     $ID_TYPE_COMPTE =$_GET['ID_TYPE_COMPTE'];
-    $NOM_UTILISATEUR =$_GET['NOM_UTILISATEUR'];
 
     $requete = 'SELECT * FROM SECRETAIRE WHERE ID_TYPE_COMPTE = ?';
     //on prepare la requete
@@ -25,12 +24,9 @@ if(isset($_GET['ID_TYPE_COMPTE'])){
     $query->execute(array($ID_TYPE_COMPTE));
     //on stock les donnees les donnes dans une variable
     $SECRET = $query->fetch();
-    if(!$SECRET){   
-        header('Location:admin.php');
-    }
- 
-} else{
-    header('Location:admin.php');
+} 
+else{
+    header('Location:indexset.php');
 }
 
 
@@ -44,7 +40,7 @@ if(isset($_GET['ID_TYPE_COMPTE'])){
     <div class="container mt-5 py-5">
 
         <h2 class="text-center text-warning">Informations Secretaire  <?php echo $SECRET['NOM_UTILISATEUR']; ?></h2>
-        <table class="table  border-success">
+      
 
             <h4>ID_TYPE_COMPTE :<?= $SECRET['ID_TYPE_COMPTE']?></h4>
             <h4>ID_COMPTE :<?= $SECRET['ID_COMPTE']?></h4>
@@ -56,7 +52,10 @@ if(isset($_GET['ID_TYPE_COMPTE'])){
             <h4>SEXE :<?= $SECRET['SEXE']?></h4>
             <h4>ADRESSE : <?= $SECRET['ADRESSE']?></h4> 
       
-        </table>
+      
+    </div>
+    <div class="row  justify-content-end align-items-end">
+            <a href="modifier.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE']?>" class="btn btn-info w-25 float-end text-white text-uppercase text-center">Modifier Profile</a>
     </div>
     
 </body>

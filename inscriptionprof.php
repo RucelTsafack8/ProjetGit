@@ -93,7 +93,7 @@ if(isset($_POST['envoyer'])){
         // $_SESSION['DATE_NAISSANCE'] =$DATE_NAISSANCE;
         // $_SESSION['NUMERO_TEL'] =$NUMERO_TEL;
 
-        header('location:admin.php');
+        header('location:donneeprof.php');
 
     }
 }
@@ -105,7 +105,7 @@ if(isset($_POST['envoyer'])){
         
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="mt-3 w-75 bg-light">
-                <h1 class ="text-center text-uppercase text-info mt-3 py-3"> inscription personnels </h1>            
+                <h1 class ="text-center text-uppercase text-info mt-3 py-3"> inscription Professeur </h1>            
                 <div class="mt-3">
 
                     <label for="NUMERO_CNI" class="form-label">NUMERO DE CNI</label>

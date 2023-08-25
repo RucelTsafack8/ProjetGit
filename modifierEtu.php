@@ -87,7 +87,7 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
-        header('location:admin.php');
+        header('location:donneeetu.php');
         // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 
     }

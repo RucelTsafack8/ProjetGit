@@ -3,6 +3,8 @@ body{
     font-weight: 400 ;
     font-size: 20px ;
     font-family: 'Times New Roman', Times, serif;
+    background-image: url(...) cover;
+    background-repeat: no-repeat;
 
 }
 .navbar .container-fluid .navbar-brand{
@@ -18,4 +20,7 @@ body{
 h1{
     font-weight: 800;
     font-size: 40px;
+}
+.card .card-body a:hover{
+    background-color: mediumspringgreen;
 }

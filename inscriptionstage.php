@@ -22,9 +22,7 @@ $erreur_adresse = '';
 $erreur_date = '';
 $MESSAGE_SUCCESS='';
 $ERREUR = 0;
-$ID_ETUDIANT= '';
 $ID_COMPTE=$_SESSION['ID_COMPTE'];
-$CHOIX_FORMATION = '';
 
 $date_actuel= date('Y');
 $age = 0;
@@ -32,13 +30,16 @@ $age = 0;
 // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 if(isset($_POST['envoyer'])){
 
-    $NUM_TEL = strip_tags($_POST['NUM_TEL']);
+    $NUMERO_CNI = strip_tags($_POST['NUMERO_CNI']);
+    $NUMERO_TEL = strip_tags($_POST['NUMERO_TEL']);
     $EMAIL = strip_tags($_POST['EMAIL']);   
     $NOM_PRENOMS = strip_tags($_POST['NOM_PRENOMS']);
     $DATE_NAISSANCE = strip_tags($_POST['DATE_NAISSANCE']);
     $SEXE = strip_tags($_POST['SEXE']);
     $ADRESSE = strip_tags($_POST['ADRESSE']);
-    $CHOIX_FORMATION = strip_tags($_POST['CHOIX_FORMATION']);
+    $CAMPUS=$_POST['CAMPUS'];
+    $FILIERE =$_POST['FILIERE'];
+    $NIVEAU=$_POST['NIVEAU'];
     $DATE = date("Y-m-d H:i:s");
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
@@ -46,7 +47,7 @@ if(isset($_POST['envoyer'])){
     $RANGNUMBER = rand(100,1000);
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
     
-    if(strlen($NUM_TEL)<=8){
+    if(strlen($NUMERO_TEL)<=8){
         $erreur_numero = "le numero est incorrect";
         $ERREUR++;
     }elseif(strlen($EMAIL)<8 && empty($EMAIL)){
@@ -65,29 +66,30 @@ if(isset($_POST['envoyer'])){
         $erreur_adresse = "l'adresse n'est pas conforme";
         $ERREUR++;
     }elseif ($ERREUR<=0){
-        $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$RANGNUMBER";
-        
+        $ID_STAGIAIRE = "3IA-STA$date_actuel$INDICE-$RANGNUMBER";
         //requete d'insertion des etudiants
-        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT)
-        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT)';
-        $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
+        $requetes = 'INSERT INTO STAGIAIRE(ID_STAGIAIRE,ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PRIX_FORMATION,DATE_DEBUT,CAMPUS,FILIERE,NIVEAU)
+        VALUES (:ID_STAGIAIRE,:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PRIX_FORMATION,:DATE_DEBUT,:CAMPUS,:FILIERE,:NIVEAU)';
         
         $stmt = $db->prepare($requetes);
         
-        $stmt->bindParam(":ID_ETUDIANT",$ID_ETUDIANT,PDO::PARAM_STR);
+        $stmt->bindParam(":ID_STAGIAIRE",$ID_STAGIAIRE,PDO::PARAM_STR);
         $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
-        $stmt->bindParam(":NUM_TEL",$_POST['NUM_TEL'],PDO::PARAM_INT);
+        $stmt->bindParam(":NUMERO_CNI",$_POST['NUMERO_CNI'],PDO::PARAM_INT);
+        $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL'],PDO::PARAM_INT);
         $stmt->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
         
         $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
         $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
         $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
-        $stmt->bindParam(":CHOIX_FORMATION",$_POST['CHOIX_FORMATION'],PDO::PARAM_STR);
         $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
+        $stmt->bindParam(":CAMPUS",$_POST['CAMPUS'],PDO::PARAM_STR);
+        $stmt->bindParam(":FILIERE",$_POST['FILIERE'],PDO::PARAM_STR);
+        $stmt->bindParam(":NIVEAU",$_POST['NIVEAU'],PDO::PARAM_STR);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
-        header('location:donneeetu.php');
+        header('location:donneestage.php');
         // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 
     }
@@ -98,11 +100,17 @@ if(isset($_POST['envoyer'])){
     <div class="container mt-5 py-5">
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-75">
-                <h1 class= "text-center text-info text-uppercase">inscrition etudiants </h1>
+                <h1 class= "text-center text-info text-uppercase">inscrition Stagiare</h1>
                 
                 <div class="mt-3">
+                    <label for="NUMERO_CNI" class="form-label">NUMERO CNI</label>
+                    <input type="number" name="NUMERO_CNI" id="NUMERO_CNI" class="form-control">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+
+                </div>
+                <div class="mt-3">
                     <label for="NUMERO_TEL" class="form-label">NUMERO TELEPHONE</label>
-                    <input type="number" name="NUM_TEL" id="NUMERO_TEL" class="form-control">
+                    <input type="number" name="NUMERO_TEL" id="NUMERO_TEL" class="form-control">
                     <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
 
                 </div>
@@ -146,19 +154,38 @@ if(isset($_POST['envoyer'])){
                     <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_adresse;?></h5>
                 </div>
                 <div class="mt-3">
-                    <label for="CHOIX_FORMATION" class="form-label" aria-label="Default select">CHOIX FORMATION</label>
-                    <select name="CHOIX_FORMATION" id="CHOIX_FORMATION" class="form-select">
-                        <option value="PRODEV">PROGRAMMATION</option>
-                        <option value="INFOGRAPHIE">INFOGRAPHIE</option>
-                        <option value="SECRETARIAT">SECRETARIAT</option>
-                        <option value="RESEAUX">RESEAUX</option>
-                        <option value="itAcadmy">ItAcadmy</option>
+                    <label for="CAMPUS" class="form-label" aria-label="Default select">NOM CAMPUS</label>
+                    <select name="CAMPUS" id="CAMPUS" class="form-select">
+                        <option value="NANFAH">INT NANFAH</option>
+                        <option value="UDS">UDS </option>
+                        <option value="IUC">IUC</option>
+                        <option value="FOYAGEM">INT FOYAGEM</option>
                     </select>
                 </div>
                 <div class="mt-3">
-                    <label for="PRIX_FORMATION" class="form-label">PRIX FORMATION </label>
+                    <label for="FILIERE" class="form-label" aria-label="Default select">FILIERE </label>
+                    <select name="FILIERE" id="FILIERE" class="form-select">
+                        <option value="GEL">GENIE LOGICIEL</option>
+                        <option value="MSI">INFOGRAPHIE</option>
+                        <option value="INFO-IN">INFO INDUSTRIELLE</option>
+                        <option value="RESEAUX">RESEAUX</option>
+                    </select>
+                </div>
+                <div class="mt-3">
+                    <label for="NIVEAU" class="form-label" aria-label="Default select">NIVEAU ETUDE </label>
+                    <select name="NIVEAU" id="NIVEAU" class="form-select">
+                        <option value="NIVEAU L1">LICENCE I</option>
+                        <option value="NIVEAU L2">LICENCE II</option>
+                        <option value="NIVEAU L3">LICENCE III</option>
+                        <option value="MAT 1">MASTER I</option>
+                        <option value="MAT 2">MASTER II</option>
+                    </select>
+                </div>
+                <div class="mt-3">
+                    <label for="PRIX_FORMATION" class="form-label">PRIX STAGE</label>
                     <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control">
                     <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+
                 </div>
 
                 <h5 class="text-center text-success"><?php echo $MESSAGE_SUCCESS;?></h5>
