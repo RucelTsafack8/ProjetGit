@@ -43,8 +43,8 @@ if(isset($_POST['envoyer'])){
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
     // echo "$age";
-    //$RANGNUMBER = rand(1000,10000);
-    //$INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
+    $RANGNUMBER = rand(1000,10000);
+    $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
     
     if(strlen($NUM_TEL)<=8){
         $erreur_numero = "le numero est incorrect";
@@ -65,7 +65,7 @@ if(isset($_POST['envoyer'])){
         $erreur_adresse = "l'adresse n'est pas conforme";
         $ERREUR++;
     }elseif ($ERREUR<=0){
-       // $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$RANGNUMBER";
+    //    $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$RANGNUMBER";
      
         //requete d'insertion des etudiants
         $requetes = 'UPDATE  ETUDIANTS SET ID_ETUDIANT=:ID_ETUDIANT,ID_COMPTE=:ID_COMPTE,NUM_TEL=:NUM_TEL,EMAIL=:EMAIL,CHOIX_FORMATION=:CHOIX_FORMATION,

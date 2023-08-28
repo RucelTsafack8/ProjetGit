@@ -1,3 +1,6 @@
+<?php
+// session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,11 +23,11 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse d-flex justify-content-end me-3" id="navbarNavAltMarkup">
+                    <div class="collapse navbar-collapse d-flex justify-content-end " id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link active fs-3" aria-current="page" href="index.php">Acceuil</a>
-                            <a class="nav-link fs-3" href="admin.php">Dashbord</a>
-                            <a class="nav-link fs-3"  href="details.php"><i class="fa-solid fa-circle-user"></i></a>
+                            <a class="nav-link fs-3" href="index.php">Dashbord</a>
+                            <a class="nav-link fs-3"  href="detailadmin.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><i class="fa-solid fa-circle-user"></i></a>
                     </div>
                 </div>
             </nav>

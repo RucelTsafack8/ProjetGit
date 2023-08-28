@@ -11,6 +11,9 @@ if(isset($_POST['envoi'])){
     $CHOIX_TYPE_COMPTE = $_POST['CHOIX_TYPE_COMPTE'];
     $NOM_UTILISATEUR = $_POST['NOM_UTILISATEUR'];
     $MOT_DE_PASSE = $_POST['MOT_DE_PASSE'];
+    if(!empty($NOM_UTILISATEUR)){
+        
+    }
 
 
     if($CHOIX_TYPE_COMPTE=='ADMIN'){

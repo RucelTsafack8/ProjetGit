@@ -99,19 +99,22 @@ if(isset($_POST['envoyer'])){
 }
    
     if(isset($_GET['ID_TYPE_COMPTE'])){
-
-
-        $requete = 'SELECT * FROM SECRETAIRE WHERE ID_TYPE_COMPTE = ?';
+        $ID_TYPE_COMPTE = $_GET['ID_TYPE_COMPTE'];
+        $MOT = 'ADMIN';
+        $resultat = strstr($ID_TYPE_COMPTE,$MOT);
+        if($resultat===false){
+            $requete = 'SELECT * FROM SECRETAIRE WHERE ID_TYPE_COMPTE = ?';
+        }else{
+            $requete = 'SELECT * FROM  ADMINISTRATEUR WHERE ID_TYPE_COMPTE = ?';
+        }
+        
         //on prepare la requete
         $query = $db->prepare($requete);
         //on excecute la requete
         $query->execute(array($ID_TYPE_COMPTE));
         //on stock les donnees les donnes dans une variable
         $SECRET = $query->fetch();
-        // if(!$SECRET){   
-        //     header('Location:admin.php');
-        //     $message ="<h1 class='text-center text-danger border text-uppercase mt-5 py-5'> $message_erreur</h1>";
-        // }
+     
     }
     $ID_COMPTE = $SECRET['ID_COMPTE'];
     $NOM_UTILISATEUR = $SECRET['NOM_UTILISATEUR'];

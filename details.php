@@ -29,14 +29,12 @@ else{
     header('Location:indexset.php');
 }
 
-
-
 ?>
-
-
-
-
+     
 <body>
+    <div class="row  justify-content-end align-items-end mt-5 py-5">
+        <a href="deconnexion.php" class="btn btn-danger float-end">Deconnexion</a>
+    </div>
     <div class="container mt-5 py-5">
 
         <h2 class="text-center text-warning">Informations Secretaire  <?php echo $SECRET['NOM_UTILISATEUR']; ?></h2>
@@ -55,7 +53,7 @@ else{
       
     </div>
     <div class="row  justify-content-end align-items-end">
-            <a href="modifier.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE']?>" class="btn btn-info w-25 float-end text-white text-uppercase text-center">Modifier Profile</a>
+        <a href="modifier.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE']?>" class="btn btn-info w-25 float-end text-white text-uppercase text-center">Modifier Profile</a>
     </div>
     
 </body>

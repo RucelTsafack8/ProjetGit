@@ -2,9 +2,9 @@
 
     session_start();
     // On inclus le fichier de connection a la base de donnees.
-    require_once('connect.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\connect.php');
 
-    require_once('header.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\header.php');
     $requete2 = 'SELECT * FROM ETUDIANTS';
     //on prepare la requete
     $stn = $db->prepare($requete2);

@@ -33,7 +33,8 @@ $prof = $db->prepare($reqprof);
 $prof ->execute();
 $totalprof = $prof->fetch()['totalprof'];
     $MONTANT=0;
-   $ret_etude = 'SELECT PRIX_FORMATION FROM  etudiants';
+    //requete pour selectionner et calculer le montant des etudiants
+$ret_etude = 'SELECT PRIX_FORMATION FROM  etudiants';
    $selet = $db->prepare($ret_etude);
    $selet->execute();
     while($prix = $selet->fetch()){
@@ -41,7 +42,8 @@ $totalprof = $prof->fetch()['totalprof'];
     }
     //on fait la meme chose pour la table stagiaire et on fait la somme
     $MONTANT1=0;
-   $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
+    //requete pour selectionner et calculer le montant des stagiaires
+$ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
    $selet = $db->prepare($ret_stage);
    $selet->execute();
     while($prix = $selet->fetch()){
@@ -61,35 +63,35 @@ $totalprof = $prof->fetch()['totalprof'];
         </div>
     
         <div class="row">
-            <div class="col-2">
+            <div class="col-6 col-md-6 col-lg-3">
                 <div class="card bg-info mt-1 py-1">
                     <div class="card-body">
                         <h5 class="card-title">Secretaires</h5>
                         <h5 class="card-text"> <?= $totalset ?></h5>
-                        <a href="donneeset.php" class="btn btn-primary">Details</a>
+                        <a href="donneeset.php" class="btn btn-primary float-end">Details</a>
                     </div>
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-6 col-md-6 col-lg-3">
                 
                 <div class="card bg-success mt-1 py-1">
                     <div class="card-body ">
                         <h5 class="card-title">Etudiants</h5>
                         <h5 class="card-text"> <?= $totaletu ?></h5>
-                        <a href="donneeetu.php" class="btn btn-primary">Details</a>
+                        <a href="donneeetu.php" class="btn btn-primary float-end">Details</a>
                     </div>
                 </div>
             </div>
             <div class="col-2">
                 
             </div>
-            <div class="col-2">
+            <div class="col-6 col-md-6 col-lg-3">
                 
                 <div class="card bg-light mt-1 py-1">
                     <div class="card-body ">
                         <h5 class="card-title">MONTANT TOTAL</h5>
                         <h5 class="card-text text-danger"> <?= $MONTANTS ?> Franc CFA</h5>
-                        <a href="detailargent.php" class="btn btn-secondary">Details</a>
+                        <a href="detailargent.php" class="btn btn-secondary float-end">Details</a>
                         
                     </div>
                 </div>
@@ -97,22 +99,22 @@ $totalprof = $prof->fetch()['totalprof'];
 
         </div>
         <div class="row">
-            <div class="col-2">
+            <div class="col-6 col-md-6 col-lg-3 ">
                 <div class="card mt-1 py-1">
                     <div class="card-body">
                         <h5 class="card-title">Professeurs</h5>
                         <h5 class="card-text"> <?= $totalprof ?> </h5>
-                        <a href="donneeprof.php" class="btn btn-primary">Details</a>
+                        <a href="donneeprof.php" class="btn btn-primary float-end">Details</a>
                     </div>
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-6 col-md-6 col-lg-3">
             
                 <div class="card bg-warning mt-1 py-1">
                     <div class="card-body ">
                         <h5 class="card-title">STAGIAIRES</h5>
                         <h5 class="card-text"> <?= $totalstage ?></h5>
-                        <a href="donneestage.php" class="btn btn-primary">Details</a>
+                        <a href="donneestage.php" class="btn btn-primary float-end">Details</a>
                     </div>
                 </div>
             </div>
