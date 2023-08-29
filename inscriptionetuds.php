@@ -28,6 +28,14 @@ $CHOIX_FORMATION = '';
 
 $date_actuel= date('Y');
 $age = 0;
+//on selection les formations presentes dans la base de donnees
+    $query = 'SELECT * FROM FORMATIONS';
+    $form = $db->prepare($query);
+    $form->execute();
+    $formation = $form->fetchAll(PDO::FETCH_ASSOC);
+    
+    
+
 // echo "$date_actuel";
 // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 if(isset($_POST['envoyer'])){
@@ -43,8 +51,12 @@ if(isset($_POST['envoyer'])){
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
     // echo "$age";
-    $RANGNUMBER = rand(100,1000);
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
+    $reqe='SELECT COUNT(*) as totaletu FROM etudiants';
+    $etu = $db->prepare($reqe);
+    $etu ->execute();
+    $totaletu = $etu->fetch()['totaletu'];
+    $TOTAL = $totaletu +1;
     
     if(strlen($NUM_TEL)<=8){
         $erreur_numero = "le numero est incorrect";
@@ -65,7 +77,8 @@ if(isset($_POST['envoyer'])){
         $erreur_adresse = "l'adresse n'est pas conforme";
         $ERREUR++;
     }elseif ($ERREUR<=0){
-        $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$RANGNUMBER";
+
+        $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$TOTAL";
         
         //requete d'insertion des etudiants
         $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT)
@@ -147,17 +160,27 @@ if(isset($_POST['envoyer'])){
                 </div>
                 <div class="mt-3">
                     <label for="CHOIX_FORMATION" class="form-label" aria-label="Default select">CHOIX FORMATION</label>
-                    <select name="CHOIX_FORMATION" id="CHOIX_FORMATION" class="form-select">
-                        <option value="PRODEV">PROGRAMMATION</option>
-                        <option value="INFOGRAPHIE">INFOGRAPHIE</option>
-                        <option value="SECRETARIAT">SECRETARIAT</option>
-                        <option value="RESEAUX">RESEAUX</option>
-                        <option value="itAcadmy">ItAcadmy</option>
+                    <select name="CHOIX_FORMATION" id="CHOIX_FORMATION" class="form-select" onchannge="recupererPrix()">
+                   <?php foreach ($formation as $choix){
+                        echo '<option value="'.$choix['ID_FORMATION'].'"> '.$choix['NOM_FORMATION'].'</option>';
+                        }
+                    ?>
+                    <option value="itAcadmy">ItAcadmy</option>
                     </select>
                 </div>
+                <?php
+                    $prix_query = 'SELECT PRIX_FORMATION FROM FORMATIONS WHERE ID_FORMATION=?';
+                    $prix_form = $db->prepare($prix_query);
+                    $prix_form->execute(array($choix['ID_FORMATION']));
+                    $prix_formation = $prix_form->fetch(PDO::FETCH_ASSOC);
+                ?>
+
                 <div class="mt-3">
                     <label for="PRIX_FORMATION" class="form-label">PRIX FORMATION </label>
-                    <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control">
+
+                    <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
+                   
+                  
                     <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
                 </div>
 
@@ -170,7 +193,7 @@ if(isset($_POST['envoyer'])){
             </form>
         </div>
     </div>
-    
+    <!-- <script src="requetesprix.js"></script> -->
 </body>
 </html>
 <?php

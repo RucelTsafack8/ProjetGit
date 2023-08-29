@@ -34,10 +34,14 @@ if(isset($_POST['envoyer'])){
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
     $DATE = $date_actuel;
-    $RANGNUMBER = rand(100,1000);
+    $reqs='SELECT COUNT(*) as totalset FROM secretaire';
+    $set = $db->prepare($reqs);
+    $set ->execute();
+    $totalset = $set->fetch()['totalset'];
+    $TOTAL = $totalset +1;
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
-    $ID_COMPTE = "3IA-$DATE$INDICE-$RANGNUMBER";
-    $ID_TYPE_COMPTE = "3IA-SECRET.$DATE$INDICE-$RANGNUMBER";
+    $ID_COMPTE = "3IA-$DATE$INDICE-$TOTAL";
+    $ID_TYPE_COMPTE = "3IA-SECRET.$DATE$INDICE-$TOTAL";
 
     if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";

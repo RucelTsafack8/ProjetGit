@@ -20,7 +20,7 @@
         <table class="table border">
              
         <thead>
-                <th>$ID_PROFESSEUR</th>
+                <th>ID_PROFESSEUR</th>
                 <th>NUMERO_TEL</th>
                 <th>NOM_PRENOMS</th>
                 <th>INFORMATIONS</th>

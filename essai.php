@@ -1,21 +1,20 @@
 <?php
     require_once('connect.php');
    //on selectionne la colonne des montat e la table etudiant et on fait la somme
-    $MONTANT=0;
-   $ret_etude = 'SELECT PRIX_FORMATION FROM  etudiants';
-   $selet = $db->prepare($ret_etude);
-   $selet->execute();
-    while($prix = $selet->fetch()){
-        $MONTANT +=$prix['PRIX_FORMATION'] ;
-    }
-    //on fait la meme chose pour la table stagiaire et on fait la somme
-    $MONTANT1=0;
-   $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
-   $selet = $db->prepare($ret_stage);
-   $selet->execute();
-    while($prix = $selet->fetch()){
-        $MONTANT1 +=$prix['PRIX_FORMATION'] ;
-    }
-   ECHO $MONTANT1+$MONTANT;
+    $query = 'SELECT ID_FORMATION, NOM_FORMATION FROM FORMATIONS';
+    $form = $db->prepare($query);
+    $form->execute();
+    $formation = $form->fetchAll(PDO::FETCH_ASSOC);
+    var_dump($formation);
+    echo '<label> choix formation</label>';
+    echo '<select name="CHOIX_FORMATION">';
+        foreach ($formation as $choix){
+            echo '<option value="'.$choix['ID_FORMATION'].'"> '.$choix['NOM_FORMATION'].'</option>';
+        }
+    
+    echo '</select>';
+      
+             
+
 
 ?>

@@ -43,7 +43,7 @@
                     <td>
                         <a href="details.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE'] ?>" class="btn btn-light">Voir Plus</a>
                         <a href="modifier.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE'] ?>" class="btn btn-success py-1 mt-1">Modifier</a>
-                        <a href="modifier.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE'] ?>" class="btn btn-danger py-1 mt-1">Modifier</a>
+                        <a href="supprimerset.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE'] ?>" class="btn btn-danger py-1 mt-1">Supprimer</a>
                     </td>
 
                 </tr>

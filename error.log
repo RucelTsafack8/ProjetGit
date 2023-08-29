@@ -1,0 +1,19 @@
+23/08/28 22:08:02 : Must issue a STARTTLS command first. z22-20020a05600c221600b003fe1c332810sm15057636wml.33 - gsmtp<EOL>
+23/08/28 22:09:16 : Must issue a STARTTLS command first. b4-20020adff244000000b0031423a8f4f7sm11619305wrp.56 - gsmtp<EOL>
+23/08/28 22:12:44 : Must issue a STARTTLS command first. r8-20020a5d4948000000b003196e992567sm11580228wrs.115 - gsmtp<EOL>
+23/08/28 22:17:53 : Must issue a STARTTLS command first. i9-20020a05600c290900b003fe26244858sm15018083wmd.46 - gsmtp<EOL>
+23/08/28 22:18:20 : Must issue a STARTTLS command first. g9-20020a056000118900b0031ad5fb5a0fsm11593714wrx.58 - gsmtp<EOL>
+23/08/28 22:20:04 : Must issue a STARTTLS command first. e14-20020adfef0e000000b00315af025098sm11626988wro.46 - gsmtp<EOL>
+23/08/28 22:21:05 : Must issue a STARTTLS command first. d7-20020adffd87000000b00317a04131c5sm11706275wrr.57 - gsmtp<EOL>
+23/08/28 22:37:13 : Must issue a STARTTLS command first. m17-20020a5d6a11000000b003141a3c4353sm11623888wru.30 - gsmtp<EOL>
+23/08/28 22:38:16 : Must issue a STARTTLS command first. l11-20020adff48b000000b0031c3ee933b5sm11608535wro.108 - gsmtp<EOL>
+23/08/28 22:38:20 : Must issue a STARTTLS command first. k4-20020a05600c0b4400b003fe0a0e03fcsm14998513wmr.12 - gsmtp<EOL>
+23/08/28 22:40:05 : Must issue a STARTTLS command first. n20-20020a7bc5d4000000b003fbca942499sm15129365wmk.14 - gsmtp<EOL>
+23/08/28 22:40:10 : Must issue a STARTTLS command first. l1-20020a5d4101000000b0031c6ae19e27sm11599539wrp.99 - gsmtp<EOL>
+23/08/28 22:41:03 : Must issue a STARTTLS command first. e14-20020adfef0e000000b00315af025098sm11674820wro.46 - gsmtp<EOL>
+23/08/28 22:44:21 : Must issue a STARTTLS command first. k8-20020a7bc408000000b003fbb06af219sm11862078wmi.32 - gsmtp<EOL>
+23/08/28 22:44:26 : Must issue a STARTTLS command first. n15-20020a7bcbcf000000b003fc02e8ea68sm15076759wmi.13 - gsmtp<EOL>
+23/08/28 22:45:47 : Must issue a STARTTLS command first. k1-20020adfe3c1000000b0031c6e1ea4c7sm11599808wrm.90 - gsmtp<EOL>
+23/08/28 22:45:56 : Must issue a STARTTLS command first. a14-20020a5d508e000000b0031ad2f9269dsm11670973wrt.40 - gsmtp<EOL>
+23/08/28 22:49:29 : Must issue a STARTTLS command first. 16-20020a05600c229000b003fff96bb62csm11926010wmf.16 - gsmtp<EOL>
+23/08/29 10:07:09 : Socket Error # 11001<EOL>Host not found.

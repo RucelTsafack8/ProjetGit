@@ -12,7 +12,7 @@ body{
     font-size: 30px;
 }
 
-.navbar .container-fluid .collapse .navbar-nav.navbar-nav .nav-link:hover{
+.navbar .container-fluid .collapse .navbar-nav .navbar-item .nav-link:hover{
     color: azure;
     text-decoration: underline mediumspringgreen;
 }

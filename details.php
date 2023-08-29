@@ -33,7 +33,6 @@ else{
      
 <body>
     <div class="row  justify-content-end align-items-end mt-5 py-5">
-        <a href="deconnexion.php" class="btn btn-danger float-end">Deconnexion</a>
     </div>
     <div class="container mt-5 py-5">
 

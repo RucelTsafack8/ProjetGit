@@ -44,8 +44,12 @@ if(isset($_POST['envoyer'])){
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
     // echo "$age";
-    $RANGNUMBER = rand(100,1000);
+    $reqstage='SELECT COUNT(*) as totalstage FROM stagiaire';
+    $stage = $db->prepare($reqstage);
+    $stage ->execute();
+    $totalstage = $stage->fetch()['totalstage'];
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
+    $TOTAL = $totalstage +1;
     
     if(strlen($NUMERO_TEL)<=8){
         $erreur_numero = "le numero est incorrect";
@@ -66,7 +70,7 @@ if(isset($_POST['envoyer'])){
         $erreur_adresse = "l'adresse n'est pas conforme";
         $ERREUR++;
     }elseif ($ERREUR<=0){
-        $ID_STAGIAIRE = "3IA-STA$date_actuel$INDICE-$RANGNUMBER";
+        $ID_STAGIAIRE = "3IA-STA$date_actuel$INDICE-$TOTAL";
         //requete d'insertion des etudiants
         $requetes = 'INSERT INTO STAGIAIRE(ID_STAGIAIRE,ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PRIX_FORMATION,DATE_DEBUT,CAMPUS,FILIERE,NIVEAU)
         VALUES (:ID_STAGIAIRE,:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PRIX_FORMATION,:DATE_DEBUT,:CAMPUS,:FILIERE,:NIVEAU)';

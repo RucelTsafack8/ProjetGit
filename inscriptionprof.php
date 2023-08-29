@@ -36,10 +36,14 @@ if(isset($_POST['envoyer'])){
     $age = $date_actuel-$annee_naiss;
     $DATE = $date_actuel;
     $DATE1 = date("Y-m-d H:i:s");
-    $RANGNUMBER = rand(100,1000);
+    $reqprof='SELECT COUNT(*) as totalprof FROM professeurs';
+    $prof = $db->prepare($reqprof);
+    $prof ->execute();
+    $totalprof = $prof->fetch()['totalprof'];
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
+    $TOTAL = $totalprof +1;
 
-    $ID_PROFESSEUR = "3IA-PROF.$DATE$INDICE-$RANGNUMBER";
+    $ID_PROFESSEUR = "3IA-PROF.$DATE$INDICE-$TOTAL";
 
     if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";

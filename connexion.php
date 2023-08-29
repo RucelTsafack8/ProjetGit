@@ -6,18 +6,26 @@ require_once('footer.php');
 require_once('connect.php');
 //variables d'erreur
 $messageErreur = '';
+$erreur_nom_utilisateur = '';
+$erreur_mot_de_passe = '';
+$NOM_UTILISATEUR= '';
 // condition du bouton d'envoi
 if(isset($_POST['envoi'])){
     $CHOIX_TYPE_COMPTE = $_POST['CHOIX_TYPE_COMPTE'];
     $NOM_UTILISATEUR = $_POST['NOM_UTILISATEUR'];
     $MOT_DE_PASSE = $_POST['MOT_DE_PASSE'];
-    if(!empty($NOM_UTILISATEUR)){
-        
-    }
+    
 
 
     if($CHOIX_TYPE_COMPTE=='ADMIN'){
-        if(($NOM_UTILISATEUR !== "" && $MOT_DE_PASSE !== "") )
+
+        if(empty($NOM_UTILISATEUR)){
+            $erreur_nom_utilisateur = "Veuiller renseigner le nom Correcte de l'utilisateur";
+        }
+        if(empty($MOT_DE_PASSE)){
+            $erreur_mot_de_passe = 'Veuiller renseigner le mot de passe';
+        }
+        elseif(($NOM_UTILISATEUR !== "" && $MOT_DE_PASSE !== "") )
         {
             //on excute la requete si les champs ne sont pas vide
             $REQ = 'SELECT ID_COMPTE,ID_TYPE_COMPTE FROM ADMINISTRATEUR WHERE NOM_UTILISATEUR=? AND MOT_DE_PASSE = ?';
@@ -47,7 +55,13 @@ if(isset($_POST['envoi'])){
             }
         }
     }else{
-        if(($NOM_UTILISATEUR !== "" && $MOT_DE_PASSE !== "") )
+        if(empty($NOM_UTILISATEUR)){
+            $erreur_nom_utilisateur = "Veuiller renseigner le nom Correcte de l'utilisateur";
+        }
+        if(empty($MOT_DE_PASSE)){
+            $erreur_mot_de_passe = 'Veuiller renseigner le mot de passe';
+        }
+        elseif(($NOM_UTILISATEUR !== "" && $MOT_DE_PASSE !== "") )
         {
             //on excute la requete si les champs ne sont pas vide
             $REQ = 'SELECT ID_COMPTE,ID_TYPE_COMPTE FROM secretaire WHERE NOM_UTILISATEUR=? AND MOT_DE_PASSE = ?';
@@ -101,19 +115,24 @@ if(isset($_POST['envoi'])){
                 <h5 class="text-center text-danger mt-4"><?php echo $messageErreur ?></h5>
                 <div class="mt-3">
                     <label for="CHOIX_TYPE_COMPTE" class="form-label" aria-label="Default select">TYPE DE COMPTE</label>
-                    <select name="CHOIX_TYPE_COMPTE" id="CHOIX_TYPE_COMPTE" class="form-select">
+                    <select name="CHOIX_TYPE_COMPTE" id="CHOIX_TYPE_COMPTE" class="form-select" value="<?= $CHOIX_TYPE_COMPTE ?>">
                         <option value="ADMIN">ADMINISTRATEUR</option>
                         <option value="SECRET">SECRETAIRE</option>
                     </select>
                 </div>
                 <div class="mt-3">
                     <label for="NOM_UTILISATEUR" class="form-label">NOM UTILISATEUR</label>
-                    <input type="text" name="NOM_UTILISATEUR" id="NOM_UTILISTEUR" class="form-control">
+                    <input type="text" name="NOM_UTILISATEUR" id="NOM_UTILISTEUR" class="form-control" value="<?= $NOM_UTILISATEUR ?>">
+                    <p class="text-center text-danger"><?php echo $erreur_nom_utilisateur ?></p>
                 </div>
-        
+                
                 <div class="mt-3">
                     <label for="MOT_DE_PASSE" class="form-label">MOT DE PASSE</label>
                     <input type="password" name="MOT_DE_PASSE" id="MOT_DE_PASSE" class="form-control">
+                    <p class="text-center text-danger"><?php echo $erreur_mot_de_passe ?></p>
+                </div>
+                <div class="col-12">
+                    <a href="motdepasse.php" class= "">mot de passe oublier ?</a>
                 </div>
                 <div class="mt-3 d-flex justify-content-center  justify-content-center align-items-center w-100">
                     <input type="submit" value="valider" class="btn btn-success w-50" name="envoi">
