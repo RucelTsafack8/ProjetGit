@@ -71,18 +71,9 @@ if(isset($_POST['envoi'])){
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>inscrption personnels</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css\bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-     crossorigin="anonymous">
-</head>
-<body>
+<div class="col-1 py-4 ms-5">
+    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+</div>
     <div class="container mt-5 py-5">
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
                 <form action="" method="post" class =" w-75 bg-light">
@@ -117,9 +108,7 @@ if(isset($_POST['envoi'])){
             </form>
         </div>
     </div>
-    <div class="row py-4 ms-5">
-        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
-    </div>
+    
     
 
 <?php

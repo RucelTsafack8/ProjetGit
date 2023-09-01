@@ -46,14 +46,9 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
 
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<div class="col-1 py-4 ms-5">
+    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+</div>
 <div class="col-12 container mt-4 py-5">
         <h2 class="text-center text-warning">Details Argent</h2>
         <table class="table border">

@@ -60,6 +60,9 @@
 
 </head>
 <body>
+<div class="col-1 py-4 ms-5">
+    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+</div>
     <div class="container">
        <div class="row mt-5 py-5  justify-content-center align-items-center w-100">
             <form action="" method="post" class="w-75 bg-light mt-3 py-4">
@@ -95,8 +98,6 @@
             </form>
        </div>
     </div> 
-    <div class="row py-4 ms-5">
-        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
-    </div>  
+     
 </body>
 </html>

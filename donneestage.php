@@ -14,7 +14,10 @@
     $result_stage = $stn->fetchAll(PDO::FETCH_ASSOC);
 
 ?>  
-<!-- tableau des etudiants -->
+<div class="col-1 py-4 ms-5">
+    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+</div>
+<!-- tableau des stagiaires -->
 <div class="col-12 container mt-5 py-5">
         <h1 class="text-center text-success">Table Stagiaire</h1>
         <table class="table border">
@@ -53,9 +56,6 @@
         <div class="row  justify-content-end align-items-end">
             <a href="inscriptionstage.php" class="btn btn-info w-25 float-end text-white text-uppercase text-center">Ajouter</a>
         </div>
-    </div>
-    <div class="row py-4 ms-5">
-        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
     </div>
 <?php
     require_once('footer.php');

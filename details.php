@@ -31,9 +31,10 @@ else{
 
 ?>
      
-<body>
-    <div class="row  justify-content-end align-items-end mt-5 py-5">
-    </div>
+
+<div class="col-1 py-4 ms-5">
+    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+</div>
     <div class="container mt-5 py-5">
 
         <h2 class="text-center text-warning">Informations Secretaire  <?php echo $SECRET['NOM_UTILISATEUR']; ?></h2>
@@ -54,9 +55,7 @@ else{
     <div class="row  justify-content-end align-items-end">
         <a href="modifier.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE']?>" class="btn btn-info w-25 float-end text-white text-uppercase text-center">Modifier Profile</a>
     </div>
-    <div class="row py-4 ms-5">
-        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
-    </div>
+    
     
 
 <?php

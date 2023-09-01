@@ -106,7 +106,9 @@ if(isset($_POST['envoyer'])){
 }
 ?>
 
-<body>
+<div class="col-1 py-4 ms-5">
+    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+</div>
     <div class="container mt-5 py-5">
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-75">
@@ -207,9 +209,7 @@ if(isset($_POST['envoyer'])){
             </form>
         </div>
     </div>
-    <div class="row py-4 ms-5">
-        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
-    </div>
+ 
 
 <?php
     //on require le footer pour le pied de page
