@@ -61,19 +61,19 @@ if(isset($_POST['envoyer'])){
     if(strlen($NUM_TEL)<=8){
         $erreur_numero = "le numero est incorrect";
         $ERREUR++;
-    }elseif(strlen($EMAIL)<8 && empty($EMAIL)){
+    }if(strlen($EMAIL)<8 && empty($EMAIL)){
         $erreur_email = "l'email est mal renseigner";
         $ERREUR++;
-    }elseif(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
+    }if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom = "remplir le champ d'au moins 8 caractere en commencent par une majuscule";
         $ERREUR++;
-    }elseif($age<=7){
+    }if($age<=7){
         $erreur_date = "l'age est trop petit pour un etudiant";
         $ERREUR++;
-    }elseif($age>26){
+    }if($age>26){
         $erreur_date = "l'age est trop grand pour un etudiant";
         $ERREUR++; 
-    }elseif(strlen($ADRESSE)<=4 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $ADRESSE)){
+    }if(strlen($ADRESSE)<=4 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $ADRESSE)){
         $erreur_adresse = "l'adresse n'est pas conforme";
         $ERREUR++;
     }elseif ($ERREUR<=0){
@@ -100,7 +100,13 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
-        header('location:donneeetu.php');
+        if($resultat===false){
+            header('location:recuetu.php');
+            
+        }else{
+            header('location:donneeetu.php');
+            
+        }
         // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 
     }
@@ -110,28 +116,26 @@ if(isset($_POST['envoyer'])){
 <body>
     <div class="container mt-5 py-5">
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
-            <form action="" method="post" class="bg-light w-75">
+            <form action="" method="post" class="bg-light w-50">
                 <h1 class= "text-center text-info text-uppercase">inscrition etudiants </h1>
                 
-                <div class="mt-3">
-                    <label for="NUMERO_TEL" class="form-label">NUMERO TELEPHONE</label>
-                    <input type="number" name="NUM_TEL" id="NUMERO_TEL" class="form-control">
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
-
-                </div>
-
-                <div class="mt-3">
-                    <label for="EMAIL" class="form-label">EMAIL</label>
-                    <input type="email" name="EMAIL" id="EMAIL" class="form-control">
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_email;?></h5>
-
-                </div>
-
                 <div class="mt-3">
                     <label for="NOM_PRENOMS" class="form-label">NOM ET PRENOM</label>
                     <input type="text" name="NOM_PRENOMS" id="NOM_PRENOMS" class="form-control">
                     <!-- affiche l'erreur si le nom et le prenom sont mal ecrit -->
                     <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_nom;?></h5>
+                </div>
+                <div class="mt-3">
+                    <label for="EMAIL" class="form-label">EMAIL</label>
+                    <input type="email" name="EMAIL" id="EMAIL" class="form-control">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_email;?></h5>
+                    
+                </div>
+                <div class="mt-3">
+                    <label for="NUMERO_TEL" class="form-label">NUMERO TELEPHONE</label>
+                    <input type="number" name="NUM_TEL" id="NUMERO_TEL" class="form-control">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+                    
                 </div>
 
                 <div class="mt-3">
@@ -140,6 +144,8 @@ if(isset($_POST['envoyer'])){
                     <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_date;?></h5>
 
                 </div>
+
+
 
                 <div class="mt-3">
                     <label for="SEXE" class="form-label">SEXE</label>
@@ -165,7 +171,7 @@ if(isset($_POST['envoyer'])){
                         echo '<option value="'.$choix['ID_FORMATION'].'"> '.$choix['NOM_FORMATION'].'</option>';
                         }
                     ?>
-                    <option value="itAcadmy">ItAcadmy</option>
+                    
                     </select>
                 </div>
                 <?php
@@ -175,13 +181,22 @@ if(isset($_POST['envoyer'])){
                     $prix_formation = $prix_form->fetch(PDO::FETCH_ASSOC);
                 ?>
 
-                <div class="mt-3">
-                    <label for="PRIX_FORMATION" class="form-label">PRIX FORMATION </label>
-
-                    <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
-                   
-                  
-                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+                <div class="mt-3 row">
+                    <div class="col-4">
+                        <label for="PRIX_FORMATION" class="form-label">PRIX FORMATION </label>
+                        <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
+                        <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+                    </div>
+                    <div class="col-4">
+                        <label for="PRIX_FORMATION" class="form-label">TRANCHE DE PAYEMENT </label>
+                        <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
+                        <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+                    </div>
+                    <div class="col-4">
+                        <label for="PRIX_FORMATION" class="form-label">MONTANT PAYE</label>
+                        <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
+                        <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+                    </div>
                 </div>
 
                 <h5 class="text-center text-success"><?php echo $MESSAGE_SUCCESS;?></h5>
@@ -193,9 +208,10 @@ if(isset($_POST['envoyer'])){
             </form>
         </div>
     </div>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
     <!-- <script src="requetesprix.js"></script> -->
-</body>
-</html>
 <?php
     //on require le footer pour le pied de page
     require_once('footer.php');

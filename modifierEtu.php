@@ -87,7 +87,13 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
-        header('location:donneeetu.php');
+        if($resultat===false){
+            header('location:recuetu.php');
+            
+        }else{
+            header('location:donneeetu.php');
+            
+        }
         // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 
     }
@@ -114,7 +120,7 @@ if(isset($_POST['envoyer'])){
     <div class="container mt-5 py-5">
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-75">
-                <h1 class= "text-center text-info text-uppercase">Modification information etudiants , <?php echo $ETUDIANT['NOM_PRENOMS']; ?></h1>
+                <h1 class= "text-center text-info">Modification Information etudiant <?php echo $ETUDIANT['NOM_PRENOMS']; ?></h1>
                 
                 <div class="mt-3">
                     <input type="hidden" name="ID_ETUDIANT"  class="form-control" value="<?= $ETUDIANT['ID_ETUDIANT']?>">
@@ -149,8 +155,8 @@ if(isset($_POST['envoyer'])){
 
                 <div class="mt-3">
                     <label for="SEXE" class="form-label">SEXE</label>
-                    <div class="form-check-inline ms-4">
-                        <input type="radio" name="SEXE" id="SEXEh" class="form-check-input" checked value= "HOMME">
+                    <div class="form-check-inline ms-4" value="<?= $ETUDIANT['SEXE']?>">
+                        <input type="radio" name="SEXE" id="SEXEh" class="form-check-input"  value= "HOMME">
                         <label for="SEXEh" class="form-check-label">HOMME</label>
                     </div>
                     <div class="form-check-inline  ms-4">
@@ -191,9 +197,10 @@ if(isset($_POST['envoyer'])){
             </form>
         </div>
     </div>
-    
-</body>
-</html>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
+
 <?php
     //on require le footer pour le pied de page
     require_once('footer.php');

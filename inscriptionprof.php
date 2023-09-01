@@ -180,8 +180,10 @@ if(isset($_POST['envoyer'])){
             </form>
         </div>
     </div>
-</body>
-</html>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
+
 <?php
     //on require le footer pour le pied de page
     require_once('footer.php');

@@ -30,10 +30,10 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                            <a class="nav-link active fs-3" aria-current="page" href="index.php">Accueil</a>
+                            <a class="nav-link active fs-3" aria-current="page" href="admin.php">Accueil</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  fs-3" href="index.php">Dashbord</a>
+                                <a class="nav-link  fs-3" href="admin.php">Dashbord</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link fs-3 "  href="detailadmin.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><i class="fa-solid fa-circle-user"></i></a>

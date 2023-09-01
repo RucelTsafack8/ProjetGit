@@ -54,3 +54,9 @@
             <a href="inscriptionetuds.php" class="btn btn-info w-25 float-end text-white text-uppercase text-center">Ajouter</a>
         </div>
     </div>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
+    <?php
+    require_once('footer.php');
+    ?>

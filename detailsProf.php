@@ -55,9 +55,10 @@ if(isset($_GET['ID_PROFESSEUR'])){
             <h4>DATE DEBUT : <?= $PROF['DATE']?></h4> 
 
     </div>
-    
-</body>
-</html>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
+     
 <?php
     require_once('footer.php');
 ?>

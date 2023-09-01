@@ -1,7 +1,6 @@
 <?php 
 session_start();
-//on require le footer pour le pied de page
-require_once('footer.php');
+
 //la connection a la base de donnes
 require_once('connect.php');
 //variables d'erreur
@@ -9,6 +8,8 @@ $messageErreur = '';
 $erreur_nom_utilisateur = '';
 $erreur_mot_de_passe = '';
 $NOM_UTILISATEUR= '';
+$succes = '';
+
 // condition du bouton d'envoi
 if(isset($_POST['envoi'])){
     $CHOIX_TYPE_COMPTE = $_POST['CHOIX_TYPE_COMPTE'];
@@ -49,9 +50,9 @@ if(isset($_POST['envoi'])){
             if($reponse>0){  
                 // nom d'utilisateur et mot de passe correctes 
                 $_SESSION['NOM_UTILISATEUR'] = $NOM_UTILISATEUR;
-                header("location:index.php");
+                header("location:admin.php");
             }else{
-                $messageErreur = "Nom Utilisateur ou mot de passe incorrecte!!! si vous n'avez pas encore de compte veuillez vous conecter!!!";
+                $messageErreur = "Nom Utilisateur ou Mot de Passe incorrecte!!! si vous n'avez pas encore de compte veuillez vous enregistrer!!!";
             }
         }
     }else{
@@ -110,7 +111,8 @@ if(isset($_POST['envoi'])){
 <body>
     <div class="container">
        <div class="row mt-5 py-5  justify-content-center align-items-center w-100">
-            <form action="" method="post" class="w-75 bg-light mt-3 py-4">
+            <form action="" method="post" class="w-50 bg-light mt-3 py-4">
+               
                 <h1 class="text-center text-info text-uppercase">connexion</h1>
                 <h5 class="text-center text-danger mt-4"><?php echo $messageErreur ?></h5>
                 <div class="mt-3">
@@ -132,7 +134,7 @@ if(isset($_POST['envoi'])){
                     <p class="text-center text-danger"><?php echo $erreur_mot_de_passe ?></p>
                 </div>
                 <div class="col-12">
-                    <a href="motdepasse.php" class= "">mot de passe oublier ?</a>
+                    <a href="code_mot_passe.php" class= "">mot de passe oublier ?</a>
                 </div>
                 <div class="mt-3 d-flex justify-content-center  justify-content-center align-items-center w-100">
                     <input type="submit" value="valider" class="btn btn-success w-50" name="envoi">

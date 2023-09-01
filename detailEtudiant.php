@@ -57,9 +57,11 @@ if(isset($_GET['ID_ETUDIANT'])){
 
 
     </div>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
     
-</body>
-</html>
+
 <?php
     require_once('footer.php');
 ?>

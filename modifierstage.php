@@ -94,7 +94,13 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
 
-        header('location:donneestage.php');
+        if($resultat===false){
+            header('location:recustage.php');
+            
+        }else{
+            header('location:donneestage.php');
+            
+        }
         // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 
     }
@@ -220,9 +226,11 @@ if(isset($_POST['envoyer'])){
             </form>
         </div>
     </div>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
     
-</body>
-</html>
+
 <?php
     //on require le footer pour le pied de page
     require_once('footer.php');

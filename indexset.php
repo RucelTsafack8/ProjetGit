@@ -25,23 +25,18 @@ require_once('connect.php');
         <div class="row">
             <div class="col-6">
                 <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
-                    <a href="inscriptionprof.php" class="btn btn-success w-50" name="envoi">Inscription Professeur</a>
-                </div>
-                <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
                     <a href="inscriptionetuds.php" class="btn btn-success w-50" name="envoi">Inscription Etudiant</a>
                 </div>
                 <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
                     <a href="inscriptionstage.php" class="btn btn-success w-50" name="envoi">Inscription Stagiare</a>
                 </div>
             </div>
+
         </div>
-        
-        <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
-            <a href="deconnexion.php" class="btn btn-danger w-50" name="envoi">Deconnexion</a>
-        </div> 
-    </div>  
-</body>
-</html>
+    
+    <div class="row py-4 ms-5 mt-5">
+        <input type="button" value="Retour" class="text-danger float-start w-25 btn btn-dark" onclick="history.back()">
+    </div>
 <?php
     //on require le footer pour le pied de page
     require_once('footer.php');

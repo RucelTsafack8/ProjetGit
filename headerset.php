@@ -27,6 +27,9 @@ session_start();
                         <div class="navbar-nav">
                             <a class="nav-link active fs-3" aria-current="page" href="indexset.php">Acceuil</a>
                             <a class="nav-link active fs-3" aria-current="page" href="details.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><i class="fa-solid fa-circle-user"></i></i></a>
+                           
+                            <a class="nav-link  fs-3" href="deconnexion.php">Deconnexion</a>
+                            
                         </div>
                     </div>
                 </div>

@@ -54,9 +54,11 @@ else{
     <div class="row  justify-content-end align-items-end">
         <a href="modifier.php?ID_TYPE_COMPTE=<?= $SECRET['ID_TYPE_COMPTE']?>" class="btn btn-info w-25 float-end text-white text-uppercase text-center">Modifier Profile</a>
     </div>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
     
-</body>
-</html>
+
 <?php
     require_once('footer.php');
 ?>

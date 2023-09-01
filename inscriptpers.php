@@ -62,6 +62,7 @@ if(isset($_POST['envoi'])){
         $stmt->execute();
 
         $_SESSION['NOM_UTILISATEUR'] = $NOM_UTILISATEUR;
+        
         header('location:details.php');
     }
     
@@ -116,9 +117,11 @@ if(isset($_POST['envoi'])){
             </form>
         </div>
     </div>
+    <div class="row py-4 ms-5">
+        <input type="button" value="Retour" class="text-light float-start w-25 btn btn-success" onclick="history.back()">
+    </div>
     
-</body>
-</html>
+
 <?php
     //on require le footer pour le pied de page
     require_once('footer.php');
