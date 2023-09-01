@@ -71,12 +71,12 @@ if(isset($_POST['envoi'])){
 ?>
 
 
-<div class="col-1 py-4 ms-5">
-    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
-</div>
-    <div class="container mt-5 py-5">
+<div class="container mt-5 py-5">
+        <div class="col-1 py-2 ms-5 mt-1">
+            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+        </div>
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
-                <form action="" method="post" class =" w-75 bg-light">
+                <form action="" method="post" class =" w-50 bg-light">
                 <h1 class ="text-center text-uppercase text-info mt-3 py-3">configuration compte  admin</h1>
                 <h3 class ="text-center text-uppercase text-info mt-3 py-3"><?php echo $_SESSION['ID_TYPE_COMPTE'];echo $_SESSION['DATE_NAISSANCE'];?></h3>
 

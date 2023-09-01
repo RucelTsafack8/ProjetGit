@@ -60,12 +60,12 @@
 
 </head>
 <body>
-<div class="col-1 py-4 ms-5">
-    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
-</div>
     <div class="container">
+        <div class="col-1 py-2 ms-5 mt-1">
+            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+        </div>
        <div class="row mt-5 py-5  justify-content-center align-items-center w-100">
-            <form action="" method="post" class="w-75 bg-light mt-3 py-4">
+            <form action="" method="post" class="w-50 bg-light mt-3 py-4">
                 <h1 class="text-center text-info text-uppercase">renitialiser le mot de passe</h1>
                 <h5 class="text-center text-danger mt-4"><?php echo $messageErreur ?></h5>
                 <!-- <div class="mt-3">

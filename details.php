@@ -32,7 +32,7 @@ else{
 ?>
      
 
-<div class="col-1 py-4 ms-5">
+<div class="col-1 py-2 ms-5 mt-1">
     <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
 </div>
     <div class="container mt-5 py-5">

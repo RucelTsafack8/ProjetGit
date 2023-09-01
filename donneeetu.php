@@ -14,12 +14,12 @@
     $result_etudiant = $stn->fetchAll(PDO::FETCH_ASSOC);
 
 ?>  
-<div class="col-1 py-4 ms-5">
-    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
-</div>
 <!-- tableau des etudiants -->
 
 <div class="col-12 container mt-5 py-5">
+    <div class="col-1 py-2 ms-5 mt-1">
+        <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+    </div>
         <h1 class="text-center text-success">Table Etudiants</h1>
         <table class="table border">
              

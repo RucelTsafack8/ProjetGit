@@ -57,11 +57,13 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
 
 ?>
 
-<body>
-    <div class="container mt-5 py-5">
+<div class="container mt-5 py-5">
+        <div class="col-1  py-1 ms-5 mt-1">
+            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+        </div>
         <div class="row">
-            <h1 class="text-center text-info text-uppercase">systeme de gestion de 3IA </h1>
-            <h1 class="text-center text-info text-uppercase">bonjour  <?php  echo $_SESSION['NOM_UTILISATEUR']; ?> </h1>
+            <h1 class="text-center text-info text-uppercase">DASHBORD DE LA GESTION DE 3IA</h1>
+            
         </div>
     
         <div class="row">

@@ -37,10 +37,10 @@ else{
 
 
 
-<div class="col-1 py-4 ms-5">
-    <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
-</div>
-    <div class="container mt-5 py-5">
+<div class="container mt-5 py-5">
+        <div class="col-1 py-5 ms-5 mt-5">
+            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+        </div>
 
         <h2 class="text-center text-warning">Informations Administrateur  <?php echo $ADMIN['NOM_UTILISATEUR']; ?></h2>
       

@@ -1,5 +1,4 @@
 <?php
-    session_start();
     $message_email = '';
     require_once("connect.php");
     if(isset($_POST['envoi'])){
@@ -14,7 +13,6 @@
         $resultat=$pdostmt->fetchAll(PDO::FETCH_ASSOC);//on récupère les données de la table secreta
         $_SESSION['EMAIL'] = $EMAIL;
         $_SESSION['TOKEN'] =$TOKEN;
-        $_SESSION['ID_TYPE_COMPTE'] =$resultat['ID_TYPE_COMPTE'];
 
         function sendmail($addresse,$code){
             include_once('mailer.php');
@@ -30,14 +28,16 @@
 </head>
 <div class="row mt-5 py-5  justify-content-center align-items-center w-100">
         <form action="" method="post" class="w-50 bg-light mt-3 py-4">
-
-            <div class="mt-3">
+            <div class="row mt-2 py-2">
+                <h1 class="text-center text-info text-uppercase">renitialiser le mot de passe</h1>
+            </div>
+            <div class="mt-3 py-2">
                 <label for="EMAIL" class="form-label ">EMAIL </label>
-                <input type="email" name="EMAIL" id="EMAIL" class="form-control" >
+                <input type="email" name="EMAIL" id="EMAIL" class="form-control" placeholder="Entrer votre pour reinitialiser votre mot de passe" >
                 <input type="hidden" name="ID_TYPE_COMPTE" id="ID_TYPE_COMPTE" class="form-control " value ="<?= $ID_TYPE_COMPTE ?>">
                 <p class="text-center text-danger"><?=  $message_email ?></p>
             </div>
-            <div class="mt-3 d-flex justify-content-center  justify-content-center align-items-center w-100">
+            <div class="mt-3 py-3 d-flex justify-content-center  justify-content-center align-items-center w-100">
                 <input type="submit" value="valider" class="btn btn-success w-25" name="envoi">
             </div>
 
