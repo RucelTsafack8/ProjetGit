@@ -3,7 +3,7 @@
         <div class="text-center p-3 " style="background-color: rgba(0, 0, 0, 0.2);">   
             © 2023 Copyright:
             <a class="text-white float-start" href="index.php">SIR_TECH 3IA </a>
-            <button class="text-white btn float-end" id="hautButton" type="button">haut de page</button>
+            <button class="text-white btn float-end btn-dark" id="hautButton" type="button"><i class="bi bi-arrow-up-short icon-link-hover"></i></button>
         </div>
         
         

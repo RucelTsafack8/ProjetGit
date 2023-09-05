@@ -1,5 +1,13 @@
 <?php
-session_start();
+    session_start();
+    require_once('connect.php');
+    $NOM_UTILISATEUR=$_SESSION['NOM_UTILISATEUR'];
+    $ID_COMPTE=$_SESSION['ID_COMPTE'];
+
+    $req = 'SELECT * FROM SECRETAIRE se  join PERSONNELS  per ON per.ID_COMPTE=se.ID_COMPTE WHERE se.NOM_UTILISATEUR = ?';
+    $stmt= $db->prepare($req);
+    $stmt ->execute(array($NOM_UTILISATEUR));
+    $SECRET = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -27,7 +35,7 @@ session_start();
                     <div class="collapse navbar-collapse d-flex justify-content-end me-3" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link active fs-3" aria-current="page" href="indexset.php">Acceuil</a>
-                            <a class="nav-link active fs-3" aria-current="page" href="details.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><i class="fa-solid fa-circle-user"></i></i></a>
+                            <a class="nav-link active fs-3" aria-current="page" href="details.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><img src="images\<?= $SECRET['PHOTO']?>" class="img-fluid rounded-circle img-thumbnails" alt="image secretaire <?= $SECRET['NOM_PRENOMS'] ?>"></a>
                            
                             <a class="nav-link  fs-3" href="deconnexion.php">Deconnexion</a>
                             

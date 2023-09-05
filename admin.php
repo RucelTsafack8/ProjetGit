@@ -4,13 +4,8 @@ session_start();
 
 $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 
-$MOT = 'ADMIN';
-$resultat = strstr($ID_TYPE_COMPTE,$MOT);
-if($resultat===false){
-    require_once('headerset.php');
-}else{
-    require_once('header.php');
-}
+require_once('header.php');
+
 $NOM_UTILISATEUR = $_SESSION['NOM_UTILISATEUR'];
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');

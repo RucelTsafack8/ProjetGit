@@ -1,19 +1,32 @@
 <?php
+    session_start();
     $message_email = '';
     require_once("connect.php");
+    //require_once("headerset.php");
     if(isset($_POST['envoi'])){
         $EMAIL = $_POST['EMAIL'];
         $TOKEN = bin2hex(random_bytes(16));
         if(empty($EMAIL)){
             $message_email="EMAIL INVALIDE";
         }
-        $request= 'SELECT * FROM SECRETAIRE WHERE EMAIL=?';
+        $request= 'SELECT * FROM PERSONNELS P JOIN SECRETAIRE SE ON P.ID_COMPTE=SE.ID_COMPTE WHERE P.EMAIL=SE.EMAIL=?';
         $pdostmt = $db->prepare($request);
         $pdostmt->execute(array($EMAIL));
-        $resultat=$pdostmt->fetchAll(PDO::FETCH_ASSOC);//on récupère les données de la table secreta
-        $_SESSION['EMAIL'] = $EMAIL;
-        $_SESSION['TOKEN'] =$TOKEN;
+        $resultat=$pdostmt->fetchAll(PDO::FETCH_ASSOC);//on récupère les données de la table secretaire
+        if($resultat){ 
+            $_SESSION['EMAIL'] = $EMAIL;
+            $_SESSION['TOKEN'] =$TOKEN;
 
+        }else {
+            $request= 'SELECT * FROM PERSONNELS P JOIN ADMINISTRATEUR AD ON P.ID_COMPTE=AD.ID_COMPTE WHERE P.EMAIL=AD.EMAIL=?';
+            $pdostmt = $db->prepare($request);
+            $pdostmt->execute(array($EMAIL));
+            $resultat=$pdostmt->fetchAll(PDO::FETCH_ASSOC);//on récupère les données de la table administrateur
+            
+            $_SESSION['EMAIL'] = $EMAIL;
+            $_SESSION['TOKEN'] =$TOKEN;
+        }
+        //session_destroy();
         function sendmail($addresse,$code){
             include_once('mailer.php');
         }
@@ -25,6 +38,8 @@
     <link rel="stylesheet" href="css\bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
      crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <div class="row mt-5 py-5  justify-content-center align-items-center w-100">
         <form action="" method="post" class="w-50 bg-light mt-3 py-4">
@@ -38,7 +53,7 @@
                 <p class="text-center text-danger"><?=  $message_email ?></p>
             </div>
             <div class="mt-3 py-3 d-flex justify-content-center  justify-content-center align-items-center w-100">
-                <input type="submit" value="valider" class="btn btn-success w-25" name="envoi">
+                <input type="submit" value="Envoyer" class="btn btn-success w-25" name="envoi">
             </div>
 
         </form>

@@ -15,6 +15,8 @@ require_once('connect.php');
 $erreur_nom = '';
 $erreur_email = '';
 $erreur_numero = '';
+$erreur_photo = '';
+$erreur_photo1 = '';
 $erreur_cni = '';
 $erreur_adresse = '';
 $erreur_date = '';
@@ -33,6 +35,19 @@ if(isset($_POST['envoyer'])){
     $SEXE = $_POST['SEXE'];
     $ADRESSE = $_POST['ADRESSE'];
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
+
+    $PHOTO = $_FILES['PHOTO'];
+    $PHOTO_NOM = $PHOTO['name'];
+    $destination ='images/'.$PHOTO_NOM;
+    $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
+    $VALID_EXTENSION = array('jpg','png','jpeg');
+    if(!in_array(strtolower($destination),$VALID_EXTENSION)){
+        $erreur_photo ="le type de fichier de l'imagfe est invalide";
+    }
+    if(!move_uploaded_file($_FILES['PHOTO']['tmp_name'],$destination)){
+        $erreur_photo1 = "erreur de telechargement de l'image";
+    }
+
     $age = $date_actuel-$annee_naiss;
     $DATE = $date_actuel;
     $DATE1 = date("Y-m-d H:i:s");
@@ -69,8 +84,8 @@ if(isset($_POST['envoyer'])){
 
         //REQUETE D'INSERTION A LA TABLE 
     
-        $requete1 = 'INSERT INTO PROFESSEURS(ID_PROFESSEUR,ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,FONCTIONS,DATE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
-        (:ID_PROFESSEUR,:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:FONCTIONS,:DATE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+        $requete1 = 'INSERT INTO PROFESSEURS(ID_PROFESSEUR,ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,FONCTIONS,DATE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PHOTO) VALUES 
+        (:ID_PROFESSEUR,:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:FONCTIONS,:DATE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PHOTO)';
 
         $stmt = $db->prepare($requete1);
 
@@ -85,6 +100,7 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
         $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
         $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
+        $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
 
         $stmt->execute();
@@ -110,7 +126,7 @@ if(isset($_POST['envoyer'])){
         </div>
         
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
-            <form action="" method="post" class="mt-3 w-50 bg-light">
+            <form action="" method="post" class="mt-3 w-50 bg-light" enctype="multipart/form-data">
                 <h1 class ="text-center text-uppercase text-info mt-3 py-3"> inscription Professeur </h1>            
                 <div class="mt-3">
 
@@ -168,6 +184,12 @@ if(isset($_POST['envoyer'])){
                         <input type="radio" name="SEXE" id="SEXEf" class="form-check-input" value ="FEMME">
                         <label for="SEXEf" class="form-check-label">FEMME</label>
                     </div>
+                </div>
+                <div class="mt-3">
+                    <label for="PHOTO" class="form-label">PHOTO</label>
+                    <input type="file" name="PHOTO" id="PHOTO" class="form-control">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo;?></h5>
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo1;?></h5>
                 </div>
 
                 <div class="mt-3">

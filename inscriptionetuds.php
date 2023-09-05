@@ -6,9 +6,9 @@ $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    require_once('headerset.php');
+    //require_once('headerset.php');
 }else{
-    require_once('header.php');
+   // require_once('header.php');
 }
 
 
@@ -16,6 +16,8 @@ if($resultat===false){
 require_once('connect.php');
 $erreur_nom = '';
 $erreur_email = '';
+$erreur_photo = '';
+$erreur_photo1 = '';
 $erreur_numero = '';
 $erreur_cni = '';
 $erreur_adresse = '';
@@ -46,6 +48,18 @@ if(isset($_POST['envoyer'])){
     $DATE_NAISSANCE = strip_tags($_POST['DATE_NAISSANCE']);
     $SEXE = strip_tags($_POST['SEXE']);
     $ADRESSE = strip_tags($_POST['ADRESSE']);
+    $PHOTO = $_FILES['PHOTO'];
+    $PHOTO_NOM = $PHOTO['name'];
+    $destination ='images/'.$PHOTO_NOM;
+    $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
+    $VALID_EXTENSION = array('jpg','png','jpeg');
+    if(!in_array(strtolower($destination),$VALID_EXTENSION)){
+        $erreur_photo ="le type de fichier de l'imagfe est invalide";
+    }
+    if(!move_uploaded_file($_FILES['PHOTO']['tmp_name'],$destination)){
+        $erreur_photo1 = "erreur de telechargement de l'image";
+    }
+
     $CHOIX_FORMATION = strip_tags($_POST['CHOIX_FORMATION']);
     $DATE = date("Y-m-d H:i:s");
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
@@ -81,8 +95,8 @@ if(isset($_POST['envoyer'])){
         $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$TOTAL";
         
         //requete d'insertion des etudiants
-        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT)
-        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT)';
+        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT,PHOTO)
+        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT,:PHOTO)';
         $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
         
         $stmt = $db->prepare($requetes);
@@ -98,6 +112,7 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->bindParam(":CHOIX_FORMATION",$_POST['CHOIX_FORMATION'],PDO::PARAM_STR);
         $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
+        $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
         if($resultat===false){
@@ -118,7 +133,7 @@ if(isset($_POST['envoyer'])){
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
-            <form action="" method="post" class="bg-light w-50">
+            <form action="" method="post" class="bg-light w-50"  enctype="multipart/form-data">
                 <h1 class= "text-center text-info text-uppercase">inscrition etudiants </h1>
                 
                 <div class="mt-3">
@@ -161,6 +176,12 @@ if(isset($_POST['envoyer'])){
                     </div>
                 </div>
 
+                <div class="mt-3">
+                    <label for="PHOTO" class="form-label">PHOTO</label>
+                    <input type="file" name="PHOTO" id="PHOTO" class="form-control">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo;?></h5>
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo1;?></h5>
+                </div>
                 <div class="mt-3">
                     <label for="ADRESSE" class="form-label">ADRESSE</label>
                     <input type="text" name="ADRESSE" id="ADRESSE" class="form-control">

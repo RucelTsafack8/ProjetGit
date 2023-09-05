@@ -19,6 +19,8 @@ $erreur_cni = '';
 $erreur_adresse = '';
 $erreur_date = '';
 $MESSAGE_SUCCESS='';
+$erreur_photo = '';
+$erreur_photo1 = '';
 $ERREUR = 0;
 $annee_naiss= 0;
 $date_actuel= date('Y');
@@ -31,6 +33,19 @@ if(isset($_POST['envoyer'])){
     $DATE_NAISSANCE = $_POST['DATE_NAISSANCE'];
     $SEXE = $_POST['SEXE'];
     $ADRESSE = $_POST['ADRESSE'];
+    //donneees de l'image
+    $PHOTO = $_FILES['PHOTO'];
+    $PHOTO_NOM = $PHOTO['name'];
+    $destination ='images/'.$PHOTO_NOM;
+    $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
+    $VALID_EXTENSION = array('jpg','png','jpeg');
+    if(!in_array(strtolower($destination),$VALID_EXTENSION)){
+        $erreur_photo ="le type de fichier de l'imagfe est invalide";
+    }
+    if(!move_uploaded_file($_FILES['PHOTO']['tmp_name'],$destination)){
+        $erreur_photo1 = "erreur de telechargement de l'image";
+    }
+
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
     $DATE = $date_actuel;
@@ -42,6 +57,7 @@ if(isset($_POST['envoyer'])){
     $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
     $ID_COMPTE = "3IA-$DATE$INDICE-$TOTAL";
     $ID_TYPE_COMPTE = "3IA-SECRET.$DATE$INDICE-$TOTAL";
+    
 
     if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";
@@ -67,8 +83,8 @@ if(isset($_POST['envoyer'])){
 
         //REQUETE D'INSERTION A LA TABLE 
     
-        $requete1 = 'INSERT INTO personnels(ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES 
-        (:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+        $requete1 = 'INSERT INTO personnels(ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PHOTO) VALUES 
+        (:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PHOTO)';
 
         $stmt = $db->prepare($requete1);
 
@@ -79,6 +95,7 @@ if(isset($_POST['envoyer'])){
         
         $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
         $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
+        $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
         $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->execute();
@@ -105,7 +122,7 @@ if(isset($_POST['envoyer'])){
         </div>
         
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
-            <form action="" method="post" class="mt-3 w-75 bg-light">
+            <form action="" method="post" class="mt-3 w-75 bg-light" enctype="multipart/form-data">
                 <h1 class ="text-center text-uppercase text-info mt-3 py-3">inscription Secretaire</h1>            
                 <div class="mt-3">
 
@@ -152,6 +169,12 @@ if(isset($_POST['envoyer'])){
                         <input type="radio" name="SEXE" id="SEXEf" class="form-check-input" value ="FEMME">
                         <label for="SEXEf" class="form-check-label">FEMME</label>
                     </div>
+                </div>
+                <div class="mt-3">
+                    <label for="PHOTO" class="form-label">PHOTO</label>
+                    <input type="file" name="PHOTO" id="PHOTO" class="form-control">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo;?></h5>
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo1;?></h5>
                 </div>
 
                 <div class="mt-3">

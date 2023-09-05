@@ -45,19 +45,31 @@ if(isset($_GET['ID_ETUDIANT'])){
         <div class="col-1 py-2 ms-5 mt-1">
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
-        <h2 class="text-center text-warning">Informations Etudiant <?php echo $ETUDIANT['NOM_PRENOMS']; ?></h2>
-
-            <h4>ID_COMPTE :<?= $ETUDIANT['ID_ETUDIANT']?></h4>
-            <h4>NUMERO TEL :<?= $ETUDIANT['NUM_TEL']?></h4>
-            <h4>EMAIL :<?= $ETUDIANT['EMAIL']?></h4>
-            <h4>NOM PRENOMS :<?= $ETUDIANT['NOM_PRENOMS']?></h4>
-            <h4>DATE NAISSANCE :<?= $ETUDIANT['DATE_NAISSANCE']?></h4>
-            <h4>SEXE :<?= $ETUDIANT['SEXE']?></h4>
-            <h4>ADRESSE : <?= $ETUDIANT['ADRESSE']?></h4> 
-            <h4>DATE DEBUT : <?= $ETUDIANT['DATE_DEBUT']?></h4> 
-            <h4>CHOIX FORMATION :<?= $ETUDIANT['CHOIX_FORMATION']?></h4>
-            <h4>PRIX_FORMATION : <?= $ETUDIANT['PRIX_FORMATION']?>F</h4> 
-
+        
+        <div class="card mb-3 justify-content-center align-items-center" style="max-width: 100%;">
+            <div class="row g-0">
+                <div class="col-md-4" style="max-width: 100%;">
+                    <img src="images\<?= $ETUDIANT['PHOTO']?>" class="img-fluid rounded-start img-thumbnails" alt="image etudiant  <?= $ETUDIANT['NOM_PRENOMS'] ?>">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h2 class="text-center text-warning">Informations Etudiant <?php echo $ETUDIANT['NOM_PRENOMS']; ?></h2>
+                    
+                    <h4 class="text-center">ID_COMPTE :<?= $ETUDIANT['ID_ETUDIANT']?></h4>
+                    <h4 class="text-center">NUMERO TEL :<?= $ETUDIANT['NUM_TEL']?></h4>
+                    <h4 class="text-center">EMAIL :<?= $ETUDIANT['EMAIL']?></h4>
+                    <h4 class="text-center">NOM PRENOMS :<?= $ETUDIANT['NOM_PRENOMS']?></h4>
+                    <h4 class="text-center">DATE NAISSANCE :<?= $ETUDIANT['DATE_NAISSANCE']?></h4>
+                    <h4 class="text-center">SEXE :<?= $ETUDIANT['SEXE']?></h4>
+                    <h4 class="text-center">ADRESSE : <?= $ETUDIANT['ADRESSE']?></h4> 
+                    <h4 class="text-center">DATE DEBUT : <?= $ETUDIANT['DATE_DEBUT']?></h4> 
+                    <h4 class="text-center">CHOIX FORMATION :<?= $ETUDIANT['CHOIX_FORMATION']?></h4>
+                    <h4 class="text-center">PRIX_FORMATION : <?= $ETUDIANT['PRIX_FORMATION']?>F</h4> 
+                </div>
+                </div>
+            </div>
+        </div>
+            
 
     </div>
     

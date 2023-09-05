@@ -1,5 +1,16 @@
 <?php
-// session_start();
+    require_once('connect.php');
+    $NOM_UTILISATEUR=$_SESSION['NOM_UTILISATEUR'];
+    $ID_COMPTE=$_SESSION['ID_COMPTE'];
+
+    $req = 'SELECT * FROM ADMINISTRATEUR ad  join PERSONNELS  per ON per.ID_COMPTE=ad.ID_COMPTE WHERE ad.NOM_UTILISATEUR = ?';
+    $stmt= $db->prepare($req);
+    $stmt ->execute(array($NOM_UTILISATEUR));
+    $ADMIN = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    
+    
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -37,7 +48,7 @@
                                 <a class="nav-link  fs-3" href="admin.php">Dashbord</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fs-3 "  href="detailadmin.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><i class="fa-solid fa-circle-user"></i></a>
+                                <a class="nav-link fs-3 "  href="detailadmin.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><img src="images\<?= $ADMIN['PHOTO']?>" class="img-fluid rounded-circle img-thumbnails" alt="image admin <?= $ADMIN['NOM_PRENOMS'] ?>"></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link  fs-3" href="deconnexion.php">Deconnexion</a>
@@ -47,5 +58,7 @@
                     </div>
                 </div>
             </nav>
+           
+           
         </div>
     </header>

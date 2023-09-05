@@ -23,9 +23,18 @@
         if ($MOT_DE_PASSE2!=$MOT_DE_PASSE) {
             $repete_mot_passe1 = "desole les deux mot de passe ne correspondent pas";
         }else{
+                $request= 'SELECT * FROM SECRETAIRE  WHERE EMAIL=?';
+                $pdostmt = $db->prepare($request);
+                $pdostmt->execute(array($EMAIL));
+                $resultat=$pdostmt->fetchAll(PDO::FETCH_ASSOC);//on récupère les données de la table secretaire
+                if($resultat){ 
+                    $requete = 'UPDATE SECRETAIRE SET MOT_DE_PASSE=:MOT_DE_PASSE WHERE EMAIL =:EMAIL';
+
+                }else{
+
+                    $requete = 'UPDATE ADMINISTRATEUR SET MOT_DE_PASSE=:MOT_DE_PASSE WHERE EMAIL =:EMAIL';
+                }
             
-            
-                $requete = 'UPDATE SECRETAIRE SET MOT_DE_PASSE=:MOT_DE_PASSE,EMAIL=:EMAIL WHERE EMAIL =:EMAIL';
                 $stmt = $db->prepare($requete);
                 $stmt->bindParam(":EMAIL",$EMAIL,PDO::PARAM_STR);
                 $stmt->bindParam(":MOT_DE_PASSE",$MOT_DE_PASSE,PDO::PARAM_STR);
@@ -66,7 +75,7 @@
         </div>
        <div class="row mt-5 py-5  justify-content-center align-items-center w-100">
             <form action="" method="post" class="w-50 bg-light mt-3 py-4">
-                <h1 class="text-center text-info text-uppercase">renitialiser le mot de passe</h1>
+                <h1 class="text-center text-info text-uppercase">reinitialiser le mot de passe</h1>
                 <h5 class="text-center text-danger mt-4"><?php echo $messageErreur ?></h5>
                 <!-- <div class="mt-3">
                     <label for="CHOIX_TYPE_COMPTE" class="form-label" aria-label="Default select">TYPE DE COMPTE</label>
@@ -77,7 +86,7 @@
                 </div> -->
                 <div class="mt-3">
                     <label for="EMAIL" class="form-label">EMAIL </label>
-                    <input type="email" name="EMAIL" id="EMAIL" class="form-control" value = "<?= $EMAIL ?>">
+                    <input type="email" name="EMAIL" id="EMAIL" class="form-control" >
                     <p class="text-center text-danger"><?=  $erreur_nom_utilisateur ?></p>
                 </div>
         

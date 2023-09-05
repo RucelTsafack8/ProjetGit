@@ -17,6 +17,8 @@ require_once('connect.php');
 $erreur_nom = '';
 $erreur_email = '';
 $erreur_numero = '';
+$erreur_photo = '';
+$erreur_photo1 = '';
 $erreur_cni = '';
 $erreur_adresse = '';
 $erreur_date = '';
@@ -37,6 +39,19 @@ if(isset($_POST['envoyer'])){
     $DATE_NAISSANCE = strip_tags($_POST['DATE_NAISSANCE']);
     $SEXE = strip_tags($_POST['SEXE']);
     $ADRESSE = strip_tags($_POST['ADRESSE']);
+
+    $PHOTO = $_FILES['PHOTO'];
+    $PHOTO_NOM = $PHOTO['name'];
+    $destination ='images/'.$PHOTO_NOM;
+    $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
+    $VALID_EXTENSION = array('jpg','png','jpeg');
+    if(!in_array(strtolower($destination),$VALID_EXTENSION)){
+        $erreur_photo ="le type de fichier de l'imagfe est invalide";
+    }
+    if(!move_uploaded_file($_FILES(['PHOTO']['tmp_name'],$destination))){
+        $erreur_photo1 = "erreur de telechargement de l'image";
+    }
+
     $CAMPUS=$_POST['CAMPUS'];
     $FILIERE =$_POST['FILIERE'];
     $NIVEAU=$_POST['NIVEAU'];
@@ -45,6 +60,7 @@ if(isset($_POST['envoyer'])){
     $age = $date_actuel-$annee_naiss;
     // echo "$age";
     $reqstage='SELECT COUNT(*) as totalstage FROM stagiaire';
+    
     $stage = $db->prepare($reqstage);
     $stage ->execute();
     $totalstage = $stage->fetch()['totalstage'];
@@ -72,8 +88,8 @@ if(isset($_POST['envoyer'])){
     }elseif ($ERREUR<=0){
         $ID_STAGIAIRE = "3IA-STA$date_actuel$INDICE-$TOTAL";
         //requete d'insertion des etudiants
-        $requetes = 'INSERT INTO STAGIAIRE(ID_STAGIAIRE,ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PRIX_FORMATION,DATE_DEBUT,CAMPUS,FILIERE,NIVEAU)
-        VALUES (:ID_STAGIAIRE,:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PRIX_FORMATION,:DATE_DEBUT,:CAMPUS,:FILIERE,:NIVEAU)';
+        $requetes = 'INSERT INTO STAGIAIRE(ID_STAGIAIRE,ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PRIX_FORMATION,DATE_DEBUT,CAMPUS,FILIERE,NIVEAU,PHOTO)
+        VALUES (:ID_STAGIAIRE,:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PRIX_FORMATION,:DATE_DEBUT,:CAMPUS,:FILIERE,:NIVEAU,PHOTO)';
         
         $stmt = $db->prepare($requetes);
         
@@ -91,6 +107,7 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":CAMPUS",$_POST['CAMPUS'],PDO::PARAM_STR);
         $stmt->bindParam(":FILIERE",$_POST['FILIERE'],PDO::PARAM_STR);
         $stmt->bindParam(":NIVEAU",$_POST['NIVEAU'],PDO::PARAM_STR);
+        $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
         if($resultat===false){
@@ -111,7 +128,7 @@ if(isset($_POST['envoyer'])){
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
-            <form action="" method="post" class="bg-light w-50">
+            <form action="" method="post" class="bg-light w-50" enctype="multipart/form-data">
                 <h1 class= "text-center text-info text-uppercase">inscrition Stagiare</h1>
                 
                 <div class="mt-3">
@@ -158,6 +175,12 @@ if(isset($_POST['envoyer'])){
                         <input type="radio" name="SEXE" id="SEXEf" class="form-check-input" value ="FEMME">
                         <label for="SEXEf" class="form-check-label">FEMME</label>
                     </div>
+                </div>
+                <div class="mt-3">
+                    <label for="PHOTO" class="form-label">PHOTO</label>
+                    <input type="file" name="PHOTO" id="PHOTO" class="form-control">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo;?></h5>
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo1;?></h5>
                 </div>
 
                 <div class="mt-3">
