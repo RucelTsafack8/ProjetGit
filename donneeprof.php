@@ -4,7 +4,7 @@
     // On inclus le fichier de connection a la base de donnees.
     require_once('connect.php');
 
-    require_once('header.php');
+    require_once('headeradmin.php');
     //requetes pour les professeurs
     $requete3 = 'SELECT * FROM professeurs';
     //on prepare la requete
@@ -16,7 +16,7 @@
 
 ?>  
  <div class="col-12 container  mt-5 py-5">
-     <div class="col-1py-2 ms-5 mt-1">
+     <div class="col-1py-2 ms-5 mt-1  fixed-top mt-5 py-5">
          <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
      </div>
         <h1 class="text-center text-success">Table Professeurs</h1>

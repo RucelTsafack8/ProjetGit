@@ -7,7 +7,7 @@ $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
     require_once('headerset.php');
 }else{
-    require_once('header.php');
+    require_once('headeradmin.php');
 }
 //on require le footer pour le pied de page
 require_once('footer.php');
@@ -32,7 +32,7 @@ else{
 ?>
      
 
-<div class="col-1 py-2 ms-5 mt-1">
+<div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
     <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
 </div>
     <div class="container mt-5 py-5">

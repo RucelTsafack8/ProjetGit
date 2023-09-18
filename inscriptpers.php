@@ -7,9 +7,8 @@ $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
     require_once('headerset.php');
 }else{
-    require_once('header.php');
+    require_once('headeradmin.php');
 }
-
 
 require_once('connect.php');
 
@@ -72,7 +71,7 @@ if(isset($_POST['envoi'])){
 
 
 <div class="container mt-5 py-5">
-        <div class="col-1 py-2 ms-5 mt-1">
+        <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">

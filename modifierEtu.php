@@ -8,7 +8,7 @@ $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
     require_once('headerset.php');
 }else{
-    require_once('header.php');
+    require_once('headeradmin.php');
 }
 
 
@@ -52,7 +52,7 @@ if(isset($_POST['envoyer'])){
     }elseif(strlen($EMAIL)<8 && empty($EMAIL)){
         $erreur_email = "l'email est mal renseigner";
         $ERREUR++;
-    }elseif(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
+    }elseif(strlen($NOM_PRENOMS)<=3 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom = "remplir le champ d'au moins 8 caractere en commencent par une majuscule";
         $ERREUR++;
     }elseif($age<=7){
@@ -117,11 +117,11 @@ if(isset($_POST['envoyer'])){
 ?>
 
 <div class="container mt-5 py-5">
-        <div class="col-1  py-2 ms-5 mt-1">
+        <div class="col-1  py-2 ms-5 mt-1  fixed-top mt-5 py-5">
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
-            <form action="" method="post" class="bg-light w-75">
+            <form action="" method="post" class="bg-light w-50">
                 <h1 class= "text-center text-info">Modification Information etudiant <?php echo $ETUDIANT['NOM_PRENOMS']; ?></h1>
                 
                 <div class="mt-3">

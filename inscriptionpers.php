@@ -8,7 +8,7 @@ $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
     require_once('headerset.php');
 }else{
-    require_once('header.php');
+   require_once('headeradmin.php');
 }
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
@@ -59,7 +59,7 @@ if(isset($_POST['envoyer'])){
     $ID_TYPE_COMPTE = "3IA-SECRET.$DATE$INDICE-$TOTAL";
     
 
-    if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
+    if(strlen($NOM_PRENOMS)<=3 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";
         $ERREUR++;
     }else if(strlen($EMAIL)<=8 && empty($EMAIL)) {
@@ -108,6 +108,7 @@ if(isset($_POST['envoyer'])){
         $_SESSION['EMAIL'] =$EMAIL;
         $_SESSION['DATE_NAISSANCE'] =$DATE_NAISSANCE;
         $_SESSION['NUMERO_TEL'] =$NUMERO_TEL;
+        $TOKEN = bin2hex(random_bytes(16));
 
         header('location:inscriptpers.php');
 
@@ -117,12 +118,12 @@ if(isset($_POST['envoyer'])){
 ?>
 
 <div class="container mt-5 py-5">
-        <div class="col-1 py-2 ms-5 mt-1">
+        <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
         
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
-            <form action="" method="post" class="mt-3 w-75 bg-light" enctype="multipart/form-data">
+            <form action="" method="post" class="mt-3 w-50 bg-light" enctype="multipart/form-data">
                 <h1 class ="text-center text-uppercase text-info mt-3 py-3">inscription Secretaire</h1>            
                 <div class="mt-3">
 

@@ -4,7 +4,7 @@
     // On inclus le fichier de connection a la base de donnees.
     require_once('connect.php');
 
-    require_once('header.php');
+    require_once('headeradmin.php');
 
     $requete = 'SELECT * FROM SECRETAIRE';
     //on prepare la requete
@@ -19,7 +19,7 @@
 
 ?>  
 <div class="col-12 container mt-4 py-5">
-    <div class="col-1 py-2 ms-5 mt-1">
+    <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
         <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
     </div>
         <h2 class="text-center text-warning">Table Secretaire</h2>

@@ -882,11 +882,12 @@ function Image($file, $x=null, $y=null, $w=0, $h=0, $type='', $link='')
 			$type = substr($file,$pos+1);
 		}
 		$type = strtolower($type);
-		if($type=='jpeg')
-			$type = 'jpg';
+		if($type=='jpg')
+			$type = 'jpeg';
 		$mtd = '_parse'.$type;
 		if(!method_exists($this,$mtd))
 			$this->Error('Unsupported image type: '.$type);
+		//$mtd = '_parse'.$type;
 		$info = $this->$mtd($file);
 		$info['i'] = count($this->images)+1;
 		$this->images[$file] = $info;

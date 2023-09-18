@@ -82,10 +82,11 @@ if(isset($_POST['envoi'])){
                 //initiation de l'execution de la requete
                 $stmt = $db->prepare($requete);
                 $stmt->execute(array($NOM_UTILISATEUR,$MOT_DE_PASSE));
-                $reponse = $stmt->fetch(PDO::FETCH_OBJ);
-                if($reponse>0){  
+                $reponse1 = $stmt->fetch(PDO::FETCH_OBJ);
+                if($reponse1>0){  
                     // nom d'utilisateur et mot de passe correctes 
                     $_SESSION['NOM_UTILISATEUR'] = $NOM_UTILISATEUR;   
+                    $_SESSION['ID_COMPTE'] = $id;   
                     $_SESSION['ID_TYPE_COMPTE'] = $id_type_compte;
                     header("location:indexset.php");
                 }else{

@@ -1,3 +1,77 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script>
+    
+    $(document).ready(function(){
+        let total = 0;
+        //selection des prix de formation
+        $("#CHOIX_FORMATION").on("change",function(){
+            let choix_formation = ($("#CHOIX_FORMATION" ).val());
+            if(choix_formation){
+                $.ajax({
+                    type: 'GET' ,
+                    url:  'ajaxData1.php?ID_FORMATION='+ choix_formation ,
+                    data: 'ID_FORMATION ='+choix_formation ,
+                    success:  function(response){
+                        //alert(response);
+                        let PRIX = document.getElementById("PRIX_FORMATION");
+                        PRIX.value = response;
+                        total=response;
+
+                    }  
+
+                });
+                
+            }else{
+                alert('cette formation n\'existe pas !!!');
+            }
+        })
+        //selection des tranche de payements
+        $("#TRANCHE_PAYEMENT").on("change",function(){
+            let choix_tranche = ($("#TRANCHE_PAYEMENT" ).val());
+            if(choix_tranche){
+                $.ajax({
+                    type: 'GET' ,
+                    url:  'ajaxData2.php?ID_TRANCHE='+ choix_tranche ,
+                    data: 'ID_TRANCHE ='+choix_tranche ,
+                    success:  function(response1){
+                        //alert(total);
+                        let PRIX2 = document.getElementById("MONTANT_PAYE");
+                        let T1=0;
+                        let T2=0;
+                        if(response1==='TOTAL'){
+                            PRIX2.value=total;
+                        }else if((response1==='TRANCHE1')){
+                            while (total<100000) {
+                                PRIX2.value=total;
+                            }
+                            T1=(total-100000)
+                            PRIX2.value= T1;
+                            total = total-T1;
+                        }else if((response1==='TRANCHE2')){
+                            while (total<100000) {
+                                PRIX2.value=total;
+                            }
+                            T2 = (total-50000);
+                            PRIX2.value= T2;
+                            total =total-T2;
+                        }
+                        else if((response1==='TRANCHE3')){
+                            PRIX2.value= total;
+                        }
+                        
+                    }
+                   
+                });
+
+            }else{
+                alert('cette tranche n\'existe pas !!!');
+            }
+        })
+
+
+
+    })
+</script>
 <?php
 //on demarre la session
 session_start();
@@ -6,9 +80,9 @@ $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    //require_once('headerset.php');
+    require_once('headerset.php');
 }else{
-   // require_once('header.php');
+    require_once('headeradmin.php');
 }
 
 
@@ -30,11 +104,21 @@ $CHOIX_FORMATION = '';
 
 $date_actuel= date('Y');
 $age = 0;
-//on selection les formations presentes dans la base de donnees
+    //on selection les formations presentes dans la base de donnees
     $query = 'SELECT * FROM FORMATIONS';
     $form = $db->prepare($query);
     $form->execute();
     $formation = $form->fetchAll(PDO::FETCH_ASSOC);
+    //on selectiionne les tranche de formations
+    $query2 = 'SELECT * FROM TRANCHE_PAYEMENT';
+    $form2 = $db->prepare($query2);
+    $form2->execute();
+    $tranche = $form2->fetchAll(PDO::FETCH_ASSOC);
+
+    // $query = 'SELECT * FROM FORMATIONS';
+    // $form = $db->prepare($query);
+    // $form->execute();
+    // $formation = $form->fetchAll(PDO::FETCH_ASSOC);
     
     
 
@@ -52,10 +136,9 @@ if(isset($_POST['envoyer'])){
     $PHOTO_NOM = $PHOTO['name'];
     $destination ='images/'.$PHOTO_NOM;
     $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
-    $VALID_EXTENSION = array('jpg','png','jpeg');
-    if(!in_array(strtolower($destination),$VALID_EXTENSION)){
-        $erreur_photo ="le type de fichier de l'imagfe est invalide";
-    }
+    // if((exif_imagetype($destination)!=IMAGETYPE_GIF) || (exif_imagetype($destination)!=IMAGETYPE_PNG) || (exif_imagetype($destination)!=IMAGETYPE_JPEG)){
+    //     $erreur_photo ="le type de fichier de l'image est invalide";
+    // }
     if(!move_uploaded_file($_FILES['PHOTO']['tmp_name'],$destination)){
         $erreur_photo1 = "erreur de telechargement de l'image";
     }
@@ -78,7 +161,7 @@ if(isset($_POST['envoyer'])){
     }if(strlen($EMAIL)<8 && empty($EMAIL)){
         $erreur_email = "l'email est mal renseigner";
         $ERREUR++;
-    }if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
+    }if(strlen($NOM_PRENOMS)<=3 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom = "remplir le champ d'au moins 8 caractere en commencent par une majuscule";
         $ERREUR++;
     }if($age<=7){
@@ -95,9 +178,8 @@ if(isset($_POST['envoyer'])){
         $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$TOTAL";
         
         //requete d'insertion des etudiants
-        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT,PHOTO)
-        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT,:PHOTO)';
-        $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
+        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT,PHOTO,MONTANT_PAYE)
+        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT,:PHOTO,:MONTANT_PAYE)';
         
         $stmt = $db->prepare($requetes);
         
@@ -112,9 +194,12 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->bindParam(":CHOIX_FORMATION",$_POST['CHOIX_FORMATION'],PDO::PARAM_STR);
         $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
+        $stmt->bindParam(":MONTANT_PAYE",$_POST['MONTANT_PAYE'],PDO::PARAM_INT);
         $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
+       
+        $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
         if($resultat===false){
             header('location:recuetu.php');
             
@@ -122,6 +207,7 @@ if(isset($_POST['envoyer'])){
             header('location:donneeetu.php');
             
         }
+    
         // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 
     }
@@ -129,12 +215,14 @@ if(isset($_POST['envoyer'])){
 ?>
 
 <div class="container mt-5 py-5">
-        <div class="col-1 py-2 ms-5 mt-1">
+        <div class="col-1 py-2 ms-5 mt-1 fixed-top mt-5 py-5">
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-50"  enctype="multipart/form-data">
                 <h1 class= "text-center text-info text-uppercase">inscrition etudiants </h1>
+                <h5 class="text-center text-success"><?php echo $MESSAGE_SUCCESS;?></h5>
+
                 
                 <div class="mt-3">
                     <label for="NOM_PRENOMS" class="form-label">NOM ET PRENOM</label>
@@ -189,40 +277,47 @@ if(isset($_POST['envoyer'])){
                 </div>
                 <div class="mt-3">
                     <label for="CHOIX_FORMATION" class="form-label" aria-label="Default select">CHOIX FORMATION</label>
-                    <select name="CHOIX_FORMATION" id="CHOIX_FORMATION" class="form-select" onchannge="recupererPrix()">
-                   <?php foreach ($formation as $choix){
-                        echo '<option value="'.$choix['ID_FORMATION'].'"> '.$choix['NOM_FORMATION'].'</option>';
+                    <select name="CHOIX_FORMATION" id="CHOIX_FORMATION" class="form-select">
+                        <option value="">selectionner une formation</option>
+                        <?php foreach ($formation as $choix){
+                            echo '<option value="'.$choix['ID_FORMATION'].'"> '.$choix['NOM_FORMATION'].'</option>';
                         }
-                    ?>
+                        ?>
                     
-                    </select>
-                </div>
-                <?php
+                </select>
+            </div>
+            <?php
                     $prix_query = 'SELECT PRIX_FORMATION FROM FORMATIONS WHERE ID_FORMATION=?';
                     $prix_form = $db->prepare($prix_query);
                     $prix_form->execute(array($choix['ID_FORMATION']));
                     $prix_formation = $prix_form->fetch(PDO::FETCH_ASSOC);
-                ?>
+                    ?>
 
-                <div class="mt-3 row">
-                    <div class="col-4">
-                        <label for="PRIX_FORMATION" class="form-label">PRIX FORMATION </label>
-                        <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
-                        <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+            <div class="mt-3 row">
+                <div class="col-4">
+                    <label for="PRIX_FORMATION" class="form-label">PRIX FORMATION </label>
+                    <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
+                </div>
+                <div class="col-4">
+                    <label for="TRANCHE_PAYEMENT" class="form-label">TRANCHE DE PAYEMENT </label>
+
+                    <select name="TRANCHE_PAYEMENT" id="TRANCHE_PAYEMENT" class="form-select">
+                        <option value="">choisir une trache de payement</option>
+                    <?php foreach ($tranche as $payement_tranche){
+                            echo '<option value="'.$payement_tranche['ID_TRANCHE'].'"> '.$payement_tranche['NOM_TRANCHE'].'</option>';
+                    }
+                    ?>
+                    
+                    </select>
                     </div>
-                    <div class="col-4">
-                        <label for="PRIX_FORMATION" class="form-label">TRANCHE DE PAYEMENT </label>
-                        <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
-                        <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
-                    </div>
-                    <div class="col-4">
-                        <label for="PRIX_FORMATION" class="form-label">MONTANT PAYE</label>
-                        <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $prix_formation ?>">
+                <div class="col-4">
+                        <label for="MONTANT_PAYE" class="form-label">MONTANT PAYE</label>
+                        <input type="number" name="MONTANT_PAYE" id="MONTANT_PAYE" class="form-control" value="<?= $prix_formation ?>">
                         <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
                     </div>
                 </div>
 
-                <h5 class="text-center text-success"><?php echo $MESSAGE_SUCCESS;?></h5>
                 <div class="mt-3 d-flex justify-content-center align-items-center w-100 py-4">
                     <input type="submit" value="Envoyer" class="btn btn-success w-50" name="envoyer">
                 </div> 

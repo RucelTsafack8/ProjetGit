@@ -35,7 +35,7 @@
                     <div class="collapse navbar-collapse d-flex justify-content-end me-3" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link active fs-3" aria-current="page" href="indexset.php">Acceuil</a>
-                            <a class="nav-link active fs-3" aria-current="page" href="details.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><img src="images\<?= $SECRET['PHOTO']?>" class="img-fluid rounded-circle img-thumbnails" alt="image secretaire <?= $SECRET['NOM_PRENOMS'] ?>"></a>
+                            <a class="nav-link active fs-3" aria-current="page" href="details.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><img src="images\<?= $SECRET['PHOTO']?>" style="width:40px;height:35px;" class="img-fluid rounded-circle img-thumbnails" alt="image secretaire <?= $SECRET['NOM_PRENOMS'] ?>"></a>
                            
                             <a class="nav-link  fs-3" href="deconnexion.php">Deconnexion</a>
                             

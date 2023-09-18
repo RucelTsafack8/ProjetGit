@@ -8,7 +8,7 @@ $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
     require_once('headerset.php');
 }else{
-    require_once('header.php');
+    require_once('headeradmin.php');
 }
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('connect.php');
@@ -60,8 +60,8 @@ if(isset($_POST['envoyer'])){
 
     $ID_PROFESSEUR = "3IA-PROF.$DATE$INDICE-$TOTAL";
 
-    if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
-        $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";
+    if(strlen($NOM_PRENOMS)<=3 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
+        $erreur_nom= "veillez remplir le champ d'au moins 3 caracteres";
         $ERREUR++;
     }else if(strlen($EMAIL)<=8 && empty($EMAIL)) {
         $erreur_email = "l'email est mal renseigner";
@@ -121,7 +121,7 @@ if(isset($_POST['envoyer'])){
 ?>
 
 <div class="container mt-5 py-5">
-        <div class="col-1 py-2 ms-5 mt-1">
+        <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
         

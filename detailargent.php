@@ -8,16 +8,17 @@
     if($resultat===false){
         require_once('headerset.php');
     }else{
-        require_once('header.php');
+        require_once('headeradmin.php');
     }
     //requetes de selection des etudiant des dont le montant est superieur a 0 franc
-    $requete4 = 'SELECT * FROM etudiants WHERE PRIX_FORMATION>0';
+    $requete4 = 'SELECT * FROM etudiants WHERE RECU_ACTION =1';
     //on prepare la requete
     $stm = $db->prepare($requete4);
     //on excecute la requete
     $stm->execute();
     //on stock les donnees les donnes dans une variable
     $result_etudiant = $stm->fetchAll(PDO::FETCH_ASSOC);
+
     $requete5 = 'SELECT * FROM stagiaire WHERE PRIX_FORMATION>0';
     //on prepare la requete
     $stn = $db->prepare($requete5);
@@ -26,16 +27,16 @@
     //on stock les donnees les donnes dans une variable
     $result_stage = $stn->fetchAll(PDO::FETCH_ASSOC);
 
-    $ret_etude = 'SELECT PRIX_FORMATION FROM  etudiants';
+    $ret_etude = 'SELECT MONTANT_PAYE FROM  etudiants WHERE RECU_ACTION =1';
    $selet = $db->prepare($ret_etude);
    $selet->execute();
     while($prix = $selet->fetch()){
-        $MONTANT +=$prix['PRIX_FORMATION'] ;
+        $MONTANT +=$prix['MONTANT_PAYE'] ;
     }
     //on fait la meme chose pour la table stagiaire et on fait la somme
     $MONTANT1=0;
     //requete pour selectionner et calculer le montant des stagiaires
-$ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
+$ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE WHERE RECU_ACTION =1';
    $selet = $db->prepare($ret_stage);
    $selet->execute();
     while($prix = $selet->fetch()){
@@ -47,7 +48,7 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
 
 ?>
 <div class="col-12 container mt-4 py-5">
-    <div class="col-1 py-2 ms-5 mt-1">
+    <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
         <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
     </div>
 
@@ -70,7 +71,7 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
                     <td><?= $ETUDE['ID_ETUDIANT']?></td>
                     <td><?= $ETUDE['NUM_TEL']?></td>
                     <td><?= $ETUDE['NOM_PRENOMS']?></td>
-                    <td><?= $ETUDE['PRIX_FORMATION']?></td>
+                    <td><?= $ETUDE['MONTANT_PAYE']?></td>
                 </tr>
             <?php
             }

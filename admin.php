@@ -4,7 +4,7 @@ session_start();
 
 $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 
-require_once('header.php');
+require_once('headeradmin.php');
 
 $NOM_UTILISATEUR = $_SESSION['NOM_UTILISATEUR'];
 //require once le fichier conect pour la connexion a la base de dennees
@@ -29,28 +29,42 @@ $reqprof='SELECT COUNT(*) as totalprof FROM professeurs';
 $prof = $db->prepare($reqprof);
 $prof ->execute();
 $totalprof = $prof->fetch()['totalprof'];
-    $MONTANT=0;
-    //requete pour selectionner et calculer le montant des etudiants
-$ret_etude = 'SELECT PRIX_FORMATION FROM  etudiants';
+
+//requete de calcul des depenses effectuer
+$ret_depense = 'SELECT PRIX_DEPENSE FROM  DEPENSES';
+$seletdep = $db->prepare($ret_depense);
+$seletdep->execute();
+while($prixdep = $seletdep->fetch()){
+    $MONTANTDEP +=$prixdep['PRIX_DEPENSE'] ;
+}
+$totaldepenses=$MONTANTDEP;
+//requete pour selectionner et calculer le montant des etudiants
+$MONTANT=0;
+$ret_etude = 'SELECT MONTANT_PAYE FROM  etudiants WHERE RECU_ACTION =1';
    $selet = $db->prepare($ret_etude);
    $selet->execute();
     while($prix = $selet->fetch()){
-        $MONTANT +=$prix['PRIX_FORMATION'] ;
+        $MONTANT +=$prix['MONTANT_PAYE'] ;
     }
     //on fait la meme chose pour la table stagiaire et on fait la somme
     $MONTANT1=0;
     //requete pour selectionner et calculer le montant des stagiaires
-$ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
+$ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE WHERE RECU_ACTION =1';
    $selet = $db->prepare($ret_stage);
    $selet->execute();
     while($prix = $selet->fetch()){
         $MONTANT1 +=$prix['PRIX_FORMATION'] ;
     }
-   $MONTANTS= $MONTANT1+$MONTANT;
+   $totalrecu= $MONTANT1+$MONTANT;
+
+   $totalreste = $totalrecu-$totaldepenses
 
 
 
 ?>
+<script>
+    
+</script>
 
 <div class="container mt-5 py-5">
         <div class="col-1  py-1 ms-5 mt-1">
@@ -63,7 +77,7 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
     
         <div class="row">
             <div class="col-6 col-md-6 col-lg-3">
-                <div class="card bg-info mt-1 py-1">
+                <div class="card bg-info mt-1 py-1"  id ="secretaire">
                     <div class="card-body">
                         <h5 class="card-title">Secretaires</h5>
                         <h5 class="card-text"> <?= $totalset ?></h5>
@@ -71,9 +85,9 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3" >
                 
-                <div class="card bg-success mt-1 py-1">
+                <div class="card bg-light mt-1 py-1" id="etudiant">
                     <div class="card-body ">
                         <h5 class="card-title">Etudiants</h5>
                         <h5 class="card-text"> <?= $totaletu ?></h5>
@@ -84,12 +98,12 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
             <div class="col-2">
                 
             </div>
-            <div class="col-6 col-md-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3" >
                 
-                <div class="card bg-light mt-1 py-1">
+                <div class="card bg-success mt-1 py-1 " id="montant_enter">
                     <div class="card-body ">
-                        <h5 class="card-title">MONTANT TOTAL</h5>
-                        <h5 class="card-text text-danger"> <?= $MONTANTS ?> Franc CFA</h5>
+                        <h5 class="card-title">MONTANT TOTAL ENTRE</h5>
+                        <h5 class="card-text text-white"> <?= $totalrecu ?> Francs CFA</h5>
                         <a href="detailargent.php" class="btn btn-secondary float-end">Details</a>
                         
                     </div>
@@ -98,8 +112,8 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
 
         </div>
         <div class="row">
-            <div class="col-6 col-md-6 col-lg-3 ">
-                <div class="card mt-1 py-1">
+            <div class="col-6 col-md-6 col-lg-3 " >
+                <div class="card mt-1 py-1 " id="professeur">
                     <div class="card-body">
                         <h5 class="card-title">Professeurs</h5>
                         <h5 class="card-text"> <?= $totalprof ?> </h5>
@@ -107,9 +121,9 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3" >
             
-                <div class="card bg-warning mt-1 py-1">
+                <div class="card bg-warning mt-1 py-1" id="stagiare">
                     <div class="card-body ">
                         <h5 class="card-title">STAGIAIRES</h5>
                         <h5 class="card-text"> <?= $totalstage ?></h5>
@@ -117,7 +131,43 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE';
                     </div>
                 </div>
             </div>
+            <div class="col-2">
+
+            </div>
+            <div class="col-6 col-md-6 col-lg-3" >
+            
+                <div class="card bg-danger mt-1 py-1" id="montant_sortie">
+                    <div class="card-body ">
+                        <h5 class="card-title">MONTANT TOTAL SORTIE</h5>
+                        <h5 class="card-text text-white"> <?= $totaldepenses ?> Francs CFA</h5>
+                        <a href="detailsdepense.php" class="btn btn-primary float-end">Voir plus </a>
+                    </div>
+                </div>
+            </div>
         </div>
+
+            <div class="row">
+                <div class="col-6 col-md-6 col-lg-3">
+
+                </div>
+                <div class="col-6 col-md-6 col-lg-3">
+                
+                </div>
+                <div class="col-2">
+
+                </div>
+                <div class="col-6 col-md-6 col-lg-3">
+            
+                <div class="card bg-warning mt-1 py-1">
+                    <div class="card-body ">
+                        <h5 class="card-title">MONTANT TOTAL RESTANT</h5>
+                        <h5 class="card-text text-white"> <?= $totalreste ?> Francs CFA</h5>
+                        <h2></h2> <br>
+                        <h2></h2>
+                    </div>
+                </div>
+            </div>
+            </div>
         
         
     </div>  

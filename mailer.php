@@ -55,9 +55,7 @@ require_once 'vendor/autoload.php';
 			}
 		} catch (phpmailerException $e) {
 			$result = $e->errorMessage();
-		} catch (Exception $e) {
-			$result = $e->getMessage();
-		}
+		} 
 		
 		// $today = date("Y-m-d H:i:s"); 
 		// $myfile = fopen("output.txt", "a+") or die("Unable to open file!");
@@ -66,7 +64,7 @@ require_once 'vendor/autoload.php';
 		
 		// fwrite($myfile, $output);
 		// fclose($myfile);	
-        		
+        header('Location:code_mot_passe.php');
     }
-	echo $EMAIL;
+	
 ?>

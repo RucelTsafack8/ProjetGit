@@ -70,7 +70,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="col-1 py-2 ms-5 mt-1">
+        <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
        <div class="row mt-5 py-5  justify-content-center align-items-center w-100">
