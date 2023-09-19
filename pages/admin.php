@@ -70,10 +70,10 @@ $ret_stage = 'SELECT PRIX_FORMATION FROM  STAGIAIRE WHERE RECU_ACTION =1';
 
 <div class="container mt-5 py-5">
         <div class="col-1  py-1 ms-5 mt-1">
-            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+            <a  class="text-warning float-start bg-success btn " href="admin.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
         </div>
         <div class="row">
-            <h1 class="text-center text-info text-uppercase">DASHBORD DE LA GESTION DE 3IA</h1>
+            <h1 class="text-center text-info text-uppercase">DASHBORD DE LA GESTION DE 3IA , <?= $ID_TYPE_COMPTE ?></h1>
             
         </div>
     

@@ -23,6 +23,17 @@ if(isset($_POST['envoi'])){
     $NOM_UTILISATEUR = $_POST['NOM_UTILISATEUR'];
     $MOT_DE_PASSE = $_POST['MOT_DE_PASSE'];
     $REPETE = $_POST['MOT_DE_PASSE2'];
+    //TRAITEMENT DES PHOTO 
+    $PHOTO = $_FILES['PHOTO'];
+    $PHOTO_NOM = $PHOTO['name'];
+    $destination ='images/'.$PHOTO_NOM;
+    $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
+    // if((exif_imagetype($destination)!==IMAGETYPE_GIF) || (exif_imagetype($destination)!==IMAGETYPE_PNG) || (exif_imagetype($destination)!==IMAGETYPE_JPEG)){
+    //     $erreur_photo ="le type de fichier de l'image est invalide";
+    // }
+    if(!move_uploaded_file($_FILES['PHOTO']['tmp_name'],$destination)){
+        $erreur_photo1 = "erreur de telechargement de l'image";
+    }
 
     if(strlen($NOM_UTILISATEUR)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/',$NOM_UTILISATEUR)){
         $nom= "veillez remplir le champ d'au moins 9 caracteres";
@@ -42,27 +53,36 @@ if(isset($_POST['envoi'])){
         $ADRESSE = $_SESSION['ADRESSE'];
         echo "$NOM_PRENOMS";
     
-        $requete = 'INSERT INTO secretaire(ID_TYPE_COMPTE,ID_COMPTE,NUMERO_TEL,EMAIL,NOM_UTILISATEUR,MOT_DE_PASSE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE) VALUES
-        (:ID_TYPE_COMPTE,:ID_COMPTE,:NUMERO_TEL,:EMAIL,:NOM_UTILISATEUR,:MOT_DE_PASSE,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE)';
+        $requete1 = 'UPDATE  SECRETAIRE SET ID_TYPE_COMPTE=:ID_TYPE_COMPTE,
+        NOM_UTILISATEUR=:NOM_UTILISATEUR,MOT_DE_PASSE=:MOT_DE_PASSE,PHOTO=:PHOTO
+        WHERE ID_TYPE_COMPTE=:ID_TYPE_COMPTE';
 
         $stmt = $db->prepare($requete);
-        $stmt->bindParam(":ID_TYPE_COMPTE",$_SESSION['ID_TYPE_COMPTE'],PDO::PARAM_STR);
-        $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
-        $stmt->bindParam(":NUMERO_TEL",$_SESSION['NUMERO_TEL'],PDO::PARAM_INT);
+        $stmt->bindParam(":ID_TYPE_COMPTE",$_POST['ID_TYPE_COMPTE'],PDO::PARAM_STR);
         
-        $stmt->bindParam(":EMAIL",$_SESSION['EMAIL'],PDO::PARAM_STR);
         $stmt->bindParam(":NOM_UTILISATEUR",$_POST['NOM_UTILISATEUR'],PDO::PARAM_STR);
         $stmt->bindParam(":MOT_DE_PASSE",$_POST['MOT_DE_PASSE'],PDO::PARAM_STR);
-        
-        $stmt->bindParam(":NOM_PRENOMS",$_SESSION['NOM_PRENOMS'],PDO::PARAM_STR);
-        $stmt->bindParam(":DATE_NAISSANCE",$_SESSION['DATE_NAISSANCE']);
-        $stmt->bindParam(":SEXE",$_SESSION['SEXE'],PDO::PARAM_STR);
-        $stmt->bindParam(":ADRESSE",$_SESSION['ADRESSE'],PDO::PARAM_STR);
+        $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
         $stmt->execute();
 
         $_SESSION['NOM_UTILISATEUR'] = $NOM_UTILISATEUR;
         
         header('location:details.php');
+    }
+    if(isset($_GET['ID_COMPTE'])){
+
+
+        $requete = 'SELECT * FROM SECRETAIRE WHERE ID_COMPTE = ?';
+        //on prepare la requete
+        $query = $db->prepare($requete);
+        //on excecute la requete
+        $query->execute(array($ID_COMPTE));
+        //on stock les donnees les donnes dans une variable
+        $SECRET = $query->fetch();
+        // if(!$SECRET){   
+        //     header('Location:admin.php');
+        //     $message ="<h1 class='text-center text-danger border text-uppercase mt-5 py-5'> $message_erreur</h1>";
+        // }
     }
     
 }
@@ -75,15 +95,22 @@ if(isset($_POST['envoi'])){
             <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
         </div>
         <div class="row  justify-content-center align-items-center w-100 py-2 mt-2">
-                <form action="" method="post" class =" w-50 bg-light">
+                <form action="" method="post" class =" w-50 bg-light"  enctype="multipart/form-data">
                 <h1 class ="text-center text-uppercase text-info mt-3 py-3">configuration compte  admin</h1>
                 <h3 class ="text-center text-uppercase text-info mt-3 py-3"><?php echo $_SESSION['ID_TYPE_COMPTE'];echo $_SESSION['DATE_NAISSANCE'];?></h3>
 
                 <div class="mt-3">
                     <label for="NOM_UTILISTEUR" class="form-label">NOM UTILISATEUR</label>
-                    <input type="" name="NOM_UTILISATEUR" id="NOM_UTILISATEUR" class="form-control">
+                    <input type="" name="NOM_UTILISATEUR" id="NOM_UTILISATEUR" class="form-control" value="<?= $SECRET['NOM_UTILISATEUR']?>">
                     <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $nom; ?></h5>
 
+                </div>
+
+                <div class="mt-3">
+                    <label for="PHOTO" class="form-label">PHOTO</label>
+                    <input type="file" name="PHOTO" id="PHOTO" class="form-control" value="<?= $SECRET['PHOTO']?>">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo;?></h5>
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_photo1;?></h5>
                 </div>
 
                 <div class="mt-3">

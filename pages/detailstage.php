@@ -43,7 +43,8 @@ if(isset($_GET['ID_STAGIAIRE'])){
 
 <div class="container mt-5 py-5">
         <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
-            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+        <a  class="text-warning float-start bg-success btn " href="donneestage.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
+
         </div>
         <h2 class="text-center text-warning">Informations Stagiaire <?php echo $STAGE['NOM_PRENOMS']; ?></h2>
 

@@ -10,7 +10,7 @@
         
     </footer>
     <script src="https://kit.fontawesome.com/a1358332fd.js" crossorigin="anonymous"></script>
-    <script src="C:\xampp12\htdocs\ProjetGit\ajax\buton.js" ></script>
+    <script src="ajax\buton.js" ></script>
     
     
 </body>

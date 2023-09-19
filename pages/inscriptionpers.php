@@ -1,12 +1,17 @@
 <?php
 //on demarre la session
 session_start();
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 //on require le header pour l'entete de la page
 $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    require_once('headerset.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headerset.php');
 }else{
    require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
 }
@@ -26,6 +31,12 @@ $ERREUR = 0;
 $annee_naiss= 0;
 $date_actuel= date('Y');
 $age = 0;
+//generer un  mot de passe 
+$mots = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@!.";
+$shfl = str_shuffle($mots);
+$passwd = substr($shfl,0,8);
+
+
 if(isset($_POST['envoyer'])){
     $NUMERO_CNI = $_POST['NUMERO_CNI'];
     $NUMERO_TEL = $_POST['NUMERO_TEL'];
@@ -83,12 +94,16 @@ if(isset($_POST['envoyer'])){
 
 
         //REQUETE D'INSERTION A LA TABLE 
-    
-        $requete1 = 'INSERT INTO personnels(ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PHOTO) VALUES 
+        $requete1 = 'INSERT INTO  PERSONNELS (ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PHOTO) VALUES 
         (:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PHOTO)';
+    
+        $requete1 = 'INSERT INTO  SECRETAIRE (ID_TYPE_COMPTE,ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_UTILISATEUR,MOT_DE_PASSE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PHOTO) VALUES 
+        (:ID_TYPE_COMPTE,:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:NOM_UTILISATEUR,:MOT_DE_PASSE,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PHOTO)';
+
 
         $stmt = $db->prepare($requete1);
 
+        $stmt->bindParam(":ID_TYPE_COMPTE",$ID_TYPE_COMPTE,PDO::PARAM_STR);
         $stmt->bindParam(":ID_COMPTE",$ID_COMPTE,PDO::PARAM_STR);
         $stmt->bindParam(":NUMERO_CNI",$_POST['NUMERO_CNI'],PDO::PARAM_INT);
         $stmt->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL'],PDO::PARAM_INT);
@@ -102,6 +117,7 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->execute();
+
         $MESSAGE_SUCCESS = "LE FORMULAIRE  A ETE SOUMIS AVEC SUCCESS";
         $_SESSION['ID_TYPE_COMPTE'] = $ID_TYPE_COMPTE;
         $_SESSION['ID_COMPTE'] = $ID_COMPTE;
@@ -112,8 +128,64 @@ if(isset($_POST['envoyer'])){
         $_SESSION['DATE_NAISSANCE'] =$DATE_NAISSANCE;
         $_SESSION['NUMERO_TEL'] =$NUMERO_TEL;
         $TOKEN = bin2hex(random_bytes(16));
+        function sendmail($EMAIL,$TOKEN){
 
-        header('location:inscriptpers.php');
+
+
+            // Load Composer's autoloader
+            require_once 'C:\xampp12\htdocs\ProjetGit\vendor\autoload.php';
+
+            if($_SERVER["REQUEST_METHOD"] == "POST")
+                {
+                
+                    // require_once("config.php"); 
+                    // require_once("Code/functions.php");
+                    // CheckSession();
+                    // require_once("Code/ComposeReport.php");
+                
+                    // Instantiation and passing `true` enables exceptions
+                    $mail = new PHPMailer(true);
+		
+		try{
+			//Server settings
+			$mail->SMTPDebug = 3;
+			$mail->isSMTP();                                            
+			$mail->Host       = 'smtp.gmail.com';                   
+			$mail->SMTPAuth   = true;                                   
+			$mail->Username   = 'petitdassi7@gmail.com';                     
+			$mail->Password   = 'cvmirnmuzjvktwzr';                               
+			$mail->SMTPSecure = 'tls';        
+			$mail->Port       =  587;  
+			
+			//Recipients
+			$mail->addAddress($EMAIL);            
+
+			// Content
+			$mail->isHTML(true);     
+			// Set email format to HTML
+			$mail->Subject = 'Test message Mailer';
+			$mail->Body    = " <h2>salut !</h2>
+            <h3>le directeur tel vous a inscrit comme secretaire a la structure 3IA </h3>
+			<p>le nom utilisateur $NOM_UTILISATEUR est le mot de passe est $passwd </p>
+            <a href='http://localhost/ProjetGit/pages/connexion.php?EMAIL='.$EMAIL.'&TOKEN='.$TOKEN.''>se connecter et modifier le mot de passe </a>
+            ";
+			$mail->AltBody = 'Le test de l envoi d email avec php reussi avec success';
+			
+			if ($mail->Send()) {
+				$result = 'le message a bien ete envoyer a l\'adresse '.$EMAIL.'';
+			} else {
+				$result = "Error: " . $mail->ErrorInfo;
+                echo "le message d erreur de connexion a la base ";
+			}
+		} catch (phpmailerException $e) {
+			$result = $e->errorMessage();
+		} 
+        }
+    }   
+        sendmail($EMAIL, $TOKEN);
+
+
+        header('location:admin.php');
 
     }
 }
@@ -151,7 +223,7 @@ if(isset($_POST['envoyer'])){
 
                 <div class="mt-3">
                     <label for="NOM_PRENOMS" class="form-label">NOM ET PRENOM</label>
-                    <input type="text" name="NOM_PRENOMS" id="NOM_PRENOMS" class="form-control">
+                    <input type="text" name="NOM_PRENOMS" id="NOM_PRENOMS" class="form-control" ">
                     <!-- affiche l'erreur si le nom et le prenom sont mal ecrit -->
                     <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_nom;?></h5>
                 </div>
@@ -184,6 +256,8 @@ if(isset($_POST['envoyer'])){
                 <div class="mt-3">
                     <label for="ADRESSE" class="form-label">ADRESSE</label>
                     <input type="text" name="ADRESSE" id="ADRESSE" class="form-control">
+                    <input type="hidden" name="NOM_UTILISATEUR" id="NOM_UTILISATEUR" class="form-control">
+                    <input type="hidden" name="MOT_DE_PASSE" id="MOT_DE_PASSE" class="form-control">
                     <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_adresse;?></h5>
                 </div> 
                 <h5 class="text-center text-success text-uppercase"><?php echo $MESSAGE_SUCCESS;?></h5>

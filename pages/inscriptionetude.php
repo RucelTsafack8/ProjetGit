@@ -1,83 +1,9 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<script>
-    
-    $(document).ready(function(){
-        let total = 0;
-        //selection des prix de formation
-        $("#CHOIX_FORMATION").on("change",function(){
-            let choix_formation = ($("#CHOIX_FORMATION" ).val());
-            if(choix_formation){
-                $.ajax({
-                    type: 'GET' ,
-                    url:  'ajax\ajaxData1.php?ID_FORMATION='+ choix_formation ,
-                    data: 'ID_FORMATION ='+choix_formation ,
-                    success:  function(response){
-                        //alert(response);
-                        let PRIX = document.getElementById("PRIX_FORMATION");
-                        PRIX.value = response;
-                        total=response;
-
-                    }  
-
-                });
-                
-            }else{
-                alert('cette formation n\'existe pas !!!');
-            }
-        })
-        //selection des tranche de payements
-        $("#TRANCHE_PAYEMENT").on("change",function(){
-            let choix_tranche = ($("#TRANCHE_PAYEMENT" ).val());
-            if(choix_tranche){
-                $.ajax({
-                    type: 'GET' ,
-                    url:  'ajax\ajaxData2.php?ID_TRANCHE='+ choix_tranche ,
-                    data: 'ID_TRANCHE ='+choix_tranche ,
-                    success:  function(response1){
-                        //alert(total);
-                        let PRIX2 = document.getElementById("MONTANT_PAYE");
-                        let T1=0;
-                        let T2=0;
-                        if(response1==='TOTAL'){
-                            PRIX2.value=total;
-                        }else if((response1==='TRANCHE1')){
-                            while (total<100000) {
-                                PRIX2.value=total;
-                            }
-                            T1=(total-100000)
-                            PRIX2.value= T1;
-                            total = total-T1;
-                        }else if((response1==='TRANCHE2')){
-                            while (total<100000) {
-                                PRIX2.value=total;
-                            }
-                            T2 = (total-50000);
-                            PRIX2.value= T2;
-                            total =total-T2;
-                        }
-                        else if((response1==='TRANCHE3')){
-                            PRIX2.value= total;
-                        }
-                        
-                    }
-                   
-                });
-
-            }else{
-                alert('cette tranche n\'existe pas !!!');
-            }
-        })
-
-
-
-    })
-</script>
 <?php
 //on demarre la session
 session_start();
 //on require le header pour l'entete de la page
 $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
-// require_once('headerset.php');
+require_once('C:\xampp12\htdocs\ProjetGit\layout\headerset.php');
 
 
 
@@ -141,6 +67,7 @@ if(isset($_POST['envoyer'])){
     }
 
     $CHOIX_FORMATION = strip_tags($_POST['CHOIX_FORMATION']);
+    $MODE_VERSEMENT = strip_tags($_POST['MODE_VERSEMENT']);
     $DATE = date("Y-m-d H:i:s");
     $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
     $age = $date_actuel-$annee_naiss;
@@ -175,8 +102,8 @@ if(isset($_POST['envoyer'])){
         $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$TOTAL";
         
         //requete d'insertion des etudiants
-        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT,PHOTO,MONTANT_PAYE)
-        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT,:PHOTO,:MONTANT_PAYE)';
+        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT,PHOTO,MONTANT_PAYE,MODE_VERSEMENT)
+        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT,:PHOTO,:MONTANT_PAYE,:MODE_VERSEMENT)';
         
         $stmt = $db->prepare($requetes);
         
@@ -189,18 +116,97 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
         $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
+        $stmt->bindParam(":MODE_VERSEMENT",$_POST['MODE_VERSEMENT'],PDO::PARAM_STR);
         $stmt->bindParam(":CHOIX_FORMATION",$_POST['CHOIX_FORMATION'],PDO::PARAM_STR);
         $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
         $stmt->bindParam(":MONTANT_PAYE",$_POST['MONTANT_PAYE'],PDO::PARAM_INT);
         $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
         $stmt->bindParam(":DATE_DEBUT",$DATE);
         $stmt->execute(); 
-        $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
+        //$MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
         // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 
     }
 }
 ?>
+<!-- debut du  code ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script>  
+    $(document).ready(function(){
+        let total = 0;
+        //selection des prix de formation
+        $("#CHOIX_FORMATION").on("change",function(){
+            let choix_formation = ($("#CHOIX_FORMATION" ).val());
+            alert(choix_formation);
+            
+            if(choix_formation){
+                $.ajax({
+                    type: 'GET' ,
+                    url:  'ajaxData1.php?ID_FORMATION='+ choix_formation ,
+                    data: 'ID_FORMATION ='+choix_formation ,
+                    success:  function(response){
+                        alert(response);
+                        let PRIX = document.getElementById("PRIX_FORMATION");
+                        PRIX.value = response;
+                        total=response;
+
+                    }  
+
+                });
+                
+            }else{
+                alert('cette formation n\'existe pas !!!');
+            }
+        })
+        //selection des tranche de payements
+        $("#TRANCHE_PAYEMENT").on("change",function(){
+            let choix_tranche = ($("#TRANCHE_PAYEMENT" ).val());
+            
+            if(choix_tranche){
+                $.ajax({
+                    type: 'GET' ,
+                    url:  'ajaxData2.php?ID_TRANCHE='+ choix_tranche ,
+                    data: 'ID_TRANCHE ='+choix_tranche ,
+                    success:  function(response1){
+                        //alert(total);
+                        let PRIX2 = document.getElementById("MONTANT_PAYE");
+                        let T1=0;
+                        let T2=0;
+                        if(response1==='TOTAL'){
+                            PRIX2.value=total;
+                        }else if((response1==='TRANCHE1')){
+                            while (total<100000) {
+                                PRIX2.value=total;
+                            }
+                            T1=(total-100000)
+                            PRIX2.value= T1;
+                            total = total-T1;
+                        }else if((response1==='TRANCHE2')){
+                            while (total<100000) {
+                                PRIX2.value=total;
+                            }
+                            T2 = (total-50000);
+                            PRIX2.value= T2;
+                            total =total-T2;
+                        }
+                        else if((response1==='TRANCHE3')){
+                            PRIX2.value= total;
+                        }
+                        
+                    }
+                   
+                });
+
+            }else{
+                alert('cette tranche n\'existe pas !!!');
+            }
+        })
+
+
+
+    })
+</script>
+<!-- fin du code ajax -->
 
 <div class="container mt-5 py-5">
         <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
@@ -288,7 +294,7 @@ if(isset($_POST['envoyer'])){
                 <div class="col-4">
                     <label for="TRANCHE_PAYEMENT" class="form-label">TRANCHE DE PAYEMENT </label>
 
-                    <select name="TRANCHE_PAYEMENT" id="TRANCHE_PAYEMENT" class="form-select">
+                    <select name="MODE_VERSEMENT" id="TRANCHE_PAYEMENT" class="form-select">
                         <option value="">choisir une trache de payement</option>
                     <?php foreach ($tranche as $payement_tranche){
                             echo '<option value="'.$payement_tranche['ID_TRANCHE'].'"> '.$payement_tranche['NOM_TRANCHE'].'</option>';
@@ -296,6 +302,7 @@ if(isset($_POST['envoyer'])){
                     ?>
                     
                     </select>
+
                     </div>
                 <div class="col-4">
                         <label for="MONTANT_PAYE" class="form-label">MONTANT PAYE</label>

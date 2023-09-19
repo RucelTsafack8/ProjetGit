@@ -10,7 +10,7 @@ use PHPMailer\PHPMailer\Exception;
 
 
 // Load Composer's autoloader
-require_once 'vendor/autoload.php';
+require_once 'C:\xampp12\htdocs\ProjetGit\vendor\autoload.php';
 
    if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
@@ -42,8 +42,9 @@ require_once 'vendor/autoload.php';
 			// Set email format to HTML
 			$mail->Subject = 'Test message Mailer';
 			$mail->Body    = " <h2>salut !</h2>
-            <h3>vous avez demandez a modifier votre mot de passe veillez cliquer sur le lien</h3>
-            <a href='http://localhost/ProjetGit/inscriptpers.php?EMAIL='.$EMAIL.'&TOKEN='.$TOKEN.''>configurer votre compte utilisateur</a>
+            <h3>le directeur tel vous a inscrit comme secretaire a la structure 3IA </h3>
+			<p>le nom utilisateur $NOM_UTILISATEUR est le mot de passe est $passwd </p>
+            <a href='http://localhost/ProjetGit/pages/connexion.php?EMAIL='.$EMAIL.'&TOKEN='.$TOKEN.''>se connecter et modifier le mot de passe </a>
             ";
 			$mail->AltBody = 'Le test de l envoi d email avec php reussi avec success';
 			

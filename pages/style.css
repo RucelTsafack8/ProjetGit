@@ -3,13 +3,16 @@ body{
     font-weight: 400 ;
     font-size: 20px ;
     font-family: 'Times New Roman', Times, serif;
-    background-image: url(images\3ia.jpg) cover;
+    background-image: url("images\3ia.jpg"),75%;
     background-repeat: no-repeat;
+    background-size: cover;
+    
 
 }
 .navbar .container-fluid .navbar-brand{
     color: aqua ;
     font-size: 30px;
+    margin-left: 2em;
 }
 
 .navbar .container-fluid .collapse .navbar-nav .navbar-item .nav-link:hover{

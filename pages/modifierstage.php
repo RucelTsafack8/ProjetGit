@@ -6,13 +6,14 @@ $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    require_once('headerset.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headerset.php');
 }else{
     require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
 }
 
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('C:\xampp12\htdocs\ProjetGit\layout\connect.php');
+
 $erreur_nom = '';
 $erreur_email = '';
 $erreur_numero = '';
@@ -100,7 +101,6 @@ if(isset($_POST['envoyer'])){
             header('location:donneestage.php');
             
         }
-        // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
 
     }
     }
@@ -124,11 +124,12 @@ if(isset($_POST['envoyer'])){
 
 <div class="container mt-5 py-5">
         <div class="col-1  py-2 ms-5 mt-1  fixed-top mt-5 py-5">
-            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+            <a  class="text-warning float-start bg-success btn " href="donneestage.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
         </div>
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-50">
                 <h1 class= "text-center text-info text-uppercase">inscrition Stagiare</h1>
+                <h1 class= "text-center text-info text-uppercase"><?= $ID_TYPE_COMPTE?></h1>
                 
                 <div class="mt-3">
                     <label for="NUMERO_CNI" class="form-label">NUMERO CNI</label>

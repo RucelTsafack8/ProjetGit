@@ -1,6 +1,6 @@
 <?php
 
-require_once('connect.php');
+require_once('C:\xampp12\htdocs\ProjetGit\layout\connect.php');
 
 
 if(!empty($_GET["ID_TRANCHE"])){

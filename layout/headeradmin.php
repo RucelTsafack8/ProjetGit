@@ -33,7 +33,7 @@
         <div class="">
             <nav class="navbar navbar-expand-lg bg-primary">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="admin.php"><img src="images\3ia.jpg" alt="logo de 3IA" style="width:40px;height:35px;"></a>
+                    <a class="navbar-brand ml-4" href="admin.php"><img src="images\3ia.jpg" alt="logo de 3IA" style="width:60px;height:50px;"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>

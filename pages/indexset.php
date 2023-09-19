@@ -5,13 +5,15 @@ $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    require_once('headerset.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headerset.php');
 }else{
-    require_once('header.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
+
 }
 
 //require once le fichier conect pour la connexion a la base de dennees
 require_once('C:\xampp12\htdocs\ProjetGit\layout\connect.php');
+
 $ID_COMPTE=$_SESSION['ID_COMPTE'];
 
 ?>

@@ -8,7 +8,6 @@ require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
     $stn=$db->prepare($ret);
     $stn->execute();
     $total = $stn->fetch()['total'];
-    echo $total  ;
 ////////////////////////////
 $message_email = '';
 $message_nom = '';
@@ -20,7 +19,6 @@ if(isset($_POST['envoi'])){
     $EMAIL_RECEVEUR = $_POST['EMAIL_RECEVEUR'];
     $PRIX_DEPENSE = $_POST['PRIX_DEPENSE'];
     $MOTIF = $_POST['MOTIF'];
-   echo $ID_COMPTE;
    
 
    $requete = 'INSERT INTO DEPENSES (ID_DEPENSE,ID_COMPTE,NOM_PRENOMS,EMAIL_RECEVEUR,PRIX_DEPENSE,MOTIF) VALUES (:ID_DEPENSE,:ID_COMPTE,:NOM_PRENOMS,:EMAIL_RECEVEUR,:PRIX_DEPENSE,:MOTIF)';
@@ -32,8 +30,8 @@ if(isset($_POST['envoi'])){
    $pdostmt->bindParam(":PRIX_DEPENSE",$_POST['PRIX_DEPENSE'],PDO::PARAM_INT);
    $pdostmt->bindParam(":MOTIF",$_POST['MOTIF'],PDO::PARAM_STR);
    $pdostmt->execute();
-   $success="le retrait pour la depense a ete effectue avec success";
    header('Location:admin.php');
+   $success="le retrait pour la depense a ete effectue avec success";
    
 
     
@@ -51,7 +49,8 @@ if(isset($_POST['envoi'])){
 
     <div class="container ms-5 mt-5">
         <div class="col-1 py-5   fixed-top mt-5 py-5">
-            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+        <a  class="text-warning float-start bg-success btn " href="detailsdepense.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
+
         </div>
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-50 py-5 mt-5">

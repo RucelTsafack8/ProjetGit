@@ -19,7 +19,8 @@
 
 <div class="col-12 container mt-5 py-5">
     <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
-        <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+        <a  class="text-warning float-start bg-success btn " href="admin.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
+
     </div>
         <h1 class="text-center text-success">Table Etudiants</h1>
         <table class="table border">
@@ -61,6 +62,6 @@
         </div>
     </div>
     
-    <?php
+<?php
     require_once('C:\xampp12\htdocs\ProjetGit\layout\footer.php');
-    ?> 
+?> 

@@ -105,7 +105,7 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
 
         $stmt->execute();
-        echo "<script>alert('LE FORMULAIRE  A ETE SOUMIS AVEC SUCCESS')</script>";
+        
         // $_SESSION['ID_COMPTE'] = $ID_COMPTE;
         // $_SESSION['SEXE'] = $SEXE;
         // $_SESSION['ADRESSE'] = $ADRESSE;

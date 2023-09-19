@@ -7,7 +7,7 @@ $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    require_once('headerset.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headerset.php');
 }else{
     require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
 }

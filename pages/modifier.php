@@ -1,4 +1,3 @@
-
 <?php
 //on demarre la session
 session_start();
@@ -7,7 +6,7 @@ $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    require_once('headerset.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headerset.php');
 }else{
     require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
 }
@@ -43,7 +42,7 @@ if(isset($_POST['envoyer'])){
     $ID_COMPTE = "3IA-$DATE$INDICE-$RANGNUMBER";
     $ID_TYPE_COMPTE = "3IA-SECRET.$DATE$INDICE-$RANGNUMBER";
 
-    if(strlen($NOM_PRENOMS)<=8 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
+    if(strlen($NOM_PRENOMS)<=3 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
         $erreur_nom= "veillez remplir le champ d'au moins 9 caracteres";
         $ERREUR++;
     }else if(strlen($EMAIL)<=8 && empty($EMAIL)) {
@@ -81,7 +80,6 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->execute();
-        $MESSAGE_SUCCESS = "LE FORMULAIRE  A ETE SOUMIS AVEC SUCCESS";
         $_SESSION['ID_TYPE_COMPTE'] = $ID_TYPE_COMPTE;
         $_SESSION['ID_COMPTE'] = $ID_COMPTE;
         $_SESSION['SEXE'] = $SEXE;
@@ -93,7 +91,11 @@ if(isset($_POST['envoyer'])){
 
             
         
-        header('location:indexset.php');
+        if($resultat===false){
+            header('Location:indexset.php');
+        }else{
+            header('Location:admin.php');
+        }
 
     }
 

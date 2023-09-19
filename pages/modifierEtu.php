@@ -6,9 +6,9 @@ $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    require_once('headerset.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headerset.php');
 }else{
-    require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
+   require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
 }
 
 
@@ -29,8 +29,7 @@ $CHOIX_FORMATION = '';
 $ID_ETUDIANT = $_GET['ID_ETUDIANT'];
 $date_actuel= date('Y');
 $age = 0;
-// echo "$date_actuel";
-// echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
+
 if(isset($_POST['envoyer'])){
 
     $NUM_TEL = strip_tags($_POST['NUM_TEL']);
@@ -69,7 +68,7 @@ if(isset($_POST['envoyer'])){
     //    $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$RANGNUMBER";
      
         //requete d'insertion des etudiants
-        $requetes = 'UPDATE  ETUDIANTS SET ID_ETUDIANT=:ID_ETUDIANT,ID_COMPTE=:ID_COMPTE,NUM_TEL=:NUM_TEL,EMAIL=:EMAIL,CHOIX_FORMATION=:CHOIX_FORMATION,
+        $requetes = 'UPDATE  ETUDIANTS SET ID_ETUDIANT=:ID_ETUDIANT,ID_COMPTE=:ID_COMPTE,NUM_TEL=:NUM_TEL,EMAIL=:EMAIL,CHOIX_FORMATION=:CHOIX_FORMATION,RECU_ACTION=:RECU_ACTION,
         PRIX_FORMATION=:PRIX_FORMATION,NOM_PRENOMS=:NOM_PRENOMS,DATE_NAISSANCE=:DATE_NAISSANCE,SEXE=:SEXE,ADRESSE=:ADRESSE,DATE_DEBUT=:DATE_DEBUT
         WHERE ID_ETUDIANT=:ID_ETUDIANT';
         
@@ -78,6 +77,7 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":ID_ETUDIANT",$ID_ETUDIANT,PDO::PARAM_STR);
         $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
         $stmt->bindParam(":NUM_TEL",$_POST['NUM_TEL'],PDO::PARAM_INT);
+        $stmt->bindParam(":RECU_ACTION",$_POST['RECU_ACTION'],PDO::PARAM_INT);
         $stmt->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
         
         $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
@@ -119,7 +119,7 @@ if(isset($_POST['envoyer'])){
 
 <div class="container mt-5 py-5">
         <div class="col-1  py-2 ms-5 mt-1  fixed-top mt-5 py-5">
-            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+            <a  class="text-warning float-start bg-success btn " href="donneeetu.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
         </div>
         <div class="row justify-content-center align-items-center w-100 py-2 mt-2">
             <form action="" method="post" class="bg-light w-50">
@@ -174,18 +174,23 @@ if(isset($_POST['envoyer'])){
                     <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_adresse;?></h5>
                 </div>
                 <div class="mt-3">
+                    <label for="RECU_ACTION" class="form-label">RECU_ACTION</label>
+                    <input type="NUMBER" name="RECU_ACTION" id="RECU_ACTION" class="form-control" value="<?= $ETUDIANT['RECU_ACTION']?>">
+                    <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_adresse;?></h5>
+                </div>
+                <div class="mt-3">
                     <label for="CHOIX_FORMATION" class="form-label" aria-label="Default select">CHOIX FORMATION</label>
-                    <select name="CHOIX_FORMATION" id="CHOIX_FORMATION" class="form-select"  value="<?= $ETUDIANT['CHOIX_FORMATION']?>">
-                        <option value="PRODEV">PROGRAMMATION</option>
+                    <input name="CHOIX_FORMATION" id="CHOIX_FORMATION" class="form-control"  value="<?= $ETUDIANT['CHOIX_FORMATION']?>">
+                        <!-- <option value="PRODEV">PROGRAMMATION</option>
                         <option value="INFOGRAPHIE">INFOGRAPHIE</option>
                         <option value="SECRETARIAT">SECRETARIAT</option>
                         <option value="RESEAUX">RESEAUX</option>
                         <option value="itAcadmy">ItAcadmy</option>
-                    </select>
+                    -->
                 </div>
                 <div class="mt-3">
-                    <label for="PRIX_FORMATION" class="form-label">PRIX FORMATION VERSE</label>
-                    <input type="number" name="PRIX_FORMATION" id="PRIX_FORMATION" class="form-control" value="<?= $ETUDIANT['PRIX_FORMATION']?>">
+                    <label for="MONTANT_PAYE" class="form-label">PRIX FORMATION VERSE</label>
+                    <input type="number" name="MONTANT_PAYE" id="MONTANT_PAYE" class="form-control" value="<?= $ETUDIANT['MONTANT_PAYE']?>">
                     <h5 class ="text-center text-danger mt-3 text-uppercase py-2"><?php echo $erreur_numero;?></h5>
 
                 </div>

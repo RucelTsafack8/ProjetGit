@@ -5,7 +5,7 @@ $ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
 $MOT = 'ADMIN';
 $resultat = strstr($ID_TYPE_COMPTE,$MOT);
 if($resultat===false){
-    require_once('headerset.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headerset.php');
 }else{
     require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
 }
@@ -36,7 +36,8 @@ else{
 
 <div class="container mt-5 py-5">
         <div class="col-1 py-5 ms-5 mt-5  fixed-top mt-5 py-5">
-            <button type="button"  class="text-warning float-start bg-success btn " onclick="history.back()"><i class="bi bi-arrow-left-short icon-link-hover"></i></button>
+        <a  class="text-warning float-start bg-success btn " href="admin.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
+
         </div>
 
         <h2 class="text-center text-warning">Informations Administrateur  <?php echo $ADMIN['NOM_UTILISATEUR']; ?></h2>

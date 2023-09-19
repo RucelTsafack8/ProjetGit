@@ -1,3 +1,148 @@
+<?php
+//on demarre la session
+session_start();
+//on require le header pour l'entete de la page
+$ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
+$MOT = 'ADMIN';
+$resultat = strstr($ID_TYPE_COMPTE,$MOT);
+if($resultat===false){
+    require_once('headerset.php');
+}else{
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
+}
+
+
+//require once le fichier conect pour la connexion a la base de dennees
+require_once('C:\xampp12\htdocs\ProjetGit\layout\connect.php');
+
+$erreur_nom = '';
+$erreur_email = '';
+$erreur_photo = '';
+$erreur_photo1 = '';
+$erreur_numero = '';
+$erreur_cni = '';
+$erreur_adresse = '';
+$erreur_date = '';
+$MESSAGE_SUCCESS='';
+$ERREUR = 0;
+$ID_ETUDIANT= '';
+$ID_COMPTE=$_SESSION['ID_COMPTE'];
+$CHOIX_FORMATION = '';
+
+$date_actuel= date('Y');
+$age = 0;
+    //on selection les formations presentes dans la base de donnees
+    $query = 'SELECT * FROM FORMATIONS';
+    $form = $db->prepare($query);
+    $form->execute();
+    $formation = $form->fetchAll(PDO::FETCH_ASSOC);
+    //on selectiionne les tranche de formations
+    $query2 = 'SELECT * FROM TRANCHE_PAYEMENT';
+    $form2 = $db->prepare($query2);
+    $form2->execute();
+    $tranche = $form2->fetchAll(PDO::FETCH_ASSOC);
+
+    // $query = 'SELECT * FROM FORMATIONS';
+    // $form = $db->prepare($query);
+    // $form->execute();
+    // $formation = $form->fetchAll(PDO::FETCH_ASSOC);
+    
+    
+
+// echo "$date_actuel";
+// echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
+if(isset($_POST['envoyer'])){
+
+    $NUM_TEL = strip_tags($_POST['NUM_TEL']);
+    $EMAIL = strip_tags($_POST['EMAIL']);   
+    $NOM_PRENOMS = strip_tags($_POST['NOM_PRENOMS']);
+    $DATE_NAISSANCE = strip_tags($_POST['DATE_NAISSANCE']);
+    $SEXE = strip_tags($_POST['SEXE']);
+    $ADRESSE = strip_tags($_POST['ADRESSE']);
+    $PHOTO = $_FILES['PHOTO'];
+    $PHOTO_NOM = $PHOTO['name'];
+    $destination ='images/'.$PHOTO_NOM;
+    $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
+    // if((exif_imagetype($destination)!=IMAGETYPE_GIF) || (exif_imagetype($destination)!=IMAGETYPE_PNG) || (exif_imagetype($destination)!=IMAGETYPE_JPEG)){
+    //     $erreur_photo ="le type de fichier de l'image est invalide";
+    // }
+    if(!move_uploaded_file($_FILES['PHOTO']['tmp_name'],$destination)){
+        $erreur_photo1 = "erreur de telechargement de l'image";
+    }
+
+    $CHOIX_FORMATION = strip_tags($_POST['CHOIX_FORMATION']);
+    $MODE_VERSEMENT = strip_tags($_POST['MODE_VERSEMENT']);
+
+    $DATE = date("Y-m-d H:i:s");
+    $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
+    $age = $date_actuel-$annee_naiss;
+    // echo "$age";
+    $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
+    $reqe='SELECT COUNT(*) as totaletu FROM etudiants';
+    $etu = $db->prepare($reqe);
+    $etu ->execute();
+    $totaletu = $etu->fetch()['totaletu'];
+    $TOTAL = $totaletu +1;
+    
+    if(strlen($NUM_TEL)<=8){
+        $erreur_numero = "le numero est incorrect";
+        $ERREUR++;
+    }if(strlen($EMAIL)<8 && empty($EMAIL)){
+        $erreur_email = "l'email est mal renseigner";
+        $ERREUR++;
+    }if(strlen($NOM_PRENOMS)<=3 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
+        $erreur_nom = "remplir le champ d'au moins 8 caractere en commencent par une majuscule";
+        $ERREUR++;
+    }if($age<=7){
+        $erreur_date = "l'age est trop petit pour un etudiant";
+        $ERREUR++;
+    }if($age>26){
+        $erreur_date = "l'age est trop grand pour un etudiant";
+        $ERREUR++; 
+    }if(strlen($ADRESSE)<=4 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $ADRESSE)){
+        $erreur_adresse = "l'adresse n'est pas conforme";
+        $ERREUR++;
+    }elseif ($ERREUR<=0){
+
+        $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$TOTAL";
+        
+        //requete d'insertion des etudiants
+        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT,PHOTO,MONTANT_PAYE,MODE_VERSEMENT)
+        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT,:PHOTO,:MONTANT_PAYE,:MODE_VERSEMENT)';
+        
+        $stmt = $db->prepare($requetes);
+        
+        $stmt->bindParam(":ID_ETUDIANT",$ID_ETUDIANT,PDO::PARAM_STR);
+        $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
+        $stmt->bindParam(":NUM_TEL",$_POST['NUM_TEL'],PDO::PARAM_INT);
+        $stmt->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
+        $stmt->bindParam(":MODE_VERSEMENT",$_POST['MODE_VERSEMENT'],PDO::PARAM_STR);
+
+        $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
+        $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
+        $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
+        $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
+        $stmt->bindParam(":CHOIX_FORMATION",$_POST['CHOIX_FORMATION'],PDO::PARAM_STR);
+        $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
+        $stmt->bindParam(":MONTANT_PAYE",$_POST['MONTANT_PAYE'],PDO::PARAM_INT);
+        $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
+        $stmt->bindParam(":DATE_DEBUT",$DATE);
+        $stmt->execute(); 
+       
+        $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
+        if($resultat===false){
+            header('location:recuetu.php');
+            
+        }else{
+            header('location:donneeetu.php');
+            
+        }
+    
+        // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
+
+    }
+}
+?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script>
     
@@ -72,148 +217,6 @@
 
     })
 </script>
-<?php
-//on demarre la session
-session_start();
-//on require le header pour l'entete de la page
-$ID_TYPE_COMPTE = $_SESSION['ID_TYPE_COMPTE'];
-$MOT = 'ADMIN';
-$resultat = strstr($ID_TYPE_COMPTE,$MOT);
-if($resultat===false){
-    require_once('headerset.php');
-}else{
-    require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
-}
-
-
-//require once le fichier conect pour la connexion a la base de dennees
-require_once('C:\xampp12\htdocs\ProjetGit\layout\connect.php');
-
-$erreur_nom = '';
-$erreur_email = '';
-$erreur_photo = '';
-$erreur_photo1 = '';
-$erreur_numero = '';
-$erreur_cni = '';
-$erreur_adresse = '';
-$erreur_date = '';
-$MESSAGE_SUCCESS='';
-$ERREUR = 0;
-$ID_ETUDIANT= '';
-$ID_COMPTE=$_SESSION['ID_COMPTE'];
-$CHOIX_FORMATION = '';
-
-$date_actuel= date('Y');
-$age = 0;
-    //on selection les formations presentes dans la base de donnees
-    $query = 'SELECT * FROM FORMATIONS';
-    $form = $db->prepare($query);
-    $form->execute();
-    $formation = $form->fetchAll(PDO::FETCH_ASSOC);
-    //on selectiionne les tranche de formations
-    $query2 = 'SELECT * FROM TRANCHE_PAYEMENT';
-    $form2 = $db->prepare($query2);
-    $form2->execute();
-    $tranche = $form2->fetchAll(PDO::FETCH_ASSOC);
-
-    // $query = 'SELECT * FROM FORMATIONS';
-    // $form = $db->prepare($query);
-    // $form->execute();
-    // $formation = $form->fetchAll(PDO::FETCH_ASSOC);
-    
-    
-
-// echo "$date_actuel";
-// echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
-if(isset($_POST['envoyer'])){
-
-    $NUM_TEL = strip_tags($_POST['NUM_TEL']);
-    $EMAIL = strip_tags($_POST['EMAIL']);   
-    $NOM_PRENOMS = strip_tags($_POST['NOM_PRENOMS']);
-    $DATE_NAISSANCE = strip_tags($_POST['DATE_NAISSANCE']);
-    $SEXE = strip_tags($_POST['SEXE']);
-    $ADRESSE = strip_tags($_POST['ADRESSE']);
-    $PHOTO = $_FILES['PHOTO'];
-    $PHOTO_NOM = $PHOTO['name'];
-    $destination ='images/'.$PHOTO_NOM;
-    $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
-    // if((exif_imagetype($destination)!=IMAGETYPE_GIF) || (exif_imagetype($destination)!=IMAGETYPE_PNG) || (exif_imagetype($destination)!=IMAGETYPE_JPEG)){
-    //     $erreur_photo ="le type de fichier de l'image est invalide";
-    // }
-    if(!move_uploaded_file($_FILES['PHOTO']['tmp_name'],$destination)){
-        $erreur_photo1 = "erreur de telechargement de l'image";
-    }
-
-    $CHOIX_FORMATION = strip_tags($_POST['CHOIX_FORMATION']);
-    $DATE = date("Y-m-d H:i:s");
-    $annee_naiss = date('Y',strtotime($DATE_NAISSANCE));
-    $age = $date_actuel-$annee_naiss;
-    // echo "$age";
-    $INDICE = $NOM_PRENOMS[0].$NOM_PRENOMS[1].$NOM_PRENOMS[2];
-    $reqe='SELECT COUNT(*) as totaletu FROM etudiants';
-    $etu = $db->prepare($reqe);
-    $etu ->execute();
-    $totaletu = $etu->fetch()['totaletu'];
-    $TOTAL = $totaletu +1;
-    
-    if(strlen($NUM_TEL)<=8){
-        $erreur_numero = "le numero est incorrect";
-        $ERREUR++;
-    }if(strlen($EMAIL)<8 && empty($EMAIL)){
-        $erreur_email = "l'email est mal renseigner";
-        $ERREUR++;
-    }if(strlen($NOM_PRENOMS)<=3 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $NOM_PRENOMS)){
-        $erreur_nom = "remplir le champ d'au moins 8 caractere en commencent par une majuscule";
-        $ERREUR++;
-    }if($age<=7){
-        $erreur_date = "l'age est trop petit pour un etudiant";
-        $ERREUR++;
-    }if($age>26){
-        $erreur_date = "l'age est trop grand pour un etudiant";
-        $ERREUR++; 
-    }if(strlen($ADRESSE)<=4 || !preg_match('/^[A-Z][a-zA-Z\s]+$/', $ADRESSE)){
-        $erreur_adresse = "l'adresse n'est pas conforme";
-        $ERREUR++;
-    }elseif ($ERREUR<=0){
-
-        $ID_ETUDIANT = "3IA-ETU$date_actuel$INDICE-$TOTAL";
-        
-        //requete d'insertion des etudiants
-        $requetes = 'INSERT INTO etudiants(ID_ETUDIANT,ID_COMPTE,NUM_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,CHOIX_FORMATION,PRIX_FORMATION,DATE_DEBUT,PHOTO,MONTANT_PAYE)
-        VALUES (:ID_ETUDIANT,:ID_COMPTE,:NUM_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:CHOIX_FORMATION,:PRIX_FORMATION,:DATE_DEBUT,:PHOTO,:MONTANT_PAYE)';
-        
-        $stmt = $db->prepare($requetes);
-        
-        $stmt->bindParam(":ID_ETUDIANT",$ID_ETUDIANT,PDO::PARAM_STR);
-        $stmt->bindParam(":ID_COMPTE",$_SESSION['ID_COMPTE'],PDO::PARAM_STR);
-        $stmt->bindParam(":NUM_TEL",$_POST['NUM_TEL'],PDO::PARAM_INT);
-        $stmt->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
-        
-        $stmt->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
-        $stmt->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
-        $stmt->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
-        $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
-        $stmt->bindParam(":CHOIX_FORMATION",$_POST['CHOIX_FORMATION'],PDO::PARAM_STR);
-        $stmt->bindParam(":PRIX_FORMATION",$_POST['PRIX_FORMATION'],PDO::PARAM_INT);
-        $stmt->bindParam(":MONTANT_PAYE",$_POST['MONTANT_PAYE'],PDO::PARAM_INT);
-        $stmt->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
-        $stmt->bindParam(":DATE_DEBUT",$DATE);
-        $stmt->execute(); 
-       
-        $MESSAGE_SUCCESS = "insertion de l'etudiant reussi";
-        if($resultat===false){
-            header('location:recuetu.php');
-            
-        }else{
-            header('location:donneeetu.php');
-            
-        }
-    
-        // echo '<h4 class="text-center mt-5 py-5">Yo man c est une erreur</h4>';
-
-    }
-}
-?>
 
 <div class="container mt-5 py-5">
         <div class="col-1 py-2 ms-5 mt-1 fixed-top mt-5 py-5">
@@ -303,7 +306,7 @@ if(isset($_POST['envoyer'])){
                 <div class="col-4">
                     <label for="TRANCHE_PAYEMENT" class="form-label">TRANCHE DE PAYEMENT </label>
 
-                    <select name="TRANCHE_PAYEMENT" id="TRANCHE_PAYEMENT" class="form-select">
+                    <select name="MODE_VERSEMENT" id="TRANCHE_PAYEMENT" class="form-select">
                         <option value="">choisir une trache de payement</option>
                     <?php foreach ($tranche as $payement_tranche){
                             echo '<option value="'.$payement_tranche['ID_TRANCHE'].'"> '.$payement_tranche['NOM_TRANCHE'].'</option>';

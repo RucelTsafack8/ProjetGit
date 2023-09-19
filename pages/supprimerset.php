@@ -16,13 +16,14 @@ $message_erreur = "L'id inscript n'existe pas";
 if(isset($_GET['ID_TYPE_COMPTE'])){
     $ID_TYPE_COMPTE =$_GET['ID_TYPE_COMPTE'];
 
-    $requete = 'DELETE FROM SECRETAIRE se join personnels per on se.ID_COMPTE = per.ID_COMPTE WHERE se.ID_TYPE_COMPTE = ?';
+    $requete = 'DELETE FROM SECRETAIRE   WHERE ID_TYPE_COMPTE = ?';
     //on prepare la requete
     $query = $db->prepare($requete);
     //on excecute la requete
     $query->execute(array($ID_TYPE_COMPTE));
     //on stock les donnees les donnes dans une variable
     $SECRET = $query->fetch();
+    
     header('Location:donneeset.php');
 }
 
