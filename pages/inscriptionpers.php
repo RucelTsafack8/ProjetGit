@@ -15,7 +15,7 @@ if($resultat===false){
 }else{
    require_once('C:\xampp12\htdocs\ProjetGit\layout\headeradmin.php');
 }
-//require once le fichier conect pour la connexion a la base de dennees
+//require once le fichier conect pour la connexion a la base de donnees
 require_once('C:\xampp12\htdocs\ProjetGit\layout\connect.php');
 
 $erreur_nom = '';
@@ -31,10 +31,7 @@ $ERREUR = 0;
 $annee_naiss= 0;
 $date_actuel= date('Y');
 $age = 0;
-//generer un  mot de passe 
-$mots = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@!.";
-$shfl = str_shuffle($mots);
-$passwd = substr($shfl,0,8);
+
 
 
 if(isset($_POST['envoyer'])){
@@ -45,15 +42,17 @@ if(isset($_POST['envoyer'])){
     $DATE_NAISSANCE = $_POST['DATE_NAISSANCE'];
     $SEXE = $_POST['SEXE'];
     $ADRESSE = $_POST['ADRESSE'];
+    
+    //generer un  mot de passe 
+    $mots = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@!.";
+    $shfl = str_shuffle($mots);
+    $passwd = substr($shfl,0,8);
     //donneees de l'image
     $PHOTO = $_FILES['PHOTO'];
     $PHOTO_NOM = $PHOTO['name'];
     $destination ='images/'.$PHOTO_NOM;
     $imagePath  = pathinfo($destination,PATHINFO_EXTENSION);
     $VALID_EXTENSION = array('jpg','png','jpeg');
-    if(!in_array(strtolower($destination),$VALID_EXTENSION)){
-        $erreur_photo ="le type de fichier de l'imagfe est invalide";
-    }
     if(!move_uploaded_file($_FILES['PHOTO']['tmp_name'],$destination)){
         $erreur_photo1 = "erreur de telechargement de l'image";
     }
@@ -91,11 +90,30 @@ if(isset($_POST['envoyer'])){
         $ERREUR++;
     }else if($ERREUR<=0){
        
+       
 
-
-        //REQUETE D'INSERTION A LA TABLE 
-        $requete1 = 'INSERT INTO  PERSONNELS (ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PHOTO) VALUES 
+        $requete12 = 'INSERT INTO  PERSONNELS (ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PHOTO) VALUES 
         (:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PHOTO)';
+        
+        $stmt12 = $db->prepare($requete12);
+        
+        
+        $stmt12->bindParam(":ID_COMPTE",$ID_COMPTE,PDO::PARAM_STR);
+        $stmt12->bindParam(":NUMERO_CNI",$_POST['NUMERO_CNI'],PDO::PARAM_INT);
+        $stmt12->bindParam(":NUMERO_TEL",$_POST['NUMERO_TEL'],PDO::PARAM_INT);
+        $stmt12->bindParam(":EMAIL",$_POST['EMAIL'],PDO::PARAM_STR);
+        
+        $stmt12->bindParam(":NOM_PRENOMS",$_POST['NOM_PRENOMS'],PDO::PARAM_STR);
+        
+        $stmt12->bindParam(":DATE_NAISSANCE",$_POST['DATE_NAISSANCE']);
+        $stmt12->bindParam(":PHOTO",$_FILES['PHOTO']['name']);
+        $stmt12->bindParam(":SEXE",$_POST['SEXE'],PDO::PARAM_STR);
+        $stmt12->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
+        $stmt12->execute();
+        
+    
+        //REQUETE D'INSERTION A LA TABLE 
+      
     
         $requete1 = 'INSERT INTO  SECRETAIRE (ID_TYPE_COMPTE,ID_COMPTE,NUMERO_CNI,NUMERO_TEL,EMAIL,NOM_UTILISATEUR,MOT_DE_PASSE,NOM_PRENOMS,DATE_NAISSANCE,SEXE,ADRESSE,PHOTO) VALUES 
         (:ID_TYPE_COMPTE,:ID_COMPTE,:NUMERO_CNI,:NUMERO_TEL,:EMAIL,:NOM_PRENOMS,:NOM_UTILISATEUR,:MOT_DE_PASSE,:DATE_NAISSANCE,:SEXE,:ADRESSE,:PHOTO)';
@@ -118,7 +136,6 @@ if(isset($_POST['envoyer'])){
         $stmt->bindParam(":ADRESSE",$_POST['ADRESSE'],PDO::PARAM_STR);
         $stmt->execute();
 
-        $MESSAGE_SUCCESS = "LE FORMULAIRE  A ETE SOUMIS AVEC SUCCESS";
         $_SESSION['ID_TYPE_COMPTE'] = $ID_TYPE_COMPTE;
         $_SESSION['ID_COMPTE'] = $ID_COMPTE;
         $_SESSION['SEXE'] = $SEXE;
@@ -175,7 +192,6 @@ if(isset($_POST['envoyer'])){
 				$result = 'le message a bien ete envoyer a l\'adresse '.$EMAIL.'';
 			} else {
 				$result = "Error: " . $mail->ErrorInfo;
-                echo "le message d erreur de connexion a la base ";
 			}
 		} catch (phpmailerException $e) {
 			$result = $e->errorMessage();
@@ -185,12 +201,13 @@ if(isset($_POST['envoyer'])){
         sendmail($EMAIL, $TOKEN);
 
 
-        header('location:admin.php');
+        header('Location:admin.php');
 
     }
 }
 
 ?>
+
 
 <div class="container mt-5 py-5">
         <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
@@ -223,8 +240,10 @@ if(isset($_POST['envoyer'])){
 
                 <div class="mt-3">
                     <label for="NOM_PRENOMS" class="form-label">NOM ET PRENOM</label>
-                    <input type="text" name="NOM_PRENOMS" id="NOM_PRENOMS" class="form-control" ">
+                    <input type="text" name="NOM_PRENOMS" id="NOM_PRENOMS" class="form-control">
                     <!-- affiche l'erreur si le nom et le prenom sont mal ecrit -->
+                    <input type="text" name="NOM_UTILISATEUR" id="NOM_UTILISATEUR" class="form-control" hidden value="">
+                    <input type="text" name="MOT_DE_PASSE" id="MOT_DE_PASSE" class="form-control" hidden value="<?= $passwd ?>">
                     <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_nom;?></h5>
                 </div>
 
@@ -256,8 +275,7 @@ if(isset($_POST['envoyer'])){
                 <div class="mt-3">
                     <label for="ADRESSE" class="form-label">ADRESSE</label>
                     <input type="text" name="ADRESSE" id="ADRESSE" class="form-control">
-                    <input type="hidden" name="NOM_UTILISATEUR" id="NOM_UTILISATEUR" class="form-control">
-                    <input type="hidden" name="MOT_DE_PASSE" id="MOT_DE_PASSE" class="form-control">
+                    
                     <h5 class ="text-center text-danger mt-2 text-uppercase"><?php echo $erreur_adresse;?></h5>
                 </div> 
                 <h5 class="text-center text-success text-uppercase"><?php echo $MESSAGE_SUCCESS;?></h5>

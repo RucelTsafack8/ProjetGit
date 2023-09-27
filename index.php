@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container bg-primary">
         <div class="row mt-4 py-5 d-flex w-100 justify-content-center align-items-center">
             <h1 class="text-center text-white text-uppercase mt-4 py-4">
                 bienvenue dans le systeme de gestion de gestion de 3IA !

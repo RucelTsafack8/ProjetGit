@@ -32,7 +32,7 @@ else{
      
 
 <div class="col-1 py-2 ms-5 mt-1  fixed-top mt-5 py-5">
-    <a  class="text-warning float-start bg-success btn " href="donneeset.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
+    <a  class="text-warning float-start bg-success btn " href="indexset.php"><i class="bi bi-arrow-left-short icon-link-hover"></i></a>
 
 </div>
     <div class="container mt-5 py-5">

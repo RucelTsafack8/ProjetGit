@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once('connect.php');
+    require_once('C:\xampp12\htdocs\ProjetGit\layout\connect.php');
     $NOM_UTILISATEUR=$_SESSION['NOM_UTILISATEUR'];
     $ID_COMPTE=$_SESSION['ID_COMPTE'];
 
@@ -28,18 +28,23 @@
     <div class="">
             <nav class="navbar navbar-expand-lg bg-primary">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="indexset.php"></a>
+                    <a class="navbar-brand" href="indexset.php"><img src="images\3ia.jpg" alt="logo de 3IA" style="width:60px;height:50px;"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse d-flex justify-content-end me-3" id="navbarNavAltMarkup">
-                        <div class="navbar-nav">
-                            <a class="nav-link active fs-3" aria-current="page" href="indexset.php">Acceuil</a>
-                            <a class="nav-link active fs-3" aria-current="page" href="details.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><img src="images\<?= $SECRET['PHOTO']?>" style="width:40px;height:35px;" class="img-fluid rounded-circle img-thumbnails" alt="image secretaire <?= $SECRET['NOM_PRENOMS'] ?>"></a>
-                           
-                            <a class="nav-link  fs-3" href="deconnexion.php">Deconnexion</a>
-                            
-                        </div>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active fs-3" aria-current="page" href="indexset.php">Acceuil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active fs-3" aria-current="page" href="details.php?ID_TYPE_COMPTE=<?= $_SESSION['ID_TYPE_COMPTE'] ?>"><img src="images\<?= $SECRET['PHOTO']?>" style="width:40px;height:35px;" class="img-fluid rounded-circle img-thumbnails" alt="image secretaire <?= $SECRET['NOM_PRENOMS'] ?>"></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  fs-3" href="deconnexion.php">Deconnexion</a>
+                            </li>
+                        </ul>
+                        
                     </div>
                 </div>
             </nav>

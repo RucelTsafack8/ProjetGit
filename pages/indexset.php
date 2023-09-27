@@ -45,6 +45,9 @@ $ID_COMPTE=$_SESSION['ID_COMPTE'];
             </div>
 
         </div>
+        <div class="row">
+            
+        </div>
 <?php
     //on require le footer pour le pied de page
     require_once('C:\xampp12\htdocs\ProjetGit\layout\footer.php');
